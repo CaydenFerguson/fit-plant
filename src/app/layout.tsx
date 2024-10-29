@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import NavigationDesktop from "./components/desktopNav";
+import NavigationDesktop from "../components/desktopNav";
 
 export const metadata: Metadata = {
   title: "Fit Plants",
