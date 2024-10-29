@@ -1,10 +1,8 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import Homepage from "./homepage";
 
+// This is the NextJS default homepage that forwards our homepage component
 export default function Home() {
   return (
-    <div>
-      <h1>Fit Plants Home Page!</h1>
-    </div>
+    <Homepage/>
   );
 }
