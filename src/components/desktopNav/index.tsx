@@ -9,13 +9,13 @@ export default function NavigationDesktop() {
         <LinkItem>Home</LinkItem>
       </Link>
       <Link href={'/plantpage'}>
-      <LinkItem>Plant #1</LinkItem>
+        <LinkItem>Plant #1</LinkItem>
       </Link>
       <Link href={'/plantpage'}>
-      <LinkItem>Plant #2</LinkItem>
+        <LinkItem>Plant #2</LinkItem>
       </Link>
       <Link href={'/about'}>
-      <LinkItem>About</LinkItem>
+        <LinkItem>About</LinkItem>
       </Link>
     </NavBar>
   )

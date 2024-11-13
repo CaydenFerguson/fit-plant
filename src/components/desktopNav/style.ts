@@ -1,11 +1,12 @@
 'use client'
+
 import styled from '@emotion/styled'
 
 export const NavBar = styled.ul({
   listStyleType: 'none',
   padding: '10px',
   display: 'flex',
-  justifyContent: 'left'
+  justifyContent: 'left',
 })
 
 export const LinkItem = styled.li({
@@ -13,6 +14,6 @@ export const LinkItem = styled.li({
   margin: '0px 10px',
   '&:hover': {
     textDecoration: 'underline',
-    cursor: 'pointer'
-  }
+    cursor: 'pointer',
+  },
 })

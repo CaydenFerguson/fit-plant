@@ -1,24 +1,24 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import NavigationDesktop from "../components/desktopNav";
+import type { Metadata } from 'next'
+import localFont from 'next/font/local'
+import './globals.css'
+import NavigationDesktop from '../components/desktopNav'
 
 export const metadata: Metadata = {
-  title: "Fit Plants",
-  description: "Monitor your plants!",
-};
+  title: 'Fit Plants',
+  description: 'Monitor your plants!',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
       <body>
-      <NavigationDesktop/>
+        <NavigationDesktop />
         {children}
       </body>
     </html>
-  );
+  )
 }
