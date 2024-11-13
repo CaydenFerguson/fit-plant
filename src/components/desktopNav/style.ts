@@ -28,13 +28,12 @@ export const LinkItem = styled.li(({ isActive }: any) => {
   return {
     padding: '15px 20px',
     fontSize: '20px',
-    backgroundColor: isActive === true ? '#44C7AF' : '',
+    backgroundColor: isActive ? '#44C7AF' : '',
+
     '&:hover': {
-      // textDecoration: 'underline',
-      backgroundColor: isActive === false ? 'rgba(68,199,175,0.1)' : '',
+      backgroundColor: !isActive ? 'rgba(68,199,175,0.1)' : '',
       cursor: 'pointer',
     },
     borderRadius: '15px',
-    // border: '2px solid red',
   }
 })
