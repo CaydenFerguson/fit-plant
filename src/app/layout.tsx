@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
 import NavigationDesktop from '../components/desktopNav'
+import TopBar from '@/components/topBar'
 
 export const metadata: Metadata = {
   title: 'Fit Plants',
@@ -16,8 +17,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <NavigationDesktop />
-        {children}
+        <TopBar />
+        <div
+          id="test"
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100vw',
+            height: 'auto',
+            overflow: 'visible',
+          }}
+        >
+          <NavigationDesktop />
+          <div style={{ flex: 1 }}>{children}</div>
+        </div>
       </body>
     </html>
   )

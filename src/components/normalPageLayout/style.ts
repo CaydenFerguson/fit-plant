@@ -3,5 +3,6 @@ import styled from '@emotion/styled'
 
 export const PageSetup = styled.ul({
   padding: '20px 20px',
-  backgroundColor: 'red',
+  height: 'auto',
+  width: '100%',
 })
