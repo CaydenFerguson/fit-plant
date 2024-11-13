@@ -9,8 +9,8 @@ export const NavContainer = styled.div({
   flexDirection: 'column',
   backgroundColor: '#29282A',
   position: 'sticky',
-  top: '50px',
-  paddingTop: '50px',
+  top: '0px',
+  // paddingTop: '50px',
   // boxShadow: '-5px 0px 20px 0px rgba(0,0,0,0.75)',
 })
 export const NavBar = styled.ul({

@@ -5,4 +5,5 @@ export const PageSetup = styled.ul({
   padding: '20px 20px',
   height: 'auto',
   width: '100%',
+  marginTop: '50px',
 })

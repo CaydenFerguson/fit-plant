@@ -9,6 +9,12 @@ export default function NavigationDesktop() {
   const pathname = usePathname()
   return (
     <NavContainer>
+      <div
+        style={{ margin: '20px', display: 'flex', justifyContent: 'center' }}
+      >
+        <h1>Fit Plants</h1>
+        <h6 style={{ paddingTop: '20px', paddingLeft: '5px' }}>Alpha 0.0.1</h6>
+      </div>
       <NavBar>
         {/* Hero */}
         <div
@@ -34,13 +40,22 @@ export default function NavigationDesktop() {
           </div>
         </div>
         <Link href={'/'}>
-          <LinkItem isActive={pathname === '/'}>Home</LinkItem>
+          <LinkItem isActive={pathname === '/'}>Overview</LinkItem>
         </Link>
         <Link href={'/plantpage'}>
           <LinkItem isActive={pathname === '/plantpage'}>My Plants</LinkItem>
         </Link>
+        <Link href={'/upload'}>
+          <LinkItem isActive={pathname === '/upload'}>Upload</LinkItem>
+        </Link>
+        <Link href={'/tips'}>
+          <LinkItem isActive={pathname === '/tips'}>Tips</LinkItem>
+        </Link>
         <Link href={'/about'}>
           <LinkItem isActive={pathname === '/about'}>About</LinkItem>
+        </Link>
+        <Link href={'/settings'}>
+          <LinkItem isActive={pathname === '/settings'}>Settings</LinkItem>
         </Link>
       </NavBar>
     </NavContainer>
