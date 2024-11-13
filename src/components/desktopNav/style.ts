@@ -3,7 +3,8 @@
 import styled from '@emotion/styled'
 
 export const NavContainer = styled.div({
-  width: '15%',
+  width: '300px',
+  // width: '15%',
   height: 'calc(100vh - 0px)',
   display: 'flex',
   flexDirection: 'column',

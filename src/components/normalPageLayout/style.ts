@@ -7,5 +7,5 @@ export const PageSetup = styled.ul({
   height: 'auto',
   width: '100%',
   // marginTop: '50px',
-  border: '2px solid red',
+  // border: '2px solid red',
 })
