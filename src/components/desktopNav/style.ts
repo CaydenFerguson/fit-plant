@@ -4,14 +4,14 @@ import styled from '@emotion/styled'
 
 export const NavContainer = styled.div({
   width: '15%',
-  height: '100vh',
+  height: 'calc(100vh - 0px)',
   display: 'flex',
   flexDirection: 'column',
   backgroundColor: '#29282A',
   position: 'sticky',
   top: '0px',
-  // paddingTop: '50px',
-  // boxShadow: '-5px 0px 20px 0px rgba(0,0,0,0.75)',
+  borderRadius: '0px 20px 20px 0',
+  boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
 })
 export const NavBar = styled.ul({
   listStyleType: 'none',
