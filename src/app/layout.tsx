@@ -17,19 +17,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* <TopBar /> */}
         <div
           id="test"
           style={{
             display: 'flex',
             flexDirection: 'row',
-            width: '100vw',
+            // width: '100vw',
             height: 'auto',
             overflow: 'visible',
           }}
         >
           <NavigationDesktop />
-          <div style={{ flex: 1 }}>{children}</div>
+          <div style={{ flex: 1 }}>
+            {/* <TopBar /> */}
+            {children}
+          </div>
         </div>
       </body>
     </html>

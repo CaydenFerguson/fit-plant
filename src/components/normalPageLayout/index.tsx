@@ -6,5 +6,9 @@ import { PageSetup } from './style'
 // When to use?
 // Use when creating a new page, wrap the entire page in it!
 export default function NormalPageLayout({ children }: any) {
-  return <PageSetup>{children}</PageSetup>
+  return (
+    <PageSetup>
+      <div style={{ padding: '20px' }}>{children}</div>
+    </PageSetup>
+  )
 }
