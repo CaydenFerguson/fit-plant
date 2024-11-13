@@ -5,8 +5,9 @@ import { LinkItem, NavBar, NavContainer } from './style'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
-export default function NavigationDesktop() {
+export default function NavigationDesktop({ isLoggedIn, setLoggedIn }: any) {
   const pathname = usePathname()
+
   return (
     <NavContainer>
       <div
@@ -57,6 +58,7 @@ export default function NavigationDesktop() {
         <Link href={'/settings'}>
           <LinkItem isActive={pathname === '/settings'}>Settings</LinkItem>
         </Link>
+        <LinkItem onClick={() => setLoggedIn(!isLoggedIn)}>Log out</LinkItem>
       </NavBar>
     </NavContainer>
   )
