@@ -21,12 +21,12 @@ export default function RootLayout({
   let notLogin = false
   const [loggedIn, setLoggedIn] = useState(false)
 
+  // Eventually clean this up by moving it all into homepage
   return (
     <html lang="en">
       <body>
         {loggedIn ? (
           <div
-            id="test"
             style={{
               display: 'flex',
               flexDirection: 'row',
