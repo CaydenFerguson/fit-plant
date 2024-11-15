@@ -15,8 +15,6 @@ export const LoginBackground = styled.div(() => {
 
 export const LoginPanel = styled.div(() => {
   return {
-    width: '40%',
-    height: '50%',
     padding: '20px',
     backgroundColor: '#E9E6E6',
     alignItems: 'center',
@@ -25,11 +23,28 @@ export const LoginPanel = styled.div(() => {
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
+
+    width: '100px',
+    '@media (min-width: 250px)': {
+      width: '100px',
+    },
+    '@media (min-width: 500px)': {
+      width: '150px',
+    },
+    '@media (min-width: 700px)': {
+      width: '200px',
+    },
+    '@media (min-width: 1080px)': {
+      width: '350px',
+    },
+    '@media (min-width: 1440px)': {
+      width: '500px',
+    },
   }
 })
 
 export const Title = styled.h2(() => ({
-  fontSize: '80px',
+  fontSize: '50px',
   color: '#2E2C2F',
   marginBottom: '15px',
   marginTop: '40px',
@@ -72,7 +87,7 @@ export const DividerLine = styled.div(() => ({
 }))
 
 export const FooterText = styled.p(() => ({
-  fontSize: '25px',
+  fontSize: '20px',
   color: '#2E2C2F',
   a: {
     color: '#66C3FF',
