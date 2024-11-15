@@ -1,14 +1,14 @@
 'use client'
 
+import theme from '@/app/theme'
 import styled from '@emotion/styled'
 
 export const NavContainer = styled.div({
   width: '300px',
-  // width: '15%',
   height: 'calc(100vh - 0px)',
   display: 'flex',
   flexDirection: 'column',
-  backgroundColor: '#29282A',
+  backgroundColor: theme.colours.greyDark,
   position: 'sticky',
   top: '0px',
   borderRadius: '0px 20px 20px 0',
@@ -28,10 +28,12 @@ export const LinkItem = styled.li(({ isActive }: any) => {
   return {
     padding: '15px 20px',
     fontSize: '20px',
-    backgroundColor: isActive ? '#44C7AF' : '',
+    backgroundColor: isActive
+      ? theme.colours.activeNav
+      : theme.colours.transparent,
 
     '&:hover': {
-      backgroundColor: !isActive ? 'rgba(68,199,175,0.1)' : '',
+      backgroundColor: !isActive ? theme.colours.hoverNav : '',
       cursor: 'pointer',
     },
     borderRadius: '15px',

@@ -1,12 +1,13 @@
 'use client'
 
+import theme, { device } from '@/app/theme'
 import styled from '@emotion/styled'
 
 export const LoginBackground = styled.div(() => {
   return {
     width: '100vw',
     height: '100vh',
-    backgroundColor: '#29282A',
+    backgroundColor: theme.colours.backgroundLight,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -16,28 +17,16 @@ export const LoginBackground = styled.div(() => {
 export const LoginPanel = styled.div(() => {
   return {
     padding: '20px',
-    backgroundColor: '#E9E6E6',
+    backgroundColor: theme.colours.foregroundLight,
     alignItems: 'center',
     textAlign: 'center',
-    borderRadius: '20px',
+    borderRadius: '50px',
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
+    width: 'calc(100vw - 40px)',
 
-    width: '100px',
-    '@media (min-width: 250px)': {
-      width: '100px',
-    },
-    '@media (min-width: 500px)': {
-      width: '150px',
-    },
-    '@media (min-width: 700px)': {
-      width: '200px',
-    },
-    '@media (min-width: 1080px)': {
-      width: '350px',
-    },
-    '@media (min-width: 1440px)': {
+    [device.sm]: {
       width: '500px',
     },
   }
@@ -45,7 +34,7 @@ export const LoginPanel = styled.div(() => {
 
 export const Title = styled.h2(() => ({
   fontSize: '50px',
-  color: '#2E2C2F',
+  color: theme.colours.textDark,
   marginBottom: '15px',
   marginTop: '40px',
 }))
@@ -54,7 +43,7 @@ export const Label = styled.label(() => ({
   width: '70%',
   textAlign: 'left',
   fontSize: '18px',
-  color: '#2E2C2F',
+  color: theme.colours.textDark,
   fontWeight: 'bold',
 }))
 
@@ -63,33 +52,37 @@ export const Input = styled.input(() => ({
   height: '7%',
   padding: '10px',
   borderRadius: '10px',
-  border: '1px solid #E9E6E6',
+  border: 'none',
   fontSize: '16px',
   marginBottom: '3px',
 }))
 
 export const Button = styled.button(() => ({
-  width: '30%',
+  width: '100%',
   padding: '10px',
   borderRadius: '20px',
-  backgroundColor: '#44C7AF',
-  border: '1px solid #E9E6E6',
+  backgroundColor: theme.colours.buttonBlue,
+  border: 'none',
   fontSize: '20px',
   fontWeight: 'bold',
   marginTop: '20px',
+  color: theme.colours.textDark,
+  [device.xs]: {
+    width: '138px',
+  },
 }))
 
 export const DividerLine = styled.div(() => ({
   width: '70%',
   height: '2px',
-  backgroundColor: '#2E2C2F',
+  backgroundColor: theme.colours.textDark,
   margin: '15px',
 }))
 
 export const FooterText = styled.p(() => ({
   fontSize: '20px',
-  color: '#2E2C2F',
+  color: theme.colours.textDark,
   a: {
-    color: '#66C3FF',
+    color: theme.colours.linkBlue,
   },
 }))
