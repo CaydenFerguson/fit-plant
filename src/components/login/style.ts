@@ -57,11 +57,20 @@ export const Input = styled.input(() => ({
   marginBottom: '3px',
 }))
 
-export const Button = styled.button(() => ({
+export const Msg = styled.p(() => {
+  return {
+    color: 'red',
+    fontSize: '14px',
+  }
+})
+
+export const Button = styled.button(({ isLoading }: any) => ({
   width: '100%',
   padding: '10px',
   borderRadius: '20px',
-  backgroundColor: theme.colours.buttonBlue,
+  backgroundColor: isLoading
+    ? theme.colours.buttonDisabledBlue
+    : theme.colours.buttonBlue,
   border: 'none',
   fontSize: '20px',
   fontWeight: 'bold',

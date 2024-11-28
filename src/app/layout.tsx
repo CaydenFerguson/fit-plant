@@ -5,8 +5,11 @@ import localFont from 'next/font/local'
 import './globals.css'
 import NavigationDesktop from '../components/desktopNav'
 import TopBar from '@/components/topBar'
+import { auth } from '../config/firebase'
 import LoginPane from '@/components/login'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { getFirestore } from 'firebase/firestore'
+const db = getFirestore()
 
 // export const metadata: Metadata = {
 //   title: 'Fit Plants',
@@ -20,6 +23,17 @@ export default function RootLayout({
 }>) {
   let notLogin = false
   const [loggedIn, setLoggedIn] = useState(false)
+
+  // Figure out a way to auto check if a user is signed in
+  // useEffect(() => {
+  //   // fetchUser();
+  //   const currentUser = auth?.currentUser?.email
+  //   if (currentUser != undefined) {
+  //     setLoggedIn(true)
+  //   } else {
+  //     setLoggedIn(false)
+  //   }
+  // }, [])
 
   // Eventually clean this up by moving it all into homepage
   return (
@@ -44,7 +58,11 @@ export default function RootLayout({
             </div>
           </div>
         ) : (
-          <LoginPane isLoggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+          <LoginPane
+            database={db}
+            isLoggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
+          />
         )}
       </body>
     </html>
