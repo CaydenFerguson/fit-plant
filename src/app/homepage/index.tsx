@@ -16,6 +16,7 @@ import { getFirestore, doc, getDoc } from 'firebase/firestore'
 import { db, auth } from '@/config/firebase'
 import { Auth } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
+import ReactECharts from 'echarts-for-react'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -48,28 +49,10 @@ export default function Homepage() {
   //   moisture: {
   //     unit: 'ppm',
   //     version: 0,
-  //     readings: [
-  //       { time: 0, reading: 0.43 },
-  //       { time: 5, reading: 0.21 },
-  //       { time: 10, reading: 0.37 },
-  //       { time: 15, reading: 0.29 },
-  //       { time: 20, reading: 0.11 },
-  //       { time: 25, reading: 0.29 },
-  //       { time: 30, reading: 0.1 },
-  //       { time: 35, reading: 0.26 },
-  //       { time: 40, reading: 0.08 },
-  //       { time: 45, reading: 0.14 },
-  //       { time: 50, reading: 0.17 },
-  //       { time: 55, reading: 0.22 },
-  //       { time: 60, reading: 0.39 },
-  //       { time: 65, reading: 0.34 },
-  //       { time: 70, reading: 0.37 },
-  //       { time: 75, reading: 0.19 },
-  //       { time: 80, reading: 0.36 },
-  //       { time: 85, reading: 0.26 },
-  //       { time: 90, reading: 0.15 },
-  //       { time: 95, reading: 0.27 },
-  //     ],
+  //     readings: {
+  //       time: [0, 5],
+  //       reading: [0.05, 0.8],
+  //     },
   //   },
   //   temperature: {
   //     unit: 'C',
@@ -175,7 +158,27 @@ export default function Homepage() {
   //       { time: 95, reading: 27.44 },
   //     ],
   //   },
-  // };
+  // }
+  const options = {
+    grid: { top: 8, right: 8, bottom: 24, left: 36 },
+    xAxis: {
+      type: 'category',
+      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    },
+    yAxis: {
+      type: 'value',
+    },
+    series: [
+      {
+        data: [820, 932, 901, 934, 1290, 1330, 1320],
+        type: 'line',
+        smooth: true,
+      },
+    ],
+    tooltip: {
+      trigger: 'axis',
+    },
+  }
 
   return (
     <NormalPageLayout>
@@ -189,7 +192,7 @@ export default function Homepage() {
               <NotificationsContainer>
                 {notifs != null ? (
                   notifs.map((notif: any, index: number) => (
-                    <Notif notif={notif} even={index % 2 === 0} />
+                    <Notif key={index} notif={notif} even={index % 2 === 0} />
                   ))
                 ) : (
                   <LoadingSpinner />
@@ -247,7 +250,9 @@ export default function Homepage() {
         <ControlPanel>
           <QuarterPanel>4</QuarterPanel>
           <QuarterPanel>5</QuarterPanel>
-          <HalfPanel>6</HalfPanel>
+          <HalfPanel>
+            <ReactECharts option={options}></ReactECharts>
+          </HalfPanel>
         </ControlPanel>
 
         <ControlPanel>

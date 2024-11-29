@@ -16,6 +16,7 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.11.0",
     "echarts": "^5.5.1",
+    "echarts-for-react": "^3.0.2",
     "firebase": "^11.0.2",
     "motion": "^11.11.14",
     "next": "^15.0.2",
