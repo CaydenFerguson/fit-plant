@@ -127,6 +127,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
               colour: '#000000',
               image: 'someimage.png',
               moisture: {
+                title: 'Moisture',
                 unit: 'ppm',
                 version: 0,
                 readings: {
@@ -141,6 +142,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
                 },
               },
               temperature: {
+                title: 'Temperature',
                 unit: 'C',
                 version: 0,
                 readings: {
@@ -156,6 +158,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
                 },
               },
               pH: {
+                title: 'pH Level',
                 unit: '',
                 version: 0,
                 readings: {
@@ -170,6 +173,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
                 },
               },
               e: {
+                title: 'Electrical Conductivity',
                 unit: 'ec',
                 version: 0,
                 readings: {
@@ -184,6 +188,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
                 },
               },
               npk: {
+                title: 'NPK',
                 unit: '',
                 version: 0,
                 readings: {

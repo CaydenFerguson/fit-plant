@@ -1,60 +1,93 @@
 import React, { useEffect, useRef } from 'react'
 import * as echarts from 'echarts'
 
-function LineGraph({ xValues, yValues }: any) {
-  const chartRef = useRef(null) // Reference to the chart container
+function LineChart({
+  xValues,
+  yValues,
+  xLabel,
+  yLabel,
+  title,
+}: {
+  xValues: string[]
+  yValues: number[]
+  xLabel: string
+  yLabel: string
+  title: string
+}) {
+  const chartRef = useRef<HTMLDivElement>(null) // Reference to the chart container
+  const chartInstanceRef = useRef<echarts.EChartsType | null>(null) // Properly typed ref for ECharts instance
 
   useEffect(() => {
+    if (!chartRef.current) return // Ensure the chart container exists
+
     // Initialize the ECharts instance
     const chartInstance = echarts.init(chartRef.current)
+    chartInstanceRef.current = chartInstance // Store the instance in the ref
+
+    const gridTop = '20%'
+    const titleTop = `calc(${gridTop})` // 10px above the graph
 
     // Set the chart options
     const options = {
       title: {
-        text: 'Custom Line Chart',
+        text: title + ' over the past 100 mins',
         left: 'center',
+        top: '5%',
+      },
+      grid: {
+        top: gridTop, // Position the graph area
+        bottom: '20%',
+        left: '10%',
+        right: '5%',
       },
       tooltip: {
         trigger: 'axis',
       },
       xAxis: {
         type: 'category',
-        data: xValues, // Use xValues for the x-axis
-        name: 'X-Axis',
+        name: xLabel,
+        data: xValues,
         nameLocation: 'middle',
         nameGap: 25,
       },
       yAxis: {
         type: 'value',
-        name: 'Y-Axis',
+        name: yLabel,
         nameLocation: 'middle',
-        nameGap: 35,
+        nameGap: 30,
       },
       series: [
         {
-          data: yValues, // Use yValues for the series data
+          data: yValues,
           type: 'line',
-          smooth: true, // Optional: smooth the line
-          name: 'Data',
+          smooth: true,
         },
       ],
     }
 
-    // Set the options for the chart instance
     chartInstance.setOption(options)
 
-    // Cleanup function to dispose of the chart instance when the component unmounts
-    return () => {
-      chartInstance.dispose()
+    // Add a resize listener to update the chart size on window resize
+    const handleResize = () => {
+      chartInstance.resize()
     }
-  }, [xValues, yValues]) // Update chart when xValues or yValues change
+
+    window.addEventListener('resize', handleResize)
+
+    // Cleanup function to remove the listener and dispose of the chart instance
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      chartInstance.dispose()
+      chartInstanceRef.current = null // Clear the reference on cleanup
+    }
+  }, [xValues, yValues]) // Recreate chart when xValues or yValues change
 
   return (
     <div
       ref={chartRef}
-      style={{ width: '100%', height: '400px' }} // Set the chart dimensions
+      style={{ width: '100%', height: '100%' }} // Ensure width and height are set
     ></div>
   )
 }
 
-export default LineGraph
+export default LineChart

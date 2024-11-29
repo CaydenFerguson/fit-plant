@@ -12,11 +12,12 @@ import QuarterPanel from '@/components/panels/quarterPanel'
 import HalfPanel from '@/components/panels/halfPanel'
 import Notif from '@/components/notification'
 
-import { getFirestore, doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import { db, auth } from '@/config/firebase'
 import { Auth } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
-import ReactECharts from 'echarts-for-react'
+import getUserData from '@/helpers/firebase'
+import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -28,9 +29,19 @@ export default function Homepage() {
   // need a version id or something we can compare to the server every so often to verify its up-to-date
   useEffect(() => {
     console.log('Fetching user details')
-    getNotifications(auth)
-    getUserPlants(auth)
+    getUsersData()
   }, [])
+
+  useEffect(() => {
+    console.log(userPlants)
+  }, [userPlants])
+
+  async function getUsersData() {
+    const user = await getUserData(db, auth, 'users')
+    const plantData = await getUserData(db, auth, 'userPlants')
+    setNotifs(user?.notifications)
+    setUserPlants(plantData?.plants)
+  }
 
   // Fetches user data
   async function getNotifications(auth: Auth) {
@@ -45,155 +56,6 @@ export default function Homepage() {
     } else {
       console.log('No such document!')
     }
-  }
-
-  async function getUserPlants(auth: Auth) {
-    const userId = auth?.currentUser?.uid
-
-    const docRef = doc(db, 'userPlants', String(userId))
-    const docSnap = await getDoc(docRef)
-
-    if (docSnap.exists()) {
-      setUserPlants(docSnap.data().notifications)
-      console.log('User Plants:', docSnap.data())
-    } else {
-      console.log('No such document!')
-    }
-  }
-
-  // const plantData = {
-  //   moisture: {
-  //     unit: 'ppm',
-  //     version: 0,
-  //     readings: {
-  //       time: [0, 5],
-  //       reading: [0.05, 0.8],
-  //     },
-  //   },
-  //   temperature: {
-  //     unit: 'C',
-  //     version: 0,
-  //     readings: [
-  //       { time: 0, reading: 27.37 },
-  //       { time: 5, reading: 20.21 },
-  //       { time: 10, reading: 20.79 },
-  //       { time: 15, reading: 28.75 },
-  //       { time: 20, reading: 23.19 },
-  //       { time: 25, reading: 29.94 },
-  //       { time: 30, reading: 29.79 },
-  //       { time: 35, reading: 22.26 },
-  //       { time: 40, reading: 25.53 },
-  //       { time: 45, reading: 21.93 },
-  //       { time: 50, reading: 22.5 },
-  //       { time: 55, reading: 27.5 },
-  //       { time: 60, reading: 29.58 },
-  //       { time: 65, reading: 25.18 },
-  //       { time: 70, reading: 27.97 },
-  //       { time: 75, reading: 26.98 },
-  //       { time: 80, reading: 28.68 },
-  //       { time: 85, reading: 27.53 },
-  //       { time: 90, reading: 22.31 },
-  //       { time: 95, reading: 21.75 },
-  //     ],
-  //   },
-  //   pH: {
-  //     unit: '',
-  //     version: 0,
-  //     readings: [
-  //       { time: 0, reading: 7.29 },
-  //       { time: 5, reading: 7.34 },
-  //       { time: 10, reading: 6.13 },
-  //       { time: 15, reading: 6.38 },
-  //       { time: 20, reading: 7.0 },
-  //       { time: 25, reading: 7.02 },
-  //       { time: 30, reading: 5.75 },
-  //       { time: 35, reading: 6.23 },
-  //       { time: 40, reading: 7.17 },
-  //       { time: 45, reading: 5.79 },
-  //       { time: 50, reading: 5.5 },
-  //       { time: 55, reading: 5.63 },
-  //       { time: 60, reading: 6.6 },
-  //       { time: 65, reading: 6.64 },
-  //       { time: 70, reading: 6.78 },
-  //       { time: 75, reading: 6.21 },
-  //       { time: 80, reading: 7.5 },
-  //       { time: 85, reading: 5.74 },
-  //       { time: 90, reading: 5.8 },
-  //       { time: 95, reading: 6.43 },
-  //     ],
-  //   },
-  //   e: {
-  //     unit: 'ec',
-  //     version: 0,
-  //     readings: [
-  //       { time: 0, reading: 0.86 },
-  //       { time: 5, reading: 0.61 },
-  //       { time: 10, reading: 0.57 },
-  //       { time: 15, reading: 0.61 },
-  //       { time: 20, reading: 0.69 },
-  //       { time: 25, reading: 0.83 },
-  //       { time: 30, reading: 0.66 },
-  //       { time: 35, reading: 0.62 },
-  //       { time: 40, reading: 0.95 },
-  //       { time: 45, reading: 0.61 },
-  //       { time: 50, reading: 0.84 },
-  //       { time: 55, reading: 0.61 },
-  //       { time: 60, reading: 0.31 },
-  //       { time: 65, reading: 0.86 },
-  //       { time: 70, reading: 0.97 },
-  //       { time: 75, reading: 0.7 },
-  //       { time: 80, reading: 0.8 },
-  //       { time: 85, reading: 0.82 },
-  //       { time: 90, reading: 0.46 },
-  //       { time: 95, reading: 0.64 },
-  //     ],
-  //   },
-  //   npk: {
-  //     unit: '',
-  //     version: 0,
-  //     readings: [
-  //       { time: 0, reading: 27.86 },
-  //       { time: 5, reading: 29.01 },
-  //       { time: 10, reading: 39.31 },
-  //       { time: 15, reading: 15.88 },
-  //       { time: 20, reading: 38.23 },
-  //       { time: 25, reading: 37.17 },
-  //       { time: 30, reading: 26.92 },
-  //       { time: 35, reading: 13.71 },
-  //       { time: 40, reading: 12.02 },
-  //       { time: 45, reading: 32.83 },
-  //       { time: 50, reading: 33.5 },
-  //       { time: 55, reading: 14.44 },
-  //       { time: 60, reading: 15.69 },
-  //       { time: 65, reading: 11.44 },
-  //       { time: 70, reading: 29.64 },
-  //       { time: 75, reading: 35.0 },
-  //       { time: 80, reading: 17.47 },
-  //       { time: 85, reading: 16.77 },
-  //       { time: 90, reading: 14.84 },
-  //       { time: 95, reading: 27.44 },
-  //     ],
-  //   },
-  // }
-  const options = {
-    grid: { top: 8, right: 8, bottom: 24, left: 36 },
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    },
-    yAxis: {
-      type: 'value',
-    },
-    series: [
-      {
-        data: [820, 932, 901, 934, 1290, 1330, 1320],
-        type: 'line',
-        smooth: true,
-      },
-    ],
-    tooltip: {
-      trigger: 'axis',
-    },
   }
 
   return (
@@ -266,7 +128,7 @@ export default function Homepage() {
         <ControlPanel>
           <QuarterPanel>4</QuarterPanel>
           <QuarterPanel>5</QuarterPanel>
-          <HalfPanel>{/* <LineGraph /> */}</HalfPanel>
+          <HalfPanelGraph plants={userPlants} />
         </ControlPanel>
 
         <ControlPanel>
