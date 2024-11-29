@@ -123,6 +123,9 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
           version: 0,
           plants: [
             {
+              name: '',
+              colour: '#Black',
+              image: 'someimage.png',
               moisture: {
                 unit: 'ppm',
                 version: 0,
