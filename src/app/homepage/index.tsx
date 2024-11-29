@@ -21,6 +21,7 @@ import ReactECharts from 'echarts-for-react'
 // This is the homepage component,
 export default function Homepage() {
   const [notifs, setNotifs] = useState<any>(null)
+  const [userPlants, setUserPlants] = useState<any>(null)
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -28,6 +29,7 @@ export default function Homepage() {
   useEffect(() => {
     console.log('Fetching user details')
     getNotifications(auth)
+    getUserPlants(auth)
   }, [])
 
   // Fetches user data
@@ -40,6 +42,20 @@ export default function Homepage() {
     if (docSnap.exists()) {
       setNotifs(docSnap.data().notifications)
       console.log('User Data:', docSnap.data())
+    } else {
+      console.log('No such document!')
+    }
+  }
+
+  async function getUserPlants(auth: Auth) {
+    const userId = auth?.currentUser?.uid
+
+    const docRef = doc(db, 'userPlants', String(userId))
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+      setUserPlants(docSnap.data().notifications)
+      console.log('User Plants:', docSnap.data())
     } else {
       console.log('No such document!')
     }
@@ -250,9 +266,7 @@ export default function Homepage() {
         <ControlPanel>
           <QuarterPanel>4</QuarterPanel>
           <QuarterPanel>5</QuarterPanel>
-          <HalfPanel>
-            <ReactECharts option={options}></ReactECharts>
-          </HalfPanel>
+          <HalfPanel>{/* <LineGraph /> */}</HalfPanel>
         </ControlPanel>
 
         <ControlPanel>
