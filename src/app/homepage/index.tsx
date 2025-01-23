@@ -16,7 +16,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import { db, auth } from '@/config/firebase'
 import { Auth } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
-import getUserData from '@/helpers/firebase'
+import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 
 // This is the homepage component,
@@ -39,8 +39,9 @@ export default function Homepage() {
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
     const plantData = await getUserData(db, auth, 'userPlants')
+    console.log('Heres the plant data:', plantData)
     setNotifs(user?.notifications)
-    setUserPlants(plantData?.plants)
+    setUserPlants(plantData)
   }
 
   // Fetches user data
@@ -58,6 +59,31 @@ export default function Homepage() {
     }
   }
 
+  // Proof of concept for moisture
+  async function setNewData(plantData: any) {
+    console.log('data', plantData)
+    let newPlantData = plantData
+
+    // get user data
+    const currentReadings = plantData.plants[0].moisture.readings.reading
+
+    // delete the oldest datapoint and append a new datapoint
+    let newReadings = currentReadings
+    newReadings.shift()
+    newReadings.push(Number((Math.random() * 0.5).toFixed(2)))
+
+    newPlantData.plants[0].moisture.readings.reading = newReadings
+    newPlantData.version = newPlantData.version + 1
+
+    console.log(
+      'new user data:',
+      newPlantData.plants[0].moisture.readings.reading
+    )
+    console.log('What will be saved', newPlantData)
+    // update firestore
+    await setDataFirebase('userPlants', auth, db, newPlantData)
+    await getUsersData()
+  }
   return (
     <NormalPageLayout>
       <DashboardRow>
@@ -120,7 +146,10 @@ export default function Homepage() {
         </ControlPanel>
 
         <ControlPanel>
-          <QuarterPanel>1</QuarterPanel>
+          <QuarterPanel>
+            1<button onClick={() => setNewData(userPlants)}>New Reading</button>
+            <button onClick={() => getUsersData()}>Refresh</button>
+          </QuarterPanel>
           <QuarterPanel>2</QuarterPanel>
           <HalfPanel>3</HalfPanel>
         </ControlPanel>
@@ -128,7 +157,7 @@ export default function Homepage() {
         <ControlPanel>
           <QuarterPanel>4</QuarterPanel>
           <QuarterPanel>5</QuarterPanel>
-          <HalfPanelGraph plants={userPlants} />
+          <HalfPanelGraph plants={userPlants?.plants} />
         </ControlPanel>
 
         <ControlPanel>

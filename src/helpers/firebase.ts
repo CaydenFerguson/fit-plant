@@ -1,13 +1,9 @@
 import { Auth } from 'firebase/auth'
-import { doc, getDoc } from 'firebase/firestore'
+import { doc, getDoc, setDoc } from 'firebase/firestore'
 
 // This file contains various helpers for firebase
 
-export default async function getUserData(
-  db: any,
-  auth: Auth,
-  database: string
-) {
+export async function getUserData(db: any, auth: Auth, database: string) {
   const userId = auth?.currentUser?.uid
 
   const docRef = doc(db, database, String(userId))
@@ -18,5 +14,22 @@ export default async function getUserData(
     return docSnap.data()
   } else {
     console.log('No such document!', database)
+  }
+}
+
+export async function setDataFirebase(
+  collection: string,
+  auth: Auth,
+  db: any,
+  data: Object
+) {
+  if (auth.currentUser) {
+    console.log('this is what is seen', data)
+    const uid = auth.currentUser.uid
+    try {
+      await setDoc(doc(db, collection, uid), data)
+    } catch (error) {
+      console.error('Error setting document:', error)
+    }
   }
 }

@@ -228,7 +228,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
       }
     } catch (error) {
       console.error(error)
-
+      console.log('error creating user')
       // console.error('Error signing in:', error.message);
       //   if (error.code === 'auth/user-not-found') {
       //       console.error('No user found with this email.');
