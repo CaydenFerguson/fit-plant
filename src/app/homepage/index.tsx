@@ -70,7 +70,9 @@ export default function Homepage() {
     // delete the oldest datapoint and append a new datapoint
     let newReadings = currentReadings
     newReadings.shift()
-    newReadings.push(Number((Math.random() * 0.5).toFixed(2)))
+    const missingOrNot = newReadings.push(
+      Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : '-'
+    )
 
     newPlantData.plants[0].moisture.readings.reading = newReadings
     newPlantData.version = newPlantData.version + 1

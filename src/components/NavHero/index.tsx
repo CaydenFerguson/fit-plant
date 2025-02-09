@@ -9,8 +9,9 @@ export default function NavHero() {
     <HeroContainer>
       <UserProfilePic />
       <UserDetails>
-        <div>{username}</div>
-        <div>Expert</div>
+        <div>Username</div>
+        {/* <div>{username}</div> */}
+        <div>1 Plant</div>
       </UserDetails>
     </HeroContainer>
   )

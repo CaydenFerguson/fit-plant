@@ -7,11 +7,14 @@ import NavigationDesktop from '../components/desktopNav'
 import TopBar from '@/components/topBar'
 import { auth } from '../config/firebase'
 import LoginPane from '@/components/login'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
 const db = getFirestore()
+
+import { AnimatePresence } from 'motion/react'
+import * as motion from 'motion/react-client'
 
 // export const metadata: Metadata = {
 //   title: 'Fit Plants',
@@ -26,6 +29,9 @@ export default function RootLayout({
   let notLogin = false
   const [loggedIn, setLoggedIn] = useState(false)
   const [validatingLogin, setValidatingLogin] = useState(true)
+  const [showNav, setShowNav] = useState(true)
+
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const auth = getAuth()
 
@@ -64,10 +70,14 @@ export default function RootLayout({
                 overflow: 'visible',
               }}
             >
-              <NavigationDesktop
-                isLoggedIn={loggedIn}
-                setLoggedIn={setLoggedIn}
-              />
+              {
+                <NavigationDesktop
+                  isLoggedIn={loggedIn}
+                  setLoggedIn={setLoggedIn}
+                  setShowNav={setShowNav}
+                  showNav={showNav}
+                />
+              }
               <div style={{ flex: 1 }}>
                 {/* <TopBar /> */}
                 {children}

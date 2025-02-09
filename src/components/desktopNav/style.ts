@@ -4,7 +4,7 @@ import theme from '@/app/theme'
 import styled from '@emotion/styled'
 
 export const NavContainer = styled.div({
-  width: '300px',
+  // width: '300px',
   height: 'calc(100vh - 0px)',
   display: 'flex',
   flexDirection: 'column',
