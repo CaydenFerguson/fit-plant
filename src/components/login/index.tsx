@@ -39,7 +39,8 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
           name: '',
           email: email,
           numPlants: 0,
-          plants: {},
+          favouritePlant: 0,
+          preferredTheme: 'dark',
           notifications: [
             {
               name: 'Tomatoes',

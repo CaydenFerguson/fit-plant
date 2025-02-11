@@ -27,6 +27,7 @@ export default function Homepage() {
   const [notifs, setNotifs] = useState<any>(null)
   const [userPlants, setUserPlants] = useState<any>(null)
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
+  const [user, setUser] = useState<any>(null)
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -50,12 +51,18 @@ export default function Homepage() {
     setFavouritePlant(userPlants?.plants[0])
   }, [userPlants])
 
+  useEffect(() => {
+    console.log(userPlants)
+    setFavouritePlant(userPlants?.plants[user?.favouritePlant])
+  }, [user])
+
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
     const plantData = await getUserData(db, auth, 'userPlants')
     console.log('Heres the plant data:', plantData)
     setNotifs(user?.notifications)
     setUserPlants(plantData)
+    setUser(user)
   }
 
   // Fetches user data
