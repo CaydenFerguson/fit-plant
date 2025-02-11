@@ -8,6 +8,7 @@ const theme = {
     foregroundDark: '#29282A',
     foregroundLight: '#E9E6E6',
     buttonBlue: '#44C7AF', //Change me to something better
+    buttonDisabledBlue: '#A1E3D7', //Change me to something better
     greyLight: '#2e2c2f',
     greyDark: '#29282A',
     textDark: '#29282A',

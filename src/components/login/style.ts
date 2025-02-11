@@ -7,7 +7,7 @@ export const LoginBackground = styled.div(() => {
   return {
     width: '100vw',
     height: '100vh',
-    backgroundColor: theme.colours.backgroundLight,
+    backgroundColor: theme.colours.backgroundDark,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,7 +17,8 @@ export const LoginBackground = styled.div(() => {
 export const LoginPanel = styled.div(() => {
   return {
     padding: '20px',
-    backgroundColor: theme.colours.foregroundLight,
+    backgroundColor: theme.colours.foregroundDark,
+    boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
     alignItems: 'center',
     textAlign: 'center',
     borderRadius: '50px',
@@ -34,7 +35,7 @@ export const LoginPanel = styled.div(() => {
 
 export const Title = styled.h2(() => ({
   fontSize: '50px',
-  color: theme.colours.textDark,
+  color: theme.colours.textLight,
   marginBottom: '15px',
   marginTop: '40px',
 }))
@@ -43,7 +44,7 @@ export const Label = styled.label(() => ({
   width: '70%',
   textAlign: 'left',
   fontSize: '18px',
-  color: theme.colours.textDark,
+  color: theme.colours.textLight,
   fontWeight: 'bold',
 }))
 
@@ -57,16 +58,25 @@ export const Input = styled.input(() => ({
   marginBottom: '3px',
 }))
 
-export const Button = styled.button(() => ({
+export const Msg = styled.p(() => {
+  return {
+    color: 'red',
+    fontSize: '14px',
+  }
+})
+
+export const Button = styled.button(({ isLoading }: any) => ({
   width: '100%',
   padding: '10px',
   borderRadius: '20px',
-  backgroundColor: theme.colours.buttonBlue,
+  backgroundColor: isLoading
+    ? theme.colours.buttonDisabledBlue
+    : theme.colours.buttonBlue,
   border: 'none',
   fontSize: '20px',
   fontWeight: 'bold',
   marginTop: '20px',
-  color: theme.colours.textDark,
+  color: theme.colours.textLight,
   [device.xs]: {
     width: '138px',
   },
@@ -75,13 +85,13 @@ export const Button = styled.button(() => ({
 export const DividerLine = styled.div(() => ({
   width: '70%',
   height: '2px',
-  backgroundColor: theme.colours.textDark,
+  backgroundColor: theme.colours.textLight,
   margin: '15px',
 }))
 
 export const FooterText = styled.p(() => ({
   fontSize: '20px',
-  color: theme.colours.textDark,
+  color: theme.colours.textLight,
   a: {
     color: theme.colours.linkBlue,
   },
