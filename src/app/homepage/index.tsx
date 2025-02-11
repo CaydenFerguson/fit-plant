@@ -7,6 +7,7 @@ import {
   DashboardRow,
   NotificationPaneContainer,
   NotificationsContainer,
+  VitalsContainer,
 } from './style'
 import QuarterPanel from '@/components/panels/quarterPanel'
 import HalfPanel from '@/components/panels/halfPanel'
@@ -19,6 +20,7 @@ import LoadingSpinner from '@/components/loadingSpinner'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 import HighThirdPanel from '@/components/panels/highQuarterPanel'
+import theme from '../theme'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -45,6 +47,7 @@ export default function Homepage() {
 
   useEffect(() => {
     console.log(userPlants)
+    setFavouritePlant(userPlants?.plants[0])
   }, [userPlants])
 
   async function getUsersData() {
@@ -96,6 +99,21 @@ export default function Homepage() {
     // update firestore
     await setDataFirebase('userPlants', auth, db, newPlantData)
     await getUsersData()
+  }
+  function getEmoji(title: string) {
+    if (title === 'Moisture') {
+      return '💧'
+    } else if (title === 'Temperature') {
+      return '🌡️'
+    } else if (title === 'pH Level') {
+      return '🧪'
+    } else if (title === 'NPK') {
+      return '🧑‍🌾'
+    } else if (title === 'Electrical Conductivity') {
+      return '⚡'
+    } else {
+      return ''
+    }
   }
 
   console.log('userPlants', userPlants)
@@ -161,74 +179,125 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        {/* <ControlPanel>
-          <QuarterPanel>
-            {userPlants?.plants?.map((plant: any) => (
-              <div>
-                <p>{plant?.vitals?.moisture}</p>
-              </div>
-            ))}
-
-          </QuarterPanel>
-        </ControlPanel> */}
-
         <ControlPanel>
-          {/* <QuarterPanel>4</QuarterPanel> */}
-          {/* <QuarterPanel>5</QuarterPanel> */}
           <HighThirdPanel>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                // alignItems: 'center',
-                height: '80%',
-              }}
-            >
-              {/* Favourite Plant Select */}
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <h2 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                  Favourite Plant:
-                </h2>
-                <select
-                  style={{ width: 'auto' }}
-                  onChange={(e) => {
-                    setFavouritePlant(userPlants?.plants[e.target.value])
+            {favouritePlant && (
+              <VitalsContainer>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    margin: '20px',
+                    padding: '10px 5px',
+                    // border: '2PX solid white',
+                    // backgroundColor: theme.colours.notificationLight,
+                    // backgroundColor: theme.colours.buttonBlue,
+                    borderRadius: '15px',
                   }}
                 >
-                  {userPlants?.plants?.map((plant: any, index: number) => (
-                    <option key={index} value={index}>
-                      {plant.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              {/* Vitals */}
-              {favouritePlant && (
-                <div>
-                  {Object.values(favouritePlant?.vitals)?.map(
-                    (vital: any, index: number) => (
-                      <div style={{ margin: '15px' }}>
-                        <h4 key={index}>{vital.title}</h4>
-                        <p>Good</p>
-                      </div>
-                    )
-                  )}
+                  <h1
+                    style={{
+                      // backgroundColor: theme.colours.buttonBlue,
+                      // borderRadius: '15px',
+                      color: theme.colours.textLight,
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    {favouritePlant?.name}
+                  </h1>
                 </div>
-              )}
-            </div>
+                {/* Vitals */}
+                {favouritePlant && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-evenly',
+                      height: '100%',
+                    }}
+                  >
+                    {Object.values(favouritePlant?.vitals)?.map(
+                      (vital: any, index: number) => (
+                        <div
+                          style={{
+                            margin: '15px',
+                            display: 'flex',
+                            flexDirection: 'row',
+                          }}
+                        >
+                          <div
+                            style={{
+                              height: '50px',
+                              width: '50px',
+                              fontSize: '30px',
+                            }}
+                          >
+                            {getEmoji(vital.title)}
+                          </div>
+                          <div
+                            style={{ display: 'flex', flexDirection: 'column' }}
+                          >
+                            <div
+                              style={{ display: 'flex', flexDirection: 'row' }}
+                            >
+                              <h2 key={index}>{vital.title}:</h2>
+                              <p
+                                style={{
+                                  fontSize: '20px',
+                                  paddingLeft: '15px',
+                                }}
+                              >
+                                Good
+                              </p>
+                            </div>
+                            <p
+                              style={{
+                                fontSize: '20px',
+                              }}
+                            >
+                              {vital.readings.reading.at(-1) + ' ' + vital.unit}
+                            </p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                )}
+              </VitalsContainer>
+            )}
+          </HighThirdPanel>
+          <HalfPanelGraph plants={userPlants?.plants} />
+        </ControlPanel>
+
+        <ControlPanel>
+          <QuarterPanel>
             <div>
               <button onClick={() => setNewData(userPlants)}>
                 New Reading
               </button>
               <button onClick={() => getUsersData()}>Refresh</button>
             </div>
-          </HighThirdPanel>
-          <HalfPanelGraph plants={userPlants?.plants} />
-        </ControlPanel>
-
-        <ControlPanel>
-          <QuarterPanel />
-          <QuarterPanel />
+          </QuarterPanel>
+          <QuarterPanel>
+            {/* Favourite Plant Select */}
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                Favourite Plant:
+              </h3>
+              <select
+                style={{ width: 'auto' }}
+                onChange={(e) => {
+                  setFavouritePlant(userPlants?.plants[e.target.value])
+                }}
+              >
+                {userPlants?.plants?.map((plant: any, index: number) => (
+                  <option key={index} value={index}>
+                    {plant.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </QuarterPanel>
           <HalfPanel />
         </ControlPanel>
       </DashboardRow>
