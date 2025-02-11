@@ -18,11 +18,13 @@ import { Auth } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
+import HighThirdPanel from '@/components/panels/highQuarterPanel'
 
 // This is the homepage component,
 export default function Homepage() {
   const [notifs, setNotifs] = useState<any>(null)
   const [userPlants, setUserPlants] = useState<any>(null)
+  const [favouritePlant, setFavouritePlant] = useState<any>(null)
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -31,6 +33,15 @@ export default function Homepage() {
     console.log('Fetching user details')
     getUsersData()
   }, [])
+
+  useEffect(() => {
+    console.log('Favourite Plant:', favouritePlant) // Logs the whole object correctly
+  }, [favouritePlant])
+
+  // useEffect(() => {
+  //   console.log('Favourite Plant Changed:')
+  //   console.log(favouritePlant)
+  // }, [favouritePlant])
 
   useEffect(() => {
     console.log(userPlants)
@@ -65,7 +76,7 @@ export default function Homepage() {
     let newPlantData = plantData
 
     // get user data
-    const currentReadings = plantData.plants[0].moisture.readings.reading
+    const currentReadings = plantData.plants[0].vitals.moisture.readings.reading
 
     // delete the oldest datapoint and append a new datapoint
     let newReadings = currentReadings
@@ -74,18 +85,21 @@ export default function Homepage() {
       Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : '-'
     )
 
-    newPlantData.plants[0].moisture.readings.reading = newReadings
+    newPlantData.plants[0].vitals.moisture.readings.reading = newReadings
     newPlantData.version = newPlantData.version + 1
 
     console.log(
       'new user data:',
-      newPlantData.plants[0].moisture.readings.reading
+      newPlantData.plants[0].vitals.moisture.readings.reading
     )
     console.log('What will be saved', newPlantData)
     // update firestore
     await setDataFirebase('userPlants', auth, db, newPlantData)
     await getUsersData()
   }
+
+  console.log('userPlants', userPlants)
+  const arr = [{ name: 'plant1' }, { name: 'plant2' }, { name: 'plant3' }]
   return (
     <NormalPageLayout>
       <DashboardRow>
@@ -108,7 +122,7 @@ export default function Homepage() {
             </NotificationPaneContainer>
           </HalfPanel>
           {/* Pie graphs */}
-          <HalfPanel invisible={true}>
+          {/* <HalfPanel invisible={true}>
             <div
               style={{
                 display: 'flex',
@@ -144,21 +158,71 @@ export default function Homepage() {
                 }}
               />
             </div>
-          </HalfPanel>
+          </HalfPanel> */}
         </ControlPanel>
 
-        <ControlPanel>
+        {/* <ControlPanel>
           <QuarterPanel>
-            1<button onClick={() => setNewData(userPlants)}>New Reading</button>
-            <button onClick={() => getUsersData()}>Refresh</button>
+            {userPlants?.plants?.map((plant: any) => (
+              <div>
+                <p>{plant?.vitals?.moisture}</p>
+              </div>
+            ))}
+
           </QuarterPanel>
-          <QuarterPanel>2</QuarterPanel>
-          <HalfPanel>3</HalfPanel>
-        </ControlPanel>
+        </ControlPanel> */}
 
         <ControlPanel>
-          <QuarterPanel>4</QuarterPanel>
-          <QuarterPanel>5</QuarterPanel>
+          {/* <QuarterPanel>4</QuarterPanel> */}
+          {/* <QuarterPanel>5</QuarterPanel> */}
+          <HighThirdPanel>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                // alignItems: 'center',
+                height: '80%',
+              }}
+            >
+              {/* Favourite Plant Select */}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <h2 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                  Favourite Plant:
+                </h2>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    setFavouritePlant(userPlants?.plants[e.target.value])
+                  }}
+                >
+                  {userPlants?.plants?.map((plant: any, index: number) => (
+                    <option key={index} value={index}>
+                      {plant.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* Vitals */}
+              {favouritePlant && (
+                <div>
+                  {Object.values(favouritePlant?.vitals)?.map(
+                    (vital: any, index: number) => (
+                      <div style={{ margin: '15px' }}>
+                        <h4 key={index}>{vital.title}</h4>
+                        <p>Good</p>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+            <div>
+              <button onClick={() => setNewData(userPlants)}>
+                New Reading
+              </button>
+              <button onClick={() => getUsersData()}>Refresh</button>
+            </div>
+          </HighThirdPanel>
           <HalfPanelGraph plants={userPlants?.plants} />
         </ControlPanel>
 

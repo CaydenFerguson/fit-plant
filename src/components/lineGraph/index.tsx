@@ -19,7 +19,7 @@ function LineChart({
   const titleTop = `calc(${gridTop})` // 10px above the graph
   const eChartsRef = React.useRef(null as any)
 
-  // MUST FIX THE Y AXIS SO IT DOESNT MORPH
+  // MAYBE: FIX THE Y AXIS SO IT DOESNT MORPH
   // Updates chart options on xValues or yValues change
   useEffect(() => {
     const options = {

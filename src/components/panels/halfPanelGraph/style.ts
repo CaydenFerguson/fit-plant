@@ -9,7 +9,7 @@ export const Container = styled.div(({ invisible = false }: any) => {
     flexBasis: '500px',
     flexGrow: 2,
     // flexGrow: proportion,
-    height: '30vh',
+    height: '60vh',
     borderRadius: '20px',
     backgroundColor: invisible ? 'transparent' : '#29282A',
     boxShadow: invisible ? '' : '3px 3px 5px 0px rgba(0,0,0,0.25)',

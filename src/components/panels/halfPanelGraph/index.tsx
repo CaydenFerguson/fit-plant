@@ -23,11 +23,11 @@ export default function HalfPanelGraph({
       {plants && (
         <LineGraph
           // TEMPORARY (just using first plant)
-          xValues={plants[0][types[activeReading]].readings.time}
-          yValues={plants[0][types[activeReading]].readings.reading}
+          xValues={plants[0].vitals[types[activeReading]].readings.time}
+          yValues={plants[0].vitals[types[activeReading]].readings.reading}
           xLabel={'TIME'}
           yLabel={types[activeReading].toUpperCase()}
-          title={plants[0][types[activeReading]].title}
+          title={plants[0].vitals[types[activeReading]].title}
         />
       )}
       {children}
