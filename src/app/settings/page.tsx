@@ -24,7 +24,16 @@ export default function settings() {
   async function updateFavouritePlant(favouritePlant: number) {
     let updatedFavUser = user
     updatedFavUser.favouritePlant = favouritePlant
+    updatedFavUser.version += 1
     setDataFirebase('users', auth, db, updatedFavUser)
+    getUsersData()
+  }
+
+  async function updateTheme(theme: string) {
+    let updatedTheme = user
+    updatedTheme.preferredTheme = theme
+    updatedTheme.version += 1
+    setDataFirebase('users', auth, db, updatedTheme)
     getUsersData()
   }
   useEffect(() => {
@@ -53,6 +62,7 @@ export default function settings() {
               <select
                 style={{ width: 'auto' }}
                 onChange={(e) => {
+                  updateTheme(e.target.value)
                   console.log('Changed Theme')
                 }}
               >

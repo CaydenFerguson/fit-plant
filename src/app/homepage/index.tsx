@@ -38,28 +38,16 @@ export default function Homepage() {
   }, [])
 
   useEffect(() => {
-    console.log('Favourite Plant:', favouritePlant) // Logs the whole object correctly
-  }, [favouritePlant])
-
-  // useEffect(() => {
-  //   console.log('Favourite Plant Changed:')
-  //   console.log(favouritePlant)
-  // }, [favouritePlant])
-
-  useEffect(() => {
-    console.log(userPlants)
     setFavouritePlant(userPlants?.plants[0])
   }, [userPlants])
 
   useEffect(() => {
-    console.log(userPlants)
     setFavouritePlant(userPlants?.plants[user?.favouritePlant])
   }, [user])
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
     const plantData = await getUserData(db, auth, 'userPlants')
-    console.log('Heres the plant data:', plantData)
     setNotifs(user?.notifications)
     setUserPlants(plantData)
     setUser(user)
@@ -74,7 +62,6 @@ export default function Homepage() {
 
     if (docSnap.exists()) {
       setNotifs(docSnap.data().notifications)
-      console.log('User Data:', docSnap.data())
     } else {
       console.log('No such document!')
     }
@@ -82,7 +69,6 @@ export default function Homepage() {
 
   // Proof of concept for moisture
   async function setNewData(plantData: any) {
-    console.log('data', plantData)
     let newPlantData = plantData
 
     // get user data
@@ -98,11 +84,6 @@ export default function Homepage() {
     newPlantData.plants[0].vitals.moisture.readings.reading = newReadings
     newPlantData.version = newPlantData.version + 1
 
-    console.log(
-      'new user data:',
-      newPlantData.plants[0].vitals.moisture.readings.reading
-    )
-    console.log('What will be saved', newPlantData)
     // update firestore
     await setDataFirebase('userPlants', auth, db, newPlantData)
     await getUsersData()
@@ -123,8 +104,6 @@ export default function Homepage() {
     }
   }
 
-  console.log('userPlants', userPlants)
-  const arr = [{ name: 'plant1' }, { name: 'plant2' }, { name: 'plant3' }]
   return (
     <NormalPageLayout>
       <DashboardRow>
@@ -226,6 +205,7 @@ export default function Homepage() {
                     {Object.values(favouritePlant?.vitals)?.map(
                       (vital: any, index: number) => (
                         <div
+                          key={index}
                           style={{
                             margin: '15px',
                             display: 'flex',
@@ -273,7 +253,12 @@ export default function Homepage() {
               </VitalsContainer>
             )}
           </HighThirdPanel>
-          <HalfPanelGraph plants={userPlants?.plants} />
+          {userPlants && (
+            <HalfPanelGraph
+              plantNum={user?.favouritePlant}
+              plants={userPlants?.plants}
+            />
+          )}
         </ControlPanel>
 
         <ControlPanel>

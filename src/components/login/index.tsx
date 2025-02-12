@@ -41,6 +41,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
           numPlants: 0,
           favouritePlant: 0,
           preferredTheme: 'dark',
+          version: 0,
           notifications: [
             {
               name: 'Tomatoes',
