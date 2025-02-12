@@ -1,68 +1,108 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import NormalPageLayout from '../../components/normalPageLayout'
 import { ControlPanel } from './style'
 import ClickableQuarterPanel from '@/components/panels/quarterPanel/ClickableQuarterPanel'
 import DetailPanel from '@/components/panels/quarterPanel/detailPanel'
+import { getUserData, setDataFirebase } from '@/helpers/firebase'
+import { db, auth } from '@/config/firebase'
 
-export default function Plantpage() {
-  // State to hold the list of tile labels.
-  // Initially, we have a few "Plant Name" tiles.
-  const [tiles, setTiles] = useState<string[]>([
-    'Plant Name',
-    'Plant Name',
-    'Plant Name',
-    'Plant Name',
-    'Plant Name',
-    'Plant Name',
-    'Plant Name',
-  ])
+export default function PlantPage() {
+  const [plants, setPlants] = useState<any[]>([])
+  const [activePlant, setActivePlant] = useState<any | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
 
-  // State for showing the detail panel for a tile.
-  const [activeTile, setActiveTile] = useState<string | null>(null)
-
-  // for when a tile (other than the plus tile) is clicked.
-  const handleTileClick = (tile: string) => {
-    setActiveTile(tile)
+  // Function to fetch the plants data from Firebase
+  async function fetchPlants() {
+    try {
+      const plantData = await getUserData(db, auth, 'userPlants')
+      if (plantData && plantData.plants) {
+        setPlants(plantData.plants)
+      } else {
+        console.log('No plants found for this user.')
+      }
+    } catch (error) {
+      console.error('Error fetching plant data:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
-  //Adds a new tile to the grid
-  const addTile = () => {
-    setTiles([...tiles, 'Plant Name'])
+  useEffect(() => {
+    console.log('Fetching plant details')
+    fetchPlants()
+  }, [])
+
+  function handlePlantClick(plant: any) {
+    setActivePlant(plant)
+  }
+
+  // Add a new plant tile
+  async function addPlant() {
+    try {
+      const plantData = await getUserData(db, auth, 'userPlants')
+      if (plantData) {
+        const newPlant = {
+          name: 'New Plant',
+          vitals: {},
+          image: '',
+        }
+        const updatedPlants = [...(plantData.plants || []), newPlant]
+        const newPlantData = {
+          ...plantData,
+          plants: updatedPlants,
+          version: plantData.version ? plantData.version + 1 : 1,
+        }
+        // update firestore
+        await setDataFirebase('userPlants', auth, db, newPlantData)
+        setPlants(updatedPlants)
+      } else {
+        console.error('User plant data not found.')
+      }
+    } catch (error) {
+      console.error('Error adding plant:', error)
+    }
   }
 
   return (
     <NormalPageLayout>
       <ControlPanel>
-        {/* Add existing plant tiles */}
-        {tiles.map((tile, index) => (
-          <ClickableQuarterPanel
-            key={index}
-            onClick={() => handleTileClick(tile)}
-          >
-            {tile}
-          </ClickableQuarterPanel>
-        ))}
-
-        <ClickableQuarterPanel onClick={addTile}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: '100%',
-              fontSize: '2rem',
-              color: '#fff',
-            }}
-          >
-            +
-          </div>
-        </ClickableQuarterPanel>
+        {loading ? (
+          <div>Loading plants...</div>
+        ) : (
+          <>
+            {plants.map((plant, index) => (
+              <ClickableQuarterPanel
+                key={index}
+                onClick={() => handlePlantClick(plant)}
+              >
+                <div style={{ padding: '10px' }}>
+                  <h3>{plant.name || 'Plant Name'}</h3>
+                  <p>Colour: {plant.colour}</p>
+                </div>
+              </ClickableQuarterPanel>
+            ))}
+            <ClickableQuarterPanel onClick={addPlant}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100%',
+                  fontSize: '2rem',
+                  color: '#fff',
+                }}
+              >
+                +
+              </div>
+            </ClickableQuarterPanel>
+          </>
+        )}
       </ControlPanel>
 
-      {activeTile && (
-        <DetailPanel data={activeTile} onClose={() => setActiveTile(null)} />
+      {activePlant && (
+        <DetailPanel data={activePlant} onClose={() => setActivePlant(null)} />
       )}
     </NormalPageLayout>
   )
