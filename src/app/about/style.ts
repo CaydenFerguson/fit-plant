@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from '@emotion/styled'
 
 export const HeroSection = styled.section`
   display: flex;
@@ -50,7 +50,7 @@ export const HeroSubtitle = styled.p`
 
 export const ContentSection = styled.section`
   max-width: 1100px;
-  margin: 80px auto;
+  margin: 50px auto;
   text-align: left;
   padding: 20px;
 `
@@ -59,36 +59,40 @@ export const ContentTitle = styled.h2`
   font-size: 3rem;
   color: #ffffff;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `
 
 export const ContentText = styled.p`
   font-size: 1.6rem;
   color: #ffffff;
   line-height: 2;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   max-width: 900px;
 `
 
-export const WhyChooseSection = styled(ContentSection)``
+export const WhyChooseSection = styled(ContentSection)`
+  margin-top: 30px;
+`
 
 export const WhyChooseItem = styled.p`
   font-size: 1.6rem;
   color: #ffffff;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   text-align: left;
   display: flex;
   align-items: left;
   gap: 15px;
 `
 
-export const ContactSection = styled(ContentSection)``
+export const ContactSection = styled(ContentSection)`
+  margin-top: 20px;
+`
 
 export const ContactLink = styled.a`
   font-size: 1.6rem;
   color: #ffffff;
   text-decoration: none;
-  margin: 10px;
+  margin: 8px;
   display: block;
   transition: color 0.3s ease;
 

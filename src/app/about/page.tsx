@@ -23,22 +23,22 @@ export default function AboutPage() {
     <NormalPageLayout>
       <HeroSection>
         <LogoContainer>
-          <Logo src="/icons/icon-192x192.png" alt="Fit Plant Logo" />
+          <Logo src="/icons/Logo.png" alt="Fit Plant Logo" />
         </LogoContainer>
 
         <HeroContent>
           <HeroTitle>Oh hey there!</HeroTitle>
           <HeroSubtitle>
-            We are Fit Plant, and our mission is to make plant care smarter and
+            We are Fit Plants, and our mission is to make plant care smarter and
             easier for everyone. 🌱
           </HeroSubtitle>
         </HeroContent>
       </HeroSection>
 
       <ContentSection>
-        <ContentTitle>About Fit Plant</ContentTitle>
+        <ContentTitle>About Fit Plants</ContentTitle>
         <ContentText>
-          Fit Plant is an innovative plant monitoring solution designed to keep
+          Fit Plants is an innovative plant monitoring solution designed to keep
           your green friends thriving. Our system integrates advanced sensor
           technology with a centralized hub, ensuring real-time insights into
           your plant’s health.
@@ -50,13 +50,13 @@ export default function AboutPage() {
           native-like mobile experience.
         </ContentText>
         <ContentText>
-          Powered by <strong>Firebase</strong>, Fit Plant offers a secure and
+          Powered by <strong>Firebase</strong>, Fit Plants offers a secure and
           scalable backend, making it easier than ever to care for your plants.
         </ContentText>
       </ContentSection>
 
       <WhyChooseSection>
-        <ContentTitle>Why Choose Fit Plant?</ContentTitle>
+        <ContentTitle>Why Choose Fit Plants?</ContentTitle>
         <WhyChooseItem>✅ Real-time plant monitoring</WhyChooseItem>
         <WhyChooseItem>✅ User-friendly interface</WhyChooseItem>
         <WhyChooseItem>✅ Secure & scalable technology</WhyChooseItem>
@@ -65,8 +65,8 @@ export default function AboutPage() {
 
       <ContactSection>
         <ContentTitle>Get in Touch</ContentTitle>
-        <ContactLink href="mailto:support@fitplant.com">
-          📧 support@fitplant.com
+        <ContactLink href="mailto:support@fitplants.com">
+          📧 support@fitplants.com
         </ContactLink>
         <ContactLink href="">🐦 Twitter</ContactLink>
         <ContactLink href="">📷 Instagram</ContactLink>
