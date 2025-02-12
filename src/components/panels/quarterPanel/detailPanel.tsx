@@ -1,56 +1,68 @@
-// detailPanel.tsx
+'use client'
+
 import React from 'react'
 import styled from '@emotion/styled'
+import VitalDetail from './vitalDetail'
 
-interface DetailPanelProps {
-  data: string
+const DetailPanelWrapper = styled.div`
+  position: fixed;
+  top: 10%;
+  left: 10%;
+  right: 10%;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border: 2px solid #fff;
+  z-index: 1000;
+  border-radius: 8px;
+`
+
+const ButtonClose = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background: #555;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background: #777;
+  }
+`
+
+const Image = styled.img`
+  max-width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+`
+
+type DetailPanelProps = {
+  data: {
+    name: string
+    image?: string
+    colour?: string
+    vitals?: Record<string, any>
+  }
   onClose: () => void
 }
 
-// Styled components for the overlay and panel
-const Overlay = styled.div({
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  right: 0,
-  bottom: 0,
-  backgroundColor: 'rgba(0, 0, 0, 0.7)', // dark background for modal effect
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  zIndex: 1000,
-})
-
-const Panel = styled.div({
-  backgroundColor: '#1a1a1a',
-  padding: '40px',
-  borderRadius: '10px',
-  minWidth: '600px',
-  minHeight: '400px',
-  position: 'relative',
-  boxShadow: '0 0 20px rgba(0,0,0,0.7)',
-  color: '#fff',
-})
-
-const CloseButton = styled.button({
-  position: 'absolute',
-  top: '15px',
-  right: '15px',
-  background: 'transparent',
-  border: 'none',
-  fontSize: '1.5rem',
-  color: '#fff',
-  cursor: 'pointer',
-})
-
 export default function DetailPanel({ data, onClose }: DetailPanelProps) {
   return (
-    <Overlay onClick={onClose}>
-      <Panel onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>×</CloseButton>
-        <h2>Plant Name:</h2>
-        <p>{data}</p>
-      </Panel>
-    </Overlay>
+    <DetailPanelWrapper>
+      <ButtonClose onClick={onClose}>X</ButtonClose>
+      <h2>{data.name}</h2>
+      {data.colour && <p>Colour: {data.colour}</p>}
+      {data.vitals && (
+        <>
+          <h3>Vitals:</h3>
+          {Object.entries(data.vitals).map(([key, vitalValue]) => (
+            // Pass the vital data
+            <VitalDetail key={key} vital={vitalValue} />
+          ))}
+        </>
+      )}
+    </DetailPanelWrapper>
   )
 }
