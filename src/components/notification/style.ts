@@ -1,5 +1,6 @@
 'use client'
 
+import theme from '@/app/theme'
 import styled from '@emotion/styled'
 
 export const MainContainer = styled.div(({ isEven }: any) => {
@@ -10,8 +11,8 @@ export const MainContainer = styled.div(({ isEven }: any) => {
     alignItems: 'center',
     gap: '20px',
     backgroundColor: isEven
-      ? 'rgba(255,255,255,0.05)'
-      : 'rgba(255,255,255,0.02)',
+      ? theme.colours.notificationDark
+      : theme.colours.notificationLight,
   }
 })
 

@@ -17,6 +17,9 @@ const theme = {
     activeNav: '#44C7AF',
     hoverNav: 'rgba(68,199,175,0.1)',
     linkBlue: '#66C3FF',
+    black: '#000000',
+    notificationLight: 'rgba(255,255,255,0.02)',
+    notificationDark: 'rgba(255,255,255,0.05)',
 
     transparent: 'rgba(0,0,0,0)',
   },

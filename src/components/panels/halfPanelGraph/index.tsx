@@ -19,15 +19,19 @@ export default function HalfPanelGraph({
 
   return (
     <Container invisible={invisible}>
-      <SettingsButton onClick={() => cycleActiveReading()}>⚙️</SettingsButton>
+      <SettingsButton onClick={() => cycleActiveReading()}>
+        ⚙️ {plants[plantNum].name}
+      </SettingsButton>
       {plants && (
         <LineGraph
           // TEMPORARY (just using first plant)
-          xValues={plants[0].vitals[types[activeReading]].readings.time}
-          yValues={plants[0].vitals[types[activeReading]].readings.reading}
+          xValues={plants[plantNum].vitals[types[activeReading]].readings.time}
+          yValues={
+            plants[plantNum].vitals[types[activeReading]].readings.reading
+          }
           xLabel={'TIME'}
           yLabel={types[activeReading].toUpperCase()}
-          title={plants[0].vitals[types[activeReading]].title}
+          title={plants[plantNum].vitals[types[activeReading]].title}
         />
       )}
       {children}

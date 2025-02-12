@@ -39,6 +39,7 @@ export const SettingsButton = styled.button(() => {
     borderColor: 'transparent',
     zIndex: '50',
     cursor: 'pointer',
+    color: theme.colours.offWhite,
     opacity: '0.5',
     '&:hover': {
       opacity: '1',
