@@ -11,6 +11,10 @@ export const Container = styled.div(({ invisible = false }: any) => {
     backgroundColor: invisible ? 'transparent' : '#29282A',
     boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
     padding: '20px',
+    '&:hover': {
+      transform: 'scale(1.03)',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+    },
 
     '@media (min-width: 1200px)': {
       flexBasis: 'calc(250px-20px)',
