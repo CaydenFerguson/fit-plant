@@ -36,3 +36,11 @@ export const NotificationsContainer = styled.div(() => {
     paddingRight: '5px',
   }
 })
+
+export const VitalsContainer = styled.div(() => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  }
+})
