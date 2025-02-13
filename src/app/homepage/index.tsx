@@ -192,7 +192,7 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        {false && (
+        {
           <ControlPanel>
             <HighThirdPanel>
               {favouritePlant && (
@@ -291,9 +291,9 @@ export default function Homepage() {
               />
             )}
           </ControlPanel>
-        )}
+        }
 
-        {false && (
+        {
           <ControlPanel>
             <QuarterPanel>
               <div>
@@ -325,7 +325,7 @@ export default function Homepage() {
             </QuarterPanel>
             <HalfPanel />
           </ControlPanel>
-        )}
+        }
       </DashboardRow>
     </NormalPageLayout>
   )

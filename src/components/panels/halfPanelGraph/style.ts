@@ -37,7 +37,7 @@ export const SettingsButton = styled.button(() => {
     top: '5px',
     left: '5px',
     borderColor: 'transparent',
-    zIndex: '50',
+    // zIndex: '5',
     cursor: 'pointer',
     color: theme.colours.offWhite,
     opacity: '0.5',

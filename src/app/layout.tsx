@@ -73,7 +73,13 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
   return (
     <body>
       {loggedIn ? (
-        <>
+        <div
+          style={{
+            height: '100%',
+            overflow: 'auto',
+            overflowX: 'hidden',
+          }}
+        >
           <div
             style={{
               display: 'flex',
@@ -97,14 +103,16 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
           </div>
 
           {isMobile && (
-            <NavigationMobile
-              isLoggedIn={loggedIn}
-              setLoggedIn={setLoggedIn}
-              setShowNav={setShowNav}
-              showNav={showNav}
-            ></NavigationMobile>
+            <div style={{ position: 'sticky', bottom: '0px' }}>
+              <NavigationMobile
+                isLoggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                setShowNav={setShowNav}
+                showNav={showNav}
+              />
+            </div>
           )}
-        </>
+        </div>
       ) : (
         <LoginPane
           database={db}

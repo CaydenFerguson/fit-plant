@@ -8,6 +8,7 @@ export const NavContainer = styled.div(() => {
     width: '100%',
     backgroundColor: theme.colours.greyDark,
     boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
+    zIndex: 100,
     // borderRadius: '15px 15px 0 0',
   }
 })
@@ -18,7 +19,7 @@ export const NavBar = styled.ul(() => {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: '100%',
-    gap: '20px',
+    // gap: '20px',
     listStyleType: 'none',
   }
 })
