@@ -33,6 +33,7 @@ export default function NavigationDesktop({
     <div
       style={{
         position: 'relative',
+        marginTop: '20px',
         // backgroundColor: theme.colours.greyDark
       }}
     >

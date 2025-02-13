@@ -21,6 +21,8 @@ import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 import HighThirdPanel from '@/components/panels/highQuarterPanel'
 import theme from '../theme'
+import HeroPanel from '@/components/panels/heroPanel'
+import NotificationPanel from '@/components/panels/notificationPanel'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -109,8 +111,26 @@ export default function Homepage() {
       <DashboardRow>
         {/* ControlPanels are rows to display panels, must add to one or less */}
         <ControlPanel>
+          {/* Hero */}
+          <HeroPanel>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <h1>Welcome back, {user?.name}!</h1>
+              <h2 style={{ color: theme.colours.textLight }}>
+                Here's a quick overview of your plants
+              </h2>
+            </div>
+          </HeroPanel>
           {/* Notifications */}
-          <HalfPanel>
+          <NotificationPanel>
             <NotificationPaneContainer>
               <h2>Notifications</h2>
               <NotificationsContainer>
@@ -124,7 +144,7 @@ export default function Homepage() {
               </NotificationsContainer>
               {/* <button onClick={() => getNotifications(auth)}>GetNotifs</button> */}
             </NotificationPaneContainer>
-          </HalfPanel>
+          </NotificationPanel>
           {/* Pie graphs */}
           {/* <HalfPanel invisible={true}>
             <div

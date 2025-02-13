@@ -24,7 +24,6 @@ export default function HalfPanelGraph({
       </SettingsButton>
       {plants && (
         <LineGraph
-          // TEMPORARY (just using first plant)
           xValues={plants[plantNum].vitals[types[activeReading]].readings.time}
           yValues={
             plants[plantNum].vitals[types[activeReading]].readings.reading
