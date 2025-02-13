@@ -84,7 +84,7 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
             style={{
               display: 'flex',
               flexDirection: 'row',
-              height: 'auto',
+              height: '100%',
               overflow: 'visible',
             }}
           >
