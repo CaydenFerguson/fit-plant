@@ -8,7 +8,7 @@ import { PageSetup } from './style'
 export default function NormalPageLayout({ children }: any) {
   return (
     <PageSetup>
-      <div style={{ padding: '20px' }}>{children}</div>
+      <div style={{ padding: '20px', height: '100%' }}>{children}</div>
     </PageSetup>
   )
 }

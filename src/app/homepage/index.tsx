@@ -24,6 +24,7 @@ import theme from '../theme'
 import HeroPanel from '@/components/panels/heroPanel'
 import NotificationPanel from '@/components/panels/notificationPanel'
 import { useGlobalContext } from '../context/GlobalContext'
+import { UserProfilePic } from '@/components/NavHero/style'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -109,7 +110,7 @@ export default function Homepage() {
   }
 
   return (
-    <NormalPageLayout>
+    <NormalPageLayout id="test">
       <DashboardRow>
         {/* ControlPanels are rows to display panels, must add to one or less */}
         <ControlPanel>
@@ -125,10 +126,33 @@ export default function Homepage() {
                 height: '100%',
               }}
             >
-              <h1>Welcome back, {user?.name}!</h1>
-              <h2 style={{ color: theme.colours.textLight }}>
-                Here's a quick overview of your plants
-              </h2>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '20px',
+                }}
+              >
+                <UserProfilePic />
+                {isMobile ? (
+                  <h2 style={{ textAlign: 'center' }}>
+                    Welcome back, {user?.firstName} 👋
+                  </h2>
+                ) : (
+                  <h1 style={{ textAlign: 'center' }}>
+                    Welcome back, {user?.firstName} 👋
+                  </h1>
+                )}
+                <p
+                  style={{
+                    fontSize: `${isMobile ? '17px' : '18px'}`,
+                    color: theme.colours.textLight,
+                  }}
+                >
+                  Here's a quick overview of your plants
+                </p>
+              </div>
             </div>
           </HeroPanel>
           {/* Notifications */}
@@ -192,7 +216,7 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        {
+        {false && (
           <ControlPanel>
             <HighThirdPanel>
               {favouritePlant && (
@@ -291,7 +315,7 @@ export default function Homepage() {
               />
             )}
           </ControlPanel>
-        }
+        )}
 
         {
           <ControlPanel>
@@ -323,7 +347,38 @@ export default function Homepage() {
                 </select>
               </div>
             </QuarterPanel>
-            <HalfPanel />
+          </ControlPanel>
+        }
+        {
+          <ControlPanel>
+            <QuarterPanel>
+              <div>
+                <button onClick={() => setNewData(userPlants)}>
+                  New Reading
+                </button>
+                <button onClick={() => getUsersData()}>Refresh</button>
+              </div>
+            </QuarterPanel>
+            <QuarterPanel>
+              {/* Favourite Plant Select */}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                  Favourite Plant:
+                </h3>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    setFavouritePlant(userPlants?.plants[e.target.value])
+                  }}
+                >
+                  {userPlants?.plants?.map((plant: any, index: number) => (
+                    <option key={index} value={index}>
+                      {plant.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </QuarterPanel>
           </ControlPanel>
         }
       </DashboardRow>

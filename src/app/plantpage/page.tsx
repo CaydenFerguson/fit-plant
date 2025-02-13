@@ -66,7 +66,7 @@ export default function PlantPage() {
   }
 
   return (
-    <NormalPageLayout>
+    <NormalPageLayout id="tet">
       <ControlPanel>
         {loading ? (
           <div>Loading plants...</div>

@@ -105,7 +105,7 @@ export default function NavigationDesktop({
                 </div>
                 <NavBar>
                   {/* Hero */}
-                  <NavHero />
+                  {/* <NavHero /> */}
                   <Link href={'/'}>
                     <LinkItem isActive={pathname === '/'}>Overview</LinkItem>
                   </Link>

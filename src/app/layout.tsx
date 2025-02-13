@@ -103,7 +103,7 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
           </div>
 
           {isMobile && (
-            <div style={{ position: 'sticky', bottom: '0px' }}>
+            <div style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
               <NavigationMobile
                 isLoggedIn={loggedIn}
                 setLoggedIn={setLoggedIn}
