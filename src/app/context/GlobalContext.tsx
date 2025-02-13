@@ -9,10 +9,10 @@ export function GlobalProvider({ children }: { children: React.ReactNode }) {
   const [isMobile, setIsMobile] = useState<any>(null)
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 576)
+    const handleResize = () => setIsMobile(window.innerWidth < 750)
     window.addEventListener('resize', handleResize)
     console.log('windowSize:', window.innerWidth)
-    setIsMobile(window.innerWidth < 576)
+    setIsMobile(window.innerWidth < 750)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 

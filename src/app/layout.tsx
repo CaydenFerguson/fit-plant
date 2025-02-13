@@ -8,7 +8,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
 import { GlobalProvider, useGlobalContext } from './context/GlobalContext'
-import Navigation from '@/components/navigation'
+import NavigationMobile from '@/components/mobileNav'
 const db = getFirestore()
 
 export default function RootLayout({
@@ -73,29 +73,38 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
   return (
     <body>
       {loggedIn ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            height: 'auto',
-            overflow: 'visible',
-          }}
-        >
-          {isMobile ? (
-            <></>
-          ) : (
-            <NavigationDesktop
+        <>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              height: 'auto',
+              overflow: 'visible',
+            }}
+          >
+            {!isMobile && (
+              <NavigationDesktop
+                isLoggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                setShowNav={setShowNav}
+                showNav={showNav}
+              />
+            )}
+            <div style={{ flex: 1 }}>
+              {/* <TopBar /> */}
+              {children}
+            </div>
+          </div>
+
+          {isMobile && (
+            <NavigationMobile
               isLoggedIn={loggedIn}
               setLoggedIn={setLoggedIn}
               setShowNav={setShowNav}
               showNav={showNav}
-            />
+            ></NavigationMobile>
           )}
-          <div style={{ flex: 1 }}>
-            {/* <TopBar /> */}
-            {children}
-          </div>
-        </div>
+        </>
       ) : (
         <LoginPane
           database={db}

@@ -27,6 +27,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
   const [password, setPass] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showSignUp, setShowSignUp] = useState(false)
 
   // Sign up functionality with firebase
 
@@ -367,32 +368,40 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
 
   return (
     <LoginBackground>
-      <LoginPanel>
-        <Title>Sign In</Title>
-        <Label>Email</Label>
-        <Input
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <Label>Password</Label>
-        <Input
-          type="password"
-          onChange={(e) => setPass(e.target.value)}
-          placeholder="Password"
-        />
-        {error != '' && <Msg>{error}</Msg>}
-        <Button isLoading={isLoading} onClick={() => signIn()}>
-          {isLoading ? <LoadingSpinner /> : 'Sign in'}
-        </Button>
-        <DividerLine />
-        <FooterText>
-          Need an Account?{' '}
+      {showSignUp ? (
+        <LoginPanel>
           <a href="#" onClick={() => signUp()}>
             Sign up
           </a>
-        </FooterText>
-      </LoginPanel>
+        </LoginPanel>
+      ) : (
+        <LoginPanel>
+          <Title>Sign In</Title>
+          <Label>Email</Label>
+          <Input
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+          <Label>Password</Label>
+          <Input
+            type="password"
+            onChange={(e) => setPass(e.target.value)}
+            placeholder="Password"
+          />
+          {error != '' && <Msg>{error}</Msg>}
+          <Button isLoading={isLoading} onClick={() => signIn()}>
+            {isLoading ? <LoadingSpinner /> : 'Sign in'}
+          </Button>
+          <DividerLine />
+          <FooterText>
+            Need an Account?{' '}
+            <a href="#" onClick={() => setShowSignUp(true)}>
+              Sign up
+            </a>
+          </FooterText>
+        </LoginPanel>
+      )}
     </LoginBackground>
   )
 }

@@ -23,6 +23,7 @@ import HighThirdPanel from '@/components/panels/highQuarterPanel'
 import theme from '../theme'
 import HeroPanel from '@/components/panels/heroPanel'
 import NotificationPanel from '@/components/panels/notificationPanel'
+import { useGlobalContext } from '../context/GlobalContext'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -30,6 +31,7 @@ export default function Homepage() {
   const [userPlants, setUserPlants] = useState<any>(null)
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
+  const { isMobile } = useGlobalContext()
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -136,7 +138,12 @@ export default function Homepage() {
               <NotificationsContainer>
                 {notifs != null ? (
                   notifs.map((notif: any, index: number) => (
-                    <Notif key={index} notif={notif} even={index % 2 === 0} />
+                    <Notif
+                      isMobile={isMobile}
+                      key={index}
+                      notif={notif}
+                      even={index % 2 === 0}
+                    />
                   ))
                 ) : (
                   <LoadingSpinner />
@@ -185,133 +192,140 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        <ControlPanel>
-          <HighThirdPanel>
-            {favouritePlant && (
-              <VitalsContainer>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    margin: '20px',
-                    padding: '10px 5px',
-                    // border: '2PX solid white',
-                    // backgroundColor: theme.colours.notificationLight,
-                    // backgroundColor: theme.colours.buttonBlue,
-                    borderRadius: '15px',
-                  }}
-                >
-                  <h1
-                    style={{
-                      // backgroundColor: theme.colours.buttonBlue,
-                      // borderRadius: '15px',
-                      color: theme.colours.textLight,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {favouritePlant?.name}
-                  </h1>
-                </div>
-                {/* Vitals */}
-                {favouritePlant && (
+        {false && (
+          <ControlPanel>
+            <HighThirdPanel>
+              {favouritePlant && (
+                <VitalsContainer>
                   <div
                     style={{
                       display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-evenly',
-                      height: '100%',
+                      justifyContent: 'center',
+                      margin: '20px',
+                      padding: '10px 5px',
+                      borderRadius: '15px',
                     }}
                   >
-                    {Object.values(favouritePlant?.vitals)?.map(
-                      (vital: any, index: number) => (
-                        <div
-                          key={index}
-                          style={{
-                            margin: '15px',
-                            display: 'flex',
-                            flexDirection: 'row',
-                          }}
-                        >
+                    <h1
+                      style={{
+                        color: theme.colours.textLight,
+                        fontWeight: 'bold',
+                      }}
+                    >
+                      {favouritePlant?.name}
+                    </h1>
+                  </div>
+                  {/* Vitals */}
+                  {favouritePlant && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-evenly',
+                        height: '100%',
+                      }}
+                    >
+                      {Object.values(favouritePlant?.vitals)?.map(
+                        (vital: any, index: number) => (
                           <div
+                            key={index}
                             style={{
-                              height: '50px',
-                              width: '50px',
-                              fontSize: '30px',
+                              margin: '15px',
+                              display: 'flex',
+                              flexDirection: 'row',
                             }}
                           >
-                            {getEmoji(vital.title)}
-                          </div>
-                          <div
-                            style={{ display: 'flex', flexDirection: 'column' }}
-                          >
                             <div
-                              style={{ display: 'flex', flexDirection: 'row' }}
+                              style={{
+                                height: '50px',
+                                width: '50px',
+                                fontSize: '30px',
+                              }}
                             >
-                              <h2 key={index}>{vital.title}:</h2>
+                              {getEmoji(vital.title)}
+                            </div>
+                            <div
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                }}
+                              >
+                                <h2 key={index}>{vital.title}:</h2>
+                                <p
+                                  style={{
+                                    fontSize: '20px',
+                                    paddingLeft: '15px',
+                                  }}
+                                >
+                                  Good
+                                </p>
+                              </div>
                               <p
                                 style={{
                                   fontSize: '20px',
-                                  paddingLeft: '15px',
                                 }}
                               >
-                                Good
+                                {vital.readings.reading.at(-1) +
+                                  ' ' +
+                                  vital.unit}
                               </p>
                             </div>
-                            <p
-                              style={{
-                                fontSize: '20px',
-                              }}
-                            >
-                              {vital.readings.reading.at(-1) + ' ' + vital.unit}
-                            </p>
                           </div>
-                        </div>
-                      )
-                    )}
-                  </div>
-                )}
-              </VitalsContainer>
+                        )
+                      )}
+                    </div>
+                  )}
+                </VitalsContainer>
+              )}
+            </HighThirdPanel>
+            {userPlants && (
+              <HalfPanelGraph
+                plantNum={user?.favouritePlant}
+                plants={userPlants?.plants}
+              />
             )}
-          </HighThirdPanel>
-          {userPlants && (
-            <HalfPanelGraph
-              plantNum={user?.favouritePlant}
-              plants={userPlants?.plants}
-            />
-          )}
-        </ControlPanel>
+          </ControlPanel>
+        )}
 
-        <ControlPanel>
-          <QuarterPanel>
-            <div>
-              <button onClick={() => setNewData(userPlants)}>
-                New Reading
-              </button>
-              <button onClick={() => getUsersData()}>Refresh</button>
-            </div>
-          </QuarterPanel>
-          <QuarterPanel>
-            {/* Favourite Plant Select */}
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                Favourite Plant:
-              </h3>
-              <select
-                style={{ width: 'auto' }}
-                onChange={(e) => {
-                  setFavouritePlant(userPlants?.plants[e.target.value])
-                }}
-              >
-                {userPlants?.plants?.map((plant: any, index: number) => (
-                  <option key={index} value={index}>
-                    {plant.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </QuarterPanel>
-          <HalfPanel />
-        </ControlPanel>
+        {false && (
+          <ControlPanel>
+            <QuarterPanel>
+              <div>
+                <button onClick={() => setNewData(userPlants)}>
+                  New Reading
+                </button>
+                <button onClick={() => getUsersData()}>Refresh</button>
+              </div>
+            </QuarterPanel>
+            <QuarterPanel>
+              {/* Favourite Plant Select */}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                  Favourite Plant:
+                </h3>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    setFavouritePlant(userPlants?.plants[e.target.value])
+                  }}
+                >
+                  {userPlants?.plants?.map((plant: any, index: number) => (
+                    <option key={index} value={index}>
+                      {plant.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </QuarterPanel>
+            <HalfPanel />
+          </ControlPanel>
+        )}
       </DashboardRow>
     </NormalPageLayout>
   )
