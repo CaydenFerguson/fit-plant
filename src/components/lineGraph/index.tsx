@@ -10,11 +10,12 @@ function LineChart({
   title,
 }: {
   xValues: string[]
-  yValues: number[]
+  yValues: any
   xLabel: string
   yLabel: string
   title: string
 }) {
+  console.log('yvalues:', yValues)
   const gridTop = '20%'
   const titleTop = `calc(${gridTop})` // 10px above the graph
   const eChartsRef = React.useRef(null as any)
@@ -57,15 +58,24 @@ function LineChart({
           end: 100, // End position of the zoomed area
         },
       ],
-      series: [
-        {
-          data: yValues,
-          type: 'line',
-          smooth: false,
-          animationEasing: 'linear', // Smooth linear transition
-          animationDurationUpdate: 1000, // Duration for updates
-        },
-      ],
+      series: yValues.map((plant: any, index: number) => ({
+        name: plant.name,
+        data: plant.readings,
+        type: 'line',
+        smooth: false,
+        animationEasing: 'linear', // Smooth linear transition
+        animationDurationUpdate: 1000, // Duration for updates
+      })),
+
+      // [
+      //   {
+      //     data: yValues,
+      //     type: 'line',
+      //     smooth: false,
+      //     animationEasing: 'linear', // Smooth linear transition
+      //     animationDurationUpdate: 1000, // Duration for updates
+      //   },
+      // ],
     }
     // Set the chart option
     if (eChartsRef && eChartsRef.current)

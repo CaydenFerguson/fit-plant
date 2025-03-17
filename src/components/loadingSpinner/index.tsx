@@ -1,7 +1,7 @@
 import theme from '@/app/theme'
 import { motion } from 'framer-motion'
 
-function LoadingSpinner({ size = 20 }: any) {
+export default function LoadingSpinner({ size = 20 }: any) {
   return (
     <motion.div
       animate={{
@@ -23,5 +23,3 @@ function LoadingSpinner({ size = 20 }: any) {
     />
   )
 }
-
-export default LoadingSpinner

@@ -29,6 +29,7 @@ export default function NavigationDesktop({
       console.error(error)
     }
   }
+
   return (
     <div
       style={{
@@ -106,31 +107,33 @@ export default function NavigationDesktop({
                 <NavBar>
                   {/* Hero */}
                   {/* <NavHero /> */}
-                  <Link href={'/'}>
+                  <Link prefetch={true} href={'/'}>
                     <LinkItem isActive={pathname === '/'}>Overview</LinkItem>
                   </Link>
-                  <Link href={'/plantpage'}>
+                  <Link prefetch={true} href={'/plantpage'}>
                     <LinkItem isActive={pathname === '/plantpage'}>
                       My Plants
                     </LinkItem>
                   </Link>
-                  <Link href={'/upload'}>
+                  <Link prefetch={true} href={'/upload'}>
                     <LinkItem isActive={pathname === '/upload'}>
                       Upload
                     </LinkItem>
                   </Link>
-                  <Link href={'/tips'}>
+                  <Link prefetch={true} href={'/tips'}>
                     <LinkItem isActive={pathname === '/tips'}>Tips</LinkItem>
                   </Link>
-                  <Link href={'/about'}>
+                  <Link prefetch={true} href={'/about'}>
                     <LinkItem isActive={pathname === '/about'}>About</LinkItem>
                   </Link>
-                  <Link href={'/settings'}>
+                  <Link prefetch={true} href={'/settings'}>
                     <LinkItem isActive={pathname === '/settings'}>
                       Settings
                     </LinkItem>
                   </Link>
-                  <LinkItem onClick={() => logout()}>Log out</LinkItem>
+                  <LinkItem prefetch={true} onClick={() => logout()}>
+                    Log out
+                  </LinkItem>
                 </NavBar>
               </>
             )}

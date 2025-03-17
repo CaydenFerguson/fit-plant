@@ -50,6 +50,22 @@ export default function Homepage() {
     setFavouritePlant(userPlants?.plants[user?.favouritePlant])
   }, [user])
 
+  useEffect(() => {
+    console.log('Fav Plant:', favouritePlant)
+  }, [favouritePlant])
+
+  //
+  // UNCOMMENT THE BELOW FOR LIVE UPDATES!!!! :)
+  //
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setNewData(userPlants)
+  //     console.log('Fetching')
+  //   }, 5000)
+  //   return () => clearInterval(interval) // Cleanup on unmount
+  // }, [user])
+
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
     const plantData = await getUserData(db, auth, 'userPlants')
@@ -75,18 +91,19 @@ export default function Homepage() {
   // Proof of concept for moisture
   async function setNewData(plantData: any) {
     let newPlantData = plantData
+    newPlantData.plants.forEach((plant: any, index: number) => {
+      // get user data
+      const currentReadings = plant.vitals.moisture.readings.reading
 
-    // get user data
-    const currentReadings = plantData.plants[0].vitals.moisture.readings.reading
+      // delete the oldest datapoint and append a new datapoint
+      let newReadings = currentReadings
+      newReadings.shift()
+      const missingOrNot = newReadings.push(
+        Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : null
+      )
 
-    // delete the oldest datapoint and append a new datapoint
-    let newReadings = currentReadings
-    newReadings.shift()
-    const missingOrNot = newReadings.push(
-      Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : '-'
-    )
-
-    newPlantData.plants[0].vitals.moisture.readings.reading = newReadings
+      newPlantData.plants[index].vitals.moisture.readings.reading = newReadings
+    })
     newPlantData.version = newPlantData.version + 1
 
     // update firestore
@@ -216,98 +233,100 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        {false && (
+        {
           <ControlPanel>
-            <HighThirdPanel>
-              {favouritePlant && (
-                <VitalsContainer>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      margin: '20px',
-                      padding: '10px 5px',
-                      borderRadius: '15px',
-                    }}
-                  >
-                    <h1
-                      style={{
-                        color: theme.colours.textLight,
-                        fontWeight: 'bold',
-                      }}
-                    >
-                      {favouritePlant?.name}
-                    </h1>
-                  </div>
-                  {/* Vitals */}
-                  {favouritePlant && (
+            {false && (
+              <HighThirdPanel>
+                {favouritePlant && (
+                  <VitalsContainer>
                     <div
                       style={{
                         display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'space-evenly',
-                        height: '100%',
+                        justifyContent: 'center',
+                        margin: '20px',
+                        padding: '10px 5px',
+                        borderRadius: '15px',
                       }}
                     >
-                      {Object.values(favouritePlant?.vitals)?.map(
-                        (vital: any, index: number) => (
-                          <div
-                            key={index}
-                            style={{
-                              margin: '15px',
-                              display: 'flex',
-                              flexDirection: 'row',
-                            }}
-                          >
+                      <h1
+                        style={{
+                          color: theme.colours.textLight,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {favouritePlant?.name}
+                      </h1>
+                    </div>
+                    {/* Vitals */}
+                    {favouritePlant && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-evenly',
+                          height: '100%',
+                        }}
+                      >
+                        {Object.values(favouritePlant?.vitals)?.map(
+                          (vital: any, index: number) => (
                             <div
+                              key={index}
                               style={{
-                                height: '50px',
-                                width: '50px',
-                                fontSize: '30px',
-                              }}
-                            >
-                              {getEmoji(vital.title)}
-                            </div>
-                            <div
-                              style={{
+                                margin: '15px',
                                 display: 'flex',
-                                flexDirection: 'column',
+                                flexDirection: 'row',
                               }}
                             >
                               <div
                                 style={{
-                                  display: 'flex',
-                                  flexDirection: 'row',
+                                  height: '50px',
+                                  width: '50px',
+                                  fontSize: '30px',
                                 }}
                               >
-                                <h2 key={index}>{vital.title}:</h2>
+                                {getEmoji(vital.title)}
+                              </div>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <h2 key={index}>{vital.title}:</h2>
+                                  <p
+                                    style={{
+                                      fontSize: '20px',
+                                      paddingLeft: '15px',
+                                    }}
+                                  >
+                                    Good
+                                  </p>
+                                </div>
                                 <p
                                   style={{
                                     fontSize: '20px',
-                                    paddingLeft: '15px',
                                   }}
                                 >
-                                  Good
+                                  {vital.readings.reading.at(-1) +
+                                    ' ' +
+                                    vital.unit}
                                 </p>
                               </div>
-                              <p
-                                style={{
-                                  fontSize: '20px',
-                                }}
-                              >
-                                {vital.readings.reading.at(-1) +
-                                  ' ' +
-                                  vital.unit}
-                              </p>
                             </div>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  )}
-                </VitalsContainer>
-              )}
-            </HighThirdPanel>
+                          )
+                        )}
+                      </div>
+                    )}
+                  </VitalsContainer>
+                )}
+              </HighThirdPanel>
+            )}
             {userPlants && (
               <HalfPanelGraph
                 plantNum={user?.favouritePlant}
@@ -315,41 +334,45 @@ export default function Homepage() {
               />
             )}
           </ControlPanel>
-        )}
+        }
 
         {
           <ControlPanel>
-            <QuarterPanel>
-              <div>
-                <button onClick={() => setNewData(userPlants)}>
-                  New Reading
-                </button>
-                <button onClick={() => getUsersData()}>Refresh</button>
-              </div>
-            </QuarterPanel>
-            <QuarterPanel>
-              {/* Favourite Plant Select */}
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                  Favourite Plant:
-                </h3>
-                <select
-                  style={{ width: 'auto' }}
-                  onChange={(e) => {
-                    setFavouritePlant(userPlants?.plants[e.target.value])
-                  }}
-                >
-                  {userPlants?.plants?.map((plant: any, index: number) => (
-                    <option key={index} value={index}>
-                      {plant.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </QuarterPanel>
+            {/* <QuarterPanel> */}
+            <div>
+              <button onClick={() => setNewData(userPlants)}>
+                New Reading
+              </button>
+              <button onClick={() => getUsersData()}>Refresh</button>
+            </div>
+            {/* </QuarterPanel> */}
+            {false && (
+              <QuarterPanel>
+                <div>
+                  {/* Favourite Plant Select */}
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                      Favourite Plant:
+                    </h3>
+                    <select
+                      style={{ width: 'auto' }}
+                      onChange={(e) => {
+                        setFavouritePlant(userPlants?.plants[e.target.value])
+                      }}
+                    >
+                      {userPlants?.plants?.map((plant: any, index: number) => (
+                        <option key={index} value={index}>
+                          {plant.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </QuarterPanel>
+            )}
           </ControlPanel>
         }
-        {
+        {false && (
           <ControlPanel>
             <QuarterPanel>
               <div>
@@ -380,7 +403,7 @@ export default function Homepage() {
               </div>
             </QuarterPanel>
           </ControlPanel>
-        }
+        )}
       </DashboardRow>
     </NormalPageLayout>
   )
