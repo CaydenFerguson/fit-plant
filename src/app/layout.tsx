@@ -81,11 +81,14 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
           }}
         >
           <div
+            id="SEEME"
             style={{
               display: 'flex',
               flexDirection: 'row',
-              height: '100%',
-              overflow: 'visible',
+              height: 'auto',
+              overflowX: 'hidden',
+              border: '2px solid red',
+              // maxWidth: '100%',
             }}
           >
             {!isMobile && (
@@ -96,7 +99,9 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
                 showNav={showNav}
               />
             )}
-            <div style={{ flex: 1 }}>
+            <div
+              style={{ flexGrow: 1, border: '5px solid green', minWidth: 0 }}
+            >
               {/* <TopBar /> */}
               {children}
             </div>

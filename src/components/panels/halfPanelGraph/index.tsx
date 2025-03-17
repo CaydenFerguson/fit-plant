@@ -13,6 +13,7 @@ export default function HalfPanelGraph({
   console.log('Look:', plants)
   const [activeReading, setActiveReading] = useState(0)
   const types = ['moisture', 'e', 'npk', 'pH', 'temperature']
+  const typesCapitalized = ['Moisture', 'E', 'NPK', 'pH', 'Temperature']
 
   function cycleActiveReading() {
     setActiveReading((activeReading + 1) % 4)
@@ -21,7 +22,7 @@ export default function HalfPanelGraph({
   return (
     <Container2 invisible={invisible}>
       <SettingsButton onClick={() => cycleActiveReading()}>
-        ⚙️ {plants[plantNum].name}
+        ⚙️ {typesCapitalized[activeReading]}
       </SettingsButton>
       {plants && (
         <LineGraph

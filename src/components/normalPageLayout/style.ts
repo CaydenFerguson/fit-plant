@@ -5,4 +5,5 @@ export const PageSetup = styled.ul({
   boxSizing: 'border-box',
   height: '100%',
   width: '100%',
+  maxWidth: '100%',
 })
