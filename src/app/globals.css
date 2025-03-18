@@ -133,7 +133,6 @@ textarea:not([rows]) {
 ::-webkit-scrollbar-thumb {
   background-color: #f1f1f1;
   border-radius: 10px;
-  /* border: 2px solid #f1f1f1; */
 }
 
 ::-webkit-scrollbar-thumb:hover {

@@ -66,11 +66,9 @@ export default function PlantPage() {
   }
 
   return (
-    <NormalPageLayout>
+    <NormalPageLayout id="tet">
       <ControlPanel>
-        {loading ? (
-          <div>Loading plants...</div>
-        ) : (
+        {!loading && (
           <>
             {plants.map((plant, index) => (
               <ClickableQuarterPanel

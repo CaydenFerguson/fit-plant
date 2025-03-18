@@ -15,6 +15,8 @@ const DetailPanelWrapper = styled.div`
   border: 2px solid #fff;
   z-index: 1000;
   border-radius: 8px;
+  max-height: 80vh;
+  overflow-y: scroll;
 `
 
 const ButtonClose = styled.button`

@@ -25,18 +25,27 @@ import { db } from '../../config/firebase'
 export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
   const [email, setEmail] = useState('')
   const [password, setPass] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [showSignUp, setShowSignUp] = useState(false)
 
   // Sign up functionality with firebase
 
-  async function setupUser(auth: Auth, email: string) {
+  async function setupUser(
+    auth: Auth,
+    email: string,
+    firstName: string,
+    lastName: string
+  ) {
     console.log('Setting up user')
     if (auth.currentUser) {
       const uid = auth.currentUser.uid
       try {
         await setDoc(doc(db, 'users', uid), {
-          name: '',
+          firstName: firstName,
+          lastName: lastName,
           email: email,
           numPlants: 0,
           favouritePlant: 0,
@@ -315,7 +324,7 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
 
       if (auth.currentUser?.email) {
         await setUpDummyPlant(auth)
-        await setupUser(auth, email)
+        await setupUser(auth, email, firstName, lastName)
         setLoggedIn(true)
       }
     } catch (error) {
@@ -367,32 +376,75 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
 
   return (
     <LoginBackground>
-      <LoginPanel>
-        <Title>Sign In</Title>
-        <Label>Email</Label>
-        <Input
-          type="email"
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-        />
-        <Label>Password</Label>
-        <Input
-          type="password"
-          onChange={(e) => setPass(e.target.value)}
-          placeholder="Password"
-        />
-        {error != '' && <Msg>{error}</Msg>}
-        <Button isLoading={isLoading} onClick={() => signIn()}>
-          {isLoading ? <LoadingSpinner /> : 'Sign in'}
-        </Button>
-        <DividerLine />
-        <FooterText>
-          Need an Account?{' '}
-          <a href="#" onClick={() => signUp()}>
-            Sign up
-          </a>
-        </FooterText>
-      </LoginPanel>
+      {showSignUp ? (
+        <LoginPanel>
+          <Title>Sign Up</Title>
+          <Label>First Name</Label>
+          <Input
+            type="First Name"
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+          />
+
+          <Label>Last Name</Label>
+          <Input
+            type="Last Name"
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+
+          <Label>Email</Label>
+          <Input
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+
+          <Label>Password</Label>
+          <Input
+            type="password"
+            onChange={(e) => setPass(e.target.value)}
+            placeholder="Password"
+          />
+          {error != '' && <Msg>{error}</Msg>}
+          <Button isLoading={isLoading} onClick={() => signUp()}>
+            {isLoading ? <LoadingSpinner /> : 'Sign up'}
+          </Button>
+          <DividerLine />
+          <FooterText>
+            <a href="#" onClick={() => setShowSignUp(false)}>
+              Back to sign in
+            </a>
+          </FooterText>
+        </LoginPanel>
+      ) : (
+        <LoginPanel>
+          <Title>Sign In</Title>
+          <Label>Email</Label>
+          <Input
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+          />
+          <Label>Password</Label>
+          <Input
+            type="password"
+            onChange={(e) => setPass(e.target.value)}
+            placeholder="Password"
+          />
+          {error != '' && <Msg>{error}</Msg>}
+          <Button isLoading={isLoading} onClick={() => signIn()}>
+            {isLoading ? <LoadingSpinner /> : 'Sign in'}
+          </Button>
+          <DividerLine />
+          <FooterText>
+            Need an Account?{' '}
+            <a href="#" onClick={() => setShowSignUp(true)}>
+              Sign up
+            </a>
+          </FooterText>
+        </LoginPanel>
+      )}
     </LoginBackground>
   )
 }

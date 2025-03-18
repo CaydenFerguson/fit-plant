@@ -26,6 +26,9 @@ export const NavBar = styled.ul({
 
 export const LinkItem = styled.li(({ isActive }: any) => {
   return {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '5px',
     padding: '15px 20px',
     fontSize: '20px',
     backgroundColor: isActive

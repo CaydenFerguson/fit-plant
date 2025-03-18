@@ -5,6 +5,8 @@ import React, { useEffect, useState } from 'react'
 import { SettingsContainer, SettingsRow } from './styles'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
+import theme from '../theme'
+import { signOut } from 'firebase/auth'
 
 export default function settings() {
   const [userPlants, setUserPlants] = useState<any>(null)
@@ -40,6 +42,18 @@ export default function settings() {
     console.log('Fetching user details')
     getUsersData()
   }, [])
+
+  async function logout() {
+    try {
+      console.log('logout')
+      await signOut(auth)
+      if (!auth.currentUser?.email) {
+        // setLoggedIn(false)
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <NormalPageLayout>
@@ -102,6 +116,20 @@ export default function settings() {
                 <option value="metric">Metric</option>
                 <option value="imperial">Imperial</option>
               </select>
+            </SettingsRow>
+
+            {/* ------- Log Out --------- */}
+            <SettingsRow>
+              <h2
+                onClick={() => logout()}
+                style={{
+                  color: 'red',
+                  backgroundColor: theme.colours.backgroundDark,
+                  borderRadius: '15px',
+                }}
+              >
+                Logout
+              </h2>
             </SettingsRow>
           </SettingsContainer>
         )}

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Container, SettingsButton } from './style'
+import { Container, Container2, SettingsButton } from './style'
 import LineGraph from '@/components/lineGraph'
 
 export default function HalfPanelGraph({
@@ -10,24 +10,34 @@ export default function HalfPanelGraph({
   plants,
   plantNum = 0,
 }: any) {
+  console.log('Look:', plants)
   const [activeReading, setActiveReading] = useState(0)
   const types = ['moisture', 'e', 'npk', 'pH', 'temperature']
+  const typesCapitalized = ['Moisture', 'E', 'NPK', 'pH', 'Temperature']
 
   function cycleActiveReading() {
     setActiveReading((activeReading + 1) % 4)
   }
 
   return (
-    <Container invisible={invisible}>
+    <Container2 invisible={invisible}>
       <SettingsButton onClick={() => cycleActiveReading()}>
-        ⚙️ {plants[plantNum].name}
+        ⚙️ {typesCapitalized[activeReading]}
       </SettingsButton>
       {plants && (
         <LineGraph
-          // TEMPORARY (just using first plant)
-          xValues={plants[plantNum].vitals[types[activeReading]].readings.time}
+          xValues={
+            plants[plantNum].vitals[types[activeReading]]?.readings?.time
+          }
+          // xValues={plants.map(
+          //   (plant: any) => plant.vitals[types[activeReading]].readings.time
+          // )}
           yValues={
-            plants[plantNum].vitals[types[activeReading]].readings.reading
+            plants.map((plant: any) => ({
+              readings: plant.vitals[types[activeReading]]?.readings?.reading,
+              name: plant.name,
+            }))
+            // plants[plantNum].vitals[types[activeReading]].readings.reading
           }
           xLabel={'TIME'}
           yLabel={types[activeReading].toUpperCase()}
@@ -35,6 +45,6 @@ export default function HalfPanelGraph({
         />
       )}
       {children}
-    </Container>
+    </Container2>
   )
 }

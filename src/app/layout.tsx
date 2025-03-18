@@ -1,40 +1,25 @@
 'use client'
 
-import type { Metadata } from 'next'
-import localFont from 'next/font/local'
 import './globals.css'
 import NavigationDesktop from '../components/desktopNav'
-import TopBar from '@/components/topBar'
-import { auth } from '../config/firebase'
 import LoginPane from '@/components/login'
-import { useEffect, useRef, useState } from 'react'
+import { use, useEffect, useRef, useState } from 'react'
 import { getFirestore } from 'firebase/firestore'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
+import { GlobalProvider, useGlobalContext } from './context/GlobalContext'
+import NavigationMobile from '@/components/mobileNav'
 const db = getFirestore()
-
-import { AnimatePresence } from 'motion/react'
-import * as motion from 'motion/react-client'
-
-// export const metadata: Metadata = {
-//   title: 'Fit Plants',
-//   description: 'Monitor your plants!',
-// }
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  let notLogin = false
-  const [loggedIn, setLoggedIn] = useState(false)
   const [validatingLogin, setValidatingLogin] = useState(true)
-  const [showNav, setShowNav] = useState(true)
-
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const auth = getAuth()
-
   useEffect(() => {
     console.log('Setting up onAuthStateChanged listener')
     // Listen to auth state changes
@@ -56,55 +41,93 @@ export default function RootLayout({
     }
   }, [])
 
-  // Eventually clean this up by moving it all into homepage
   return (
     <html lang="en">
-      {!validatingLogin ? (
-        <body>
-          {loggedIn ? (
+      <GlobalProvider>
+        {!validatingLogin != null ? (
+          <LayoutContent loggedIn={loggedIn}>{children}</LayoutContent>
+        ) : (
+          <body>
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'row',
-                height: 'auto',
-                overflow: 'visible',
+                justifyContent: 'center',
+                alignContent: 'center',
+                height: '100%',
               }}
             >
-              {
-                <NavigationDesktop
-                  isLoggedIn={loggedIn}
-                  setLoggedIn={setLoggedIn}
-                  setShowNav={setShowNav}
-                  showNav={showNav}
-                />
-              }
-              <div style={{ flex: 1 }}>
-                {/* <TopBar /> */}
-                {children}
-              </div>
+              <LoadingSpinner size={100} />
             </div>
-          ) : (
-            <LoginPane
-              database={db}
-              isLoggedIn={loggedIn}
-              setLoggedIn={setLoggedIn}
-            />
-          )}
-        </body>
-      ) : (
-        <body>
+          </body>
+        )}
+      </GlobalProvider>
+    </html>
+  )
+}
+
+export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
+  const [showNav, setShowNav] = useState(true)
+  const { isMobile } = useGlobalContext()
+
+  // Eventually clean this up by moving it all into homepage
+  return (
+    <body>
+      {loggedIn ? (
+        <div
+          style={{
+            height: '100%',
+            overflow: 'auto',
+            overflowX: 'hidden',
+          }}
+        >
           <div
+            id="SEEME"
             style={{
               display: 'flex',
-              justifyContent: 'center',
-              alignContent: 'center',
-              height: '100%',
+              flexDirection: 'row',
+              height: 'auto',
+              overflowX: 'hidden',
+              // border: '2px solid red',
             }}
           >
-            <LoadingSpinner size={100} />
+            {!isMobile && (
+              <NavigationDesktop
+                isLoggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                setShowNav={setShowNav}
+                showNav={showNav}
+              />
+            )}
+            <div
+              style={{
+                flexGrow: 1,
+                // border: '5px solid green',
+                minWidth: 0,
+              }}
+            >
+              {/* <TopBar /> */}
+              {children}
+            </div>
           </div>
-        </body>
+
+          {isMobile && (
+            <div style={{ position: 'fixed', bottom: '0px', width: '100%' }}>
+              <NavigationMobile
+                isLoggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                setShowNav={setShowNav}
+                showNav={showNav}
+              />
+            </div>
+          )}
+        </div>
+      ) : (
+        <LoginPane
+          database={db}
+          isLoggedIn={loggedIn}
+          setLoggedIn={setLoggedIn}
+        />
       )}
-    </html>
+    </body>
   )
 }

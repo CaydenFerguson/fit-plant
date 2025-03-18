@@ -21,6 +21,10 @@ import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 import HighThirdPanel from '@/components/panels/highQuarterPanel'
 import theme from '../theme'
+import HeroPanel from '@/components/panels/heroPanel'
+import NotificationPanel from '@/components/panels/notificationPanel'
+import { useGlobalContext } from '../context/GlobalContext'
+import { UserProfilePic } from '@/components/NavHero/style'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -28,6 +32,7 @@ export default function Homepage() {
   const [userPlants, setUserPlants] = useState<any>(null)
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
+  const { isMobile } = useGlobalContext()
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -44,6 +49,22 @@ export default function Homepage() {
   useEffect(() => {
     setFavouritePlant(userPlants?.plants[user?.favouritePlant])
   }, [user])
+
+  useEffect(() => {
+    console.log('Fav Plant:', favouritePlant)
+  }, [favouritePlant])
+
+  //
+  // UNCOMMENT THE BELOW FOR LIVE UPDATES!!!! :)
+  //
+
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setNewData(userPlants)
+  //     console.log('Fetching')
+  //   }, 5000)
+  //   return () => clearInterval(interval) // Cleanup on unmount
+  // }, [user])
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
@@ -70,18 +91,19 @@ export default function Homepage() {
   // Proof of concept for moisture
   async function setNewData(plantData: any) {
     let newPlantData = plantData
+    newPlantData.plants.forEach((plant: any, index: number) => {
+      // get user data
+      const currentReadings = plant.vitals.moisture.readings.reading
 
-    // get user data
-    const currentReadings = plantData.plants[0].vitals.moisture.readings.reading
+      // delete the oldest datapoint and append a new datapoint
+      let newReadings = currentReadings
+      newReadings.shift()
+      const missingOrNot = newReadings.push(
+        Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : null
+      )
 
-    // delete the oldest datapoint and append a new datapoint
-    let newReadings = currentReadings
-    newReadings.shift()
-    const missingOrNot = newReadings.push(
-      Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : '-'
-    )
-
-    newPlantData.plants[0].vitals.moisture.readings.reading = newReadings
+      newPlantData.plants[index].vitals.moisture.readings.reading = newReadings
+    })
     newPlantData.version = newPlantData.version + 1
 
     // update firestore
@@ -105,18 +127,64 @@ export default function Homepage() {
   }
 
   return (
-    <NormalPageLayout>
+    <NormalPageLayout id="test">
       <DashboardRow>
         {/* ControlPanels are rows to display panels, must add to one or less */}
         <ControlPanel>
+          {/* Hero */}
+          <HeroPanel>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '20px',
+                }}
+              >
+                <UserProfilePic />
+                {isMobile ? (
+                  <h2 style={{ textAlign: 'center' }}>
+                    Welcome back, {user?.firstName} 👋
+                  </h2>
+                ) : (
+                  <h1 style={{ textAlign: 'center' }}>
+                    Welcome back, {user?.firstName} 👋
+                  </h1>
+                )}
+                <p
+                  style={{
+                    fontSize: `${isMobile ? '17px' : '18px'}`,
+                    color: theme.colours.textLight,
+                  }}
+                >
+                  Here's a quick overview of your plants
+                </p>
+              </div>
+            </div>
+          </HeroPanel>
           {/* Notifications */}
-          <HalfPanel>
+          <NotificationPanel>
             <NotificationPaneContainer>
               <h2>Notifications</h2>
               <NotificationsContainer>
                 {notifs != null ? (
                   notifs.map((notif: any, index: number) => (
-                    <Notif key={index} notif={notif} even={index % 2 === 0} />
+                    <Notif
+                      isMobile={isMobile}
+                      key={index}
+                      notif={notif}
+                      even={index % 2 === 0}
+                    />
                   ))
                 ) : (
                   <LoadingSpinner />
@@ -124,7 +192,7 @@ export default function Homepage() {
               </NotificationsContainer>
               {/* <button onClick={() => getNotifications(auth)}>GetNotifs</button> */}
             </NotificationPaneContainer>
-          </HalfPanel>
+          </NotificationPanel>
           {/* Pie graphs */}
           {/* <HalfPanel invisible={true}>
             <div
@@ -165,133 +233,177 @@ export default function Homepage() {
           </HalfPanel> */}
         </ControlPanel>
 
-        <ControlPanel>
-          <HighThirdPanel>
-            {favouritePlant && (
-              <VitalsContainer>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    margin: '20px',
-                    padding: '10px 5px',
-                    // border: '2PX solid white',
-                    // backgroundColor: theme.colours.notificationLight,
-                    // backgroundColor: theme.colours.buttonBlue,
-                    borderRadius: '15px',
-                  }}
-                >
-                  <h1
-                    style={{
-                      // backgroundColor: theme.colours.buttonBlue,
-                      // borderRadius: '15px',
-                      color: theme.colours.textLight,
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {favouritePlant?.name}
-                  </h1>
-                </div>
-                {/* Vitals */}
+        {
+          <ControlPanel>
+            {false && (
+              <HighThirdPanel>
                 {favouritePlant && (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'space-evenly',
-                      height: '100%',
-                    }}
-                  >
-                    {Object.values(favouritePlant?.vitals)?.map(
-                      (vital: any, index: number) => (
-                        <div
-                          key={index}
-                          style={{
-                            margin: '15px',
-                            display: 'flex',
-                            flexDirection: 'row',
-                          }}
-                        >
-                          <div
-                            style={{
-                              height: '50px',
-                              width: '50px',
-                              fontSize: '30px',
-                            }}
-                          >
-                            {getEmoji(vital.title)}
-                          </div>
-                          <div
-                            style={{ display: 'flex', flexDirection: 'column' }}
-                          >
+                  <VitalsContainer>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        margin: '20px',
+                        padding: '10px 5px',
+                        borderRadius: '15px',
+                      }}
+                    >
+                      <h1
+                        style={{
+                          color: theme.colours.textLight,
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        {favouritePlant?.name}
+                      </h1>
+                    </div>
+                    {/* Vitals */}
+                    {favouritePlant && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-evenly',
+                          height: '100%',
+                        }}
+                      >
+                        {Object.values(favouritePlant?.vitals)?.map(
+                          (vital: any, index: number) => (
                             <div
-                              style={{ display: 'flex', flexDirection: 'row' }}
-                            >
-                              <h2 key={index}>{vital.title}:</h2>
-                              <p
-                                style={{
-                                  fontSize: '20px',
-                                  paddingLeft: '15px',
-                                }}
-                              >
-                                Good
-                              </p>
-                            </div>
-                            <p
+                              key={index}
                               style={{
-                                fontSize: '20px',
+                                margin: '15px',
+                                display: 'flex',
+                                flexDirection: 'row',
                               }}
                             >
-                              {vital.readings.reading.at(-1) + ' ' + vital.unit}
-                            </p>
-                          </div>
-                        </div>
-                      )
+                              <div
+                                style={{
+                                  height: '50px',
+                                  width: '50px',
+                                  fontSize: '30px',
+                                }}
+                              >
+                                {getEmoji(vital.title)}
+                              </div>
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                  }}
+                                >
+                                  <h2 key={index}>{vital.title}:</h2>
+                                  <p
+                                    style={{
+                                      fontSize: '20px',
+                                      paddingLeft: '15px',
+                                    }}
+                                  >
+                                    Good
+                                  </p>
+                                </div>
+                                <p
+                                  style={{
+                                    fontSize: '20px',
+                                  }}
+                                >
+                                  {vital.readings.reading.at(-1) +
+                                    ' ' +
+                                    vital.unit}
+                                </p>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
                     )}
-                  </div>
+                  </VitalsContainer>
                 )}
-              </VitalsContainer>
+              </HighThirdPanel>
             )}
-          </HighThirdPanel>
-          {userPlants && (
-            <HalfPanelGraph
-              plantNum={user?.favouritePlant}
-              plants={userPlants?.plants}
-            />
-          )}
-        </ControlPanel>
+            {userPlants && (
+              <HalfPanelGraph
+                plantNum={user?.favouritePlant}
+                plants={userPlants?.plants}
+              />
+            )}
+          </ControlPanel>
+        }
 
-        <ControlPanel>
-          <QuarterPanel>
+        {
+          <ControlPanel>
+            {/* <QuarterPanel> */}
             <div>
               <button onClick={() => setNewData(userPlants)}>
                 New Reading
               </button>
               <button onClick={() => getUsersData()}>Refresh</button>
             </div>
-          </QuarterPanel>
-          <QuarterPanel>
-            {/* Favourite Plant Select */}
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                Favourite Plant:
-              </h3>
-              <select
-                style={{ width: 'auto' }}
-                onChange={(e) => {
-                  setFavouritePlant(userPlants?.plants[e.target.value])
-                }}
-              >
-                {userPlants?.plants?.map((plant: any, index: number) => (
-                  <option key={index} value={index}>
-                    {plant.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </QuarterPanel>
-          <HalfPanel />
-        </ControlPanel>
+            {/* </QuarterPanel> */}
+            {false && (
+              <QuarterPanel>
+                <div>
+                  {/* Favourite Plant Select */}
+                  <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                      Favourite Plant:
+                    </h3>
+                    <select
+                      style={{ width: 'auto' }}
+                      onChange={(e) => {
+                        setFavouritePlant(userPlants?.plants[e.target.value])
+                      }}
+                    >
+                      {userPlants?.plants?.map((plant: any, index: number) => (
+                        <option key={index} value={index}>
+                          {plant.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </QuarterPanel>
+            )}
+          </ControlPanel>
+        }
+        {false && (
+          <ControlPanel>
+            <QuarterPanel>
+              <div>
+                <button onClick={() => setNewData(userPlants)}>
+                  New Reading
+                </button>
+                <button onClick={() => getUsersData()}>Refresh</button>
+              </div>
+            </QuarterPanel>
+            <QuarterPanel>
+              {/* Favourite Plant Select */}
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
+                  Favourite Plant:
+                </h3>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    setFavouritePlant(userPlants?.plants[e.target.value])
+                  }}
+                >
+                  {userPlants?.plants?.map((plant: any, index: number) => (
+                    <option key={index} value={index}>
+                      {plant.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </QuarterPanel>
+          </ControlPanel>
+        )}
       </DashboardRow>
     </NormalPageLayout>
   )

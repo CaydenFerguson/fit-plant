@@ -1,6 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
+// const { isMobile } = useGlobalContext()
 
 export const Container = styled.div(({ invisible = false }: any) => {
   return {
