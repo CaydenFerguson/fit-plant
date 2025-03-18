@@ -87,8 +87,7 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
               flexDirection: 'row',
               height: 'auto',
               overflowX: 'hidden',
-              border: '2px solid red',
-              // maxWidth: '100%',
+              // border: '2px solid red',
             }}
           >
             {!isMobile && (
@@ -100,7 +99,11 @@ export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
               />
             )}
             <div
-              style={{ flexGrow: 1, border: '5px solid green', minWidth: 0 }}
+              style={{
+                flexGrow: 1,
+                // border: '5px solid green',
+                minWidth: 0,
+              }}
             >
               {/* <TopBar /> */}
               {children}

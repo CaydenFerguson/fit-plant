@@ -29,7 +29,7 @@ export const LinkItem = styled.li(({ isActive }: any) => {
   return {
     textAlign: 'center',
     fontSize: '18px',
-    padding: '15px 10px',
+    // padding: '15px 10px',
     cursor: 'pointer',
     width: '100%',
     // borderLeft: '2px solid rgba(255,255,255,0.3)',

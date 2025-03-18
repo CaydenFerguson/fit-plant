@@ -94,44 +94,160 @@ export default function NavigationDesktop({
               <>
                 <div
                   style={{
-                    margin: '20px',
+                    margin: '20px 20px 0px 20px',
                     display: 'flex',
                     justifyContent: 'center',
                   }}
                 >
-                  <h1>Fit Plants</h1>
+                  <svg
+                    width={'auto'}
+                    height={'auto'}
+                    fill={'white'}
+                    viewBox={'0 0 300 115'}
+                  >
+                    <image
+                      href="/icons/LogoWhiteText.svg"
+                      width="300"
+                      height="115"
+                    />
+                  </svg>
+                  {/* <h1>Fit Plants</h1>
                   <h6 style={{ paddingTop: '20px', paddingLeft: '5px' }}>
                     Alpha 0.0.1
-                  </h6>
+                  </h6> */}
                 </div>
                 <NavBar>
                   {/* Hero */}
                   {/* <NavHero /> */}
                   <Link prefetch={true} href={'/'}>
-                    <LinkItem isActive={pathname === '/'}>Overview</LinkItem>
+                    <LinkItem isActive={pathname === '/'}>
+                      {/* <div
+                        style={{
+                          width: '30px',
+                          height: 'auto',
+                          backgroundColor: 'white',
+                        }}
+                      /> */}
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'0 0 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
+                      Overview
+                    </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/plantpage'}>
                     <LinkItem isActive={pathname === '/plantpage'}>
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'100 0 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
                       My Plants
                     </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/upload'}>
                     <LinkItem isActive={pathname === '/upload'}>
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'200 0 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
                       Upload
                     </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/tips'}>
-                    <LinkItem isActive={pathname === '/tips'}>Tips</LinkItem>
+                    <LinkItem isActive={pathname === '/tips'}>
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'300 0 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
+                      Tips
+                    </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/about'}>
-                    <LinkItem isActive={pathname === '/about'}>About</LinkItem>
+                    <LinkItem isActive={pathname === '/about'}>
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'400 0 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
+                      About
+                    </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/settings'}>
                     <LinkItem isActive={pathname === '/settings'}>
+                      <svg
+                        width={'50px'}
+                        height={'50px'}
+                        style={{ margin: '-10px 0px' }}
+                        // fill={'white'}
+                        viewBox={'0 100 100 100'}
+                      >
+                        <image
+                          href="/icons/iconsInverted.svg"
+                          width="1000"
+                          height="1000"
+                        />
+                      </svg>
                       Settings
                     </LinkItem>
                   </Link>
                   <LinkItem prefetch={true} onClick={() => logout()}>
+                    <svg
+                      width={'50px'}
+                      height={'50px'}
+                      style={{ margin: '-10px 0px' }}
+                      // fill={'white'}
+                      viewBox={'100 100 100 100'}
+                    >
+                      <image
+                        href="/icons/iconsInverted.svg"
+                        width="1000"
+                        height="1000"
+                      />
+                    </svg>
                     Log out
                   </LinkItem>
                 </NavBar>

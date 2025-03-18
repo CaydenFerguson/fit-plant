@@ -26,13 +26,15 @@ export default function HalfPanelGraph({
       </SettingsButton>
       {plants && (
         <LineGraph
-          xValues={plants[plantNum].vitals[types[activeReading]].readings.time}
+          xValues={
+            plants[plantNum].vitals[types[activeReading]]?.readings?.time
+          }
           // xValues={plants.map(
           //   (plant: any) => plant.vitals[types[activeReading]].readings.time
           // )}
           yValues={
             plants.map((plant: any) => ({
-              readings: plant.vitals[types[activeReading]].readings.reading,
+              readings: plant.vitals[types[activeReading]]?.readings?.reading,
               name: plant.name,
             }))
             // plants[plantNum].vitals[types[activeReading]].readings.reading
