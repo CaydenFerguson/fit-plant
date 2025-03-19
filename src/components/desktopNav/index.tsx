@@ -177,7 +177,7 @@ export default function NavigationDesktop({
                           height="1000"
                         />
                       </svg>
-                      Upload
+                      Connect
                     </LinkItem>
                   </Link>
                   <Link prefetch={true} href={'/tips'}>

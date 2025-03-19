@@ -65,7 +65,7 @@ export default function RootLayout({
   )
 }
 
-export function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
+function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
   const [showNav, setShowNav] = useState(true)
   const { isMobile } = useGlobalContext()
 
