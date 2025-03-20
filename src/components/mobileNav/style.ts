@@ -1,9 +1,8 @@
 'use client'
 
-import theme from '@/app/theme'
 import styled from '@emotion/styled'
 
-export const NavContainer = styled.div(() => {
+export const NavContainer = styled.div(({ theme }) => {
   return {
     width: '100%',
     backgroundColor: theme.colours.greyDark,
@@ -25,7 +24,7 @@ export const NavBar = styled.ul(() => {
   }
 })
 
-export const LinkItem = styled.li(({ isActive }: any) => {
+export const LinkItem = styled.li(({ isActive, theme }: any) => {
   return {
     textAlign: 'center',
     fontSize: '18px',

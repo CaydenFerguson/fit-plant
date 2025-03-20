@@ -1,9 +1,8 @@
 'use client'
 
-import theme from '@/app/theme'
 import styled from '@emotion/styled'
 
-export const MainContainer = styled.div(({ isEven }: any) => {
+export const MainContainer = styled.div(({ isEven, theme }: any) => {
   return {
     height: 'auto',
     padding: '5px 20px 5px 5px',

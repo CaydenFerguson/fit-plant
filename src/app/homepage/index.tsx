@@ -1,5 +1,6 @@
 'use client'
 
+import { useTheme } from '@emotion/react'
 import React, { useEffect, useState } from 'react'
 import NormalPageLayout from '../../components/normalPageLayout'
 import {
@@ -33,6 +34,8 @@ export default function Homepage() {
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
   const { isMobile } = useGlobalContext()
+
+  const theme = useTheme()
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched

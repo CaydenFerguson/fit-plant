@@ -1,7 +1,6 @@
 'use client'
 
 import styled from '@emotion/styled'
-import theme from '@/app/theme'
 
 export const Container = styled.div(({ invisible = false }: any) => {
   return {
@@ -39,7 +38,7 @@ export const Container2 = styled.div(({ invisible = false }: any) => {
   }
 })
 
-export const SettingsButton = styled.button(() => {
+export const SettingsButton = styled.button(({ theme }) => {
   return {
     backgroundColor: theme.colours.transparent,
     position: 'absolute',

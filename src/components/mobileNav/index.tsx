@@ -1,7 +1,6 @@
 import React from 'react'
 import { LinkItem, NavBar, NavContainer } from './style'
 import { usePathname } from 'next/navigation'
-import theme from '@/app/theme'
 import Link from 'next/link'
 
 export default function NavigationMobile({
@@ -9,6 +8,7 @@ export default function NavigationMobile({
   setLoggedIn,
   setShowNav,
   showNav,
+  theme,
 }: any) {
   const pathname = usePathname()
   return (

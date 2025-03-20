@@ -2,11 +2,17 @@
 import NormalPageLayout from '@/components/normalPageLayout'
 import PanelGeneric from '@/components/panels/panelGeneric'
 import React, { useEffect, useState } from 'react'
-import { SettingsContainer, SettingsRow } from './styles'
+import {
+  LogoutButton,
+  SettingsContainer,
+  SettingsRow,
+  SettingsWrapper,
+} from './styles'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
 import theme from '../theme'
 import { signOut } from 'firebase/auth'
+import AccountHero from '@/components/accountHero'
 
 export default function settings() {
   const [userPlants, setUserPlants] = useState<any>(null)
@@ -57,83 +63,101 @@ export default function settings() {
 
   return (
     <NormalPageLayout>
-      <PanelGeneric>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginBottom: '20px',
-          }}
-        >
-          <h1>Settings</h1>
-        </div>
-        {userPlants && (
-          <SettingsContainer>
-            {/* --------- Theme ---------- */}
-            <SettingsRow>
-              <h2>Theme:</h2>
-              <select
-                style={{ width: 'auto' }}
-                onChange={(e) => {
-                  updateTheme(e.target.value)
-                  console.log('Changed Theme')
-                }}
-              >
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
-              </select>
-            </SettingsRow>
+      <SettingsWrapper>
+        <PanelGeneric>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: '20px',
+            }}
+          >
+            <h1>Settings</h1>
+          </div>
+          {userPlants && (
+            <SettingsContainer>
+              {/* --------- Theme ---------- */}
+              <SettingsRow>
+                <h2>Theme:</h2>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    updateTheme(e.target.value)
+                    console.log('Changed Theme')
+                  }}
+                >
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </SettingsRow>
 
-            {/* ------- Favourite Plant -------- */}
-            <SettingsRow>
-              <h2>Favourite Plant:</h2>
-              <select
-                value={user?.favouritePlant}
-                style={{ width: 'auto' }}
-                onChange={(e) => {
-                  updateFavouritePlant(Number(e.target.value))
-                  setFavouritePlant(userPlants?.plants[e.target.value])
-                }}
-              >
-                {userPlants?.plants?.map((plant: any, index: number) => (
-                  <option key={index} value={index}>
-                    {plant.name}
-                  </option>
-                ))}
-              </select>
-            </SettingsRow>
+              {/* ------- Favourite Plant -------- */}
+              <SettingsRow>
+                <h2>Favourite Plant:</h2>
+                <select
+                  value={user?.favouritePlant}
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    updateFavouritePlant(Number(e.target.value))
+                    setFavouritePlant(userPlants?.plants[e.target.value])
+                  }}
+                >
+                  {userPlants?.plants?.map((plant: any, index: number) => (
+                    <option key={index} value={index}>
+                      {plant.name}
+                    </option>
+                  ))}
+                </select>
+              </SettingsRow>
 
-            {/* ------- Units --------- */}
-            <SettingsRow>
-              <h2>Units:</h2>
-              <select
-                style={{ width: 'auto' }}
-                onChange={(e) => {
-                  console.log('Changed Units')
-                }}
-              >
-                <option value="metric">Metric</option>
-                <option value="imperial">Imperial</option>
-              </select>
-            </SettingsRow>
+              {/* ------- Units --------- */}
+              <SettingsRow>
+                <h2>Units:</h2>
+                <select
+                  style={{ width: 'auto' }}
+                  onChange={(e) => {
+                    console.log('Changed Units')
+                  }}
+                >
+                  <option value="metric">Metric</option>
+                  <option value="imperial">Imperial</option>
+                </select>
+              </SettingsRow>
 
-            {/* ------- Log Out --------- */}
-            <SettingsRow>
-              <h2
-                onClick={() => logout()}
-                style={{
-                  color: 'red',
-                  backgroundColor: theme.colours.backgroundDark,
-                  borderRadius: '15px',
-                }}
-              >
-                Logout
-              </h2>
-            </SettingsRow>
-          </SettingsContainer>
-        )}
-      </PanelGeneric>
+              {/* ------- Log Out --------- */}
+              <SettingsRow>
+                <LogoutButton onClick={() => logout()}>Logout</LogoutButton>
+              </SettingsRow>
+            </SettingsContainer>
+          )}
+        </PanelGeneric>
+        <PanelGeneric>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginBottom: '20px',
+              }}
+            >
+              <h1>Account Details</h1>
+            </div>
+            <AccountHero user={user} />
+            <p style={{ textWrap: 'wrap' }}>
+              <b>UID:</b> {auth.currentUser?.uid}
+            </p>
+          </div>
+        </PanelGeneric>
+      </SettingsWrapper>
     </NormalPageLayout>
   )
 }

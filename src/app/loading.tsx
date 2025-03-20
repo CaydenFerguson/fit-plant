@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import theme from './theme'
-
+import { useTheme } from '@emotion/react'
 export default function Loading() {
   const size = '100px'
+  const theme = useTheme()
   return (
     <div
       style={{

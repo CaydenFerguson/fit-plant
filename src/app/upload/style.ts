@@ -1,8 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import theme, { device } from '../theme'
-
+import { device } from '../theme'
 export const Title = styled.h1(() => {
   return {
     marginBottom: '20px',
@@ -29,7 +28,7 @@ export const CodeOutputBox = styled.input({
   },
 })
 
-export const CopyButton = styled.button(() => {
+export const CopyButton = styled.button(({ theme }) => {
   return {
     backgroundColor: theme.colours.activeNav,
     color: '#ffffff',
@@ -49,7 +48,7 @@ export const CopyButton = styled.button(() => {
   }
 })
 
-export const Container = styled.div(() => {
+export const Container = styled.div(({ theme }) => {
   return {
     display: 'flex',
     flexDirection: 'column',
