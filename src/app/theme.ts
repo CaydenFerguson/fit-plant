@@ -1,5 +1,20 @@
 // All colours will be defined here
 
+import { color } from 'echarts'
+
+// Used for Graphs
+var colorPalette = [
+  // '#4992ff',
+  // '#7cffb2',
+  '#fddd60',
+  '#ff6e76',
+  '#58d9f9',
+  '#05c091',
+  '#ff8a45',
+  '#8d48e3',
+  '#dd79ff',
+]
+
 // Eventually we will have the background colour toggleable to be the light or dark
 const theme = {
   dark: {
@@ -26,6 +41,23 @@ const theme = {
       notificationLight: 'rgba(255,255,255,0.02)',
       notificationDark: 'rgba(255,255,255,0.05)',
       transparent: 'rgba(0,0,0,0)',
+
+      graphing: {
+        color: colorPalette,
+        graphLineColor: '#FFFFFF',
+        textStyle: {
+          color: '#FFFFFF',
+          // color: '#E9E6E6',
+        },
+        title: {
+          textStyle: {
+            color: '#EEF1FA',
+          },
+          subtextStyle: {
+            color: '#B9B8CE',
+          },
+        },
+      },
     },
   },
   light: {
@@ -52,6 +84,22 @@ const theme = {
       notificationLight: 'rgba(214, 214, 214,0.05)',
       notificationDark: 'rgba(214, 214, 214,0.1)',
       transparent: 'rgba(0,0,0,0)',
+
+      graphing: {
+        color: colorPalette,
+        graphLineColor: '#FFFFFF',
+        textStyle: {
+          color: '#FFFFFF',
+        },
+        title: {
+          textStyle: {
+            color: '#EEF1FA',
+          },
+          subtextStyle: {
+            color: '#B9B8CE',
+          },
+        },
+      },
     },
   },
 }

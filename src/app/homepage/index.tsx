@@ -75,6 +75,7 @@ export default function Homepage() {
     setNotifs(user?.notifications)
     setUserPlants(plantData)
     setUser(user)
+    console.log('User Object:', user)
   }
 
   // Fetches user data

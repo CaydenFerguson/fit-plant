@@ -23,18 +23,18 @@ export const HeroButton = styled.button(({ theme }) => {
   console.log('theme', theme)
   if (theme) {
     return {
-      //   backgroundColor: theme?.colours.activeNav,
-      //   color: '#ffffff',
-      //   padding: '7px',
-      //   borderRadius: '10px',
-      //   border: 'none',
-      //   marginLeft: 'auto',
-      //   marginRight: 'auto',
-      //   cursor: 'pointer',
-      //   textWrap: 'nowrap',
-      //   '&:hover': {
-      //     backgroundColor: theme.colours.hoverNav,
-      //   },
+      backgroundColor: theme?.colours.activeNav,
+      color: '#ffffff',
+      padding: '7px',
+      borderRadius: '10px',
+      border: 'none',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      cursor: 'pointer',
+      textWrap: 'nowrap',
+      '&:hover': {
+        backgroundColor: theme.colours.hoverNav,
+      },
     }
   }
 })
