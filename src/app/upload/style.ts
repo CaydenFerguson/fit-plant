@@ -1,8 +1,7 @@
 'use client'
 
 import styled from '@emotion/styled'
-import theme, { device } from '../theme'
-
+import { device } from '../theme'
 export const Title = styled.h1(() => {
   return {
     marginBottom: '20px',
@@ -12,24 +11,26 @@ export const Title = styled.h1(() => {
     textAlign: 'center',
   }
 })
-export const CodeOutputBox = styled.input({
-  backgroundColor: '#29282A',
-  color: '#ffffff',
-  padding: '10px',
-  borderRadius: '10px',
-  border: 'none',
-  width: '100%',
-  maxWidth: '400px',
-  fontSize: '1rem',
-  textAlign: 'center',
-  margin: '0 auto',
-  marginBottom: '20px',
-  [device.sm]: {
-    fontSize: '1.5rem',
-  },
+export const CodeOutputBox = styled.input(({ theme }) => {
+  return {
+    backgroundColor: theme.colours.transparent,
+    color: theme.colours.text,
+    padding: '10px',
+    borderRadius: '10px',
+    border: 'none',
+    width: '100%',
+    maxWidth: '400px',
+    fontSize: '1rem',
+    textAlign: 'center',
+    margin: '0 auto',
+    marginBottom: '20px',
+    [device.sm]: {
+      fontSize: '1.5rem',
+    },
+  }
 })
 
-export const CopyButton = styled.button(() => {
+export const CopyButton = styled.button(({ theme }) => {
   return {
     backgroundColor: theme.colours.activeNav,
     color: '#ffffff',
@@ -49,7 +50,7 @@ export const CopyButton = styled.button(() => {
   }
 })
 
-export const Container = styled.div(() => {
+export const Container = styled.div(({ theme }) => {
   return {
     display: 'flex',
     flexDirection: 'column',

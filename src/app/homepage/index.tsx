@@ -1,5 +1,6 @@
 'use client'
 
+import { useTheme } from '@emotion/react'
 import React, { useEffect, useState } from 'react'
 import NormalPageLayout from '../../components/normalPageLayout'
 import {
@@ -33,6 +34,8 @@ export default function Homepage() {
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
   const { isMobile } = useGlobalContext()
+
+  const theme = useTheme()
 
   // This will work for now, but the issue is we have no way of knowing
   // if this data is accurate past the second its fetched
@@ -72,6 +75,8 @@ export default function Homepage() {
     setNotifs(user?.notifications)
     setUserPlants(plantData)
     setUser(user)
+    console.log('User Object:', user)
+    console.log('Plant Object', plantData)
   }
 
   // Fetches user data
@@ -193,44 +198,6 @@ export default function Homepage() {
               {/* <button onClick={() => getNotifications(auth)}>GetNotifs</button> */}
             </NotificationPaneContainer>
           </NotificationPanel>
-          {/* Pie graphs */}
-          {/* <HalfPanel invisible={true}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                alignContent: 'center',
-                alignItems: 'center',
-                height: '100%',
-              }}
-            >
-              <div
-                style={{
-                  borderRadius: '50%',
-                  width: '100px',
-                  height: '100px',
-                  backgroundColor: 'white',
-                }}
-              />
-              <div
-                style={{
-                  borderRadius: '50%',
-                  width: '100px',
-                  height: '100px',
-                  backgroundColor: 'white',
-                }}
-              />
-              <div
-                style={{
-                  borderRadius: '50%',
-                  width: '100px',
-                  height: '100px',
-                  backgroundColor: 'white',
-                }}
-              />
-            </div>
-          </HalfPanel> */}
         </ControlPanel>
 
         {

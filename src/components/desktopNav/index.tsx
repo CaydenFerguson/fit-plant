@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useTheme } from '@emotion/react'
 import { LinkItem, NavBar, NavContainer } from './style'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'firebase/auth'
@@ -8,16 +9,18 @@ import { auth } from '../../config/firebase'
 import Link from 'next/link'
 import NavHero from '../NavHero'
 import { motion } from 'motion/react'
-import theme from '@/app/theme'
 
 export default function NavigationDesktop({
   isLoggedIn,
   setLoggedIn,
   setShowNav,
   showNav,
+  setUserTheme,
+  userTheme,
 }: any) {
   const pathname = usePathname()
-
+  const theme = useTheme()
+  console.log('ThemeNav:', theme)
   async function logout() {
     try {
       console.log('logout')
@@ -64,7 +67,7 @@ export default function NavigationDesktop({
             alignItems: 'center',
             backgroundColor: showNav
               ? theme.colours.transparent
-              : theme.colours.greyDark,
+              : theme.colours.navAndPanels,
             borderRadius: showNav ? '' : '0px 20px 20px 0',
             boxShadow: showNav ? '' : '3px 3px 5px 0px rgba(0,0,0,0.25)',
           }}
@@ -249,6 +252,27 @@ export default function NavigationDesktop({
                       />
                     </svg>
                     Log out
+                  </LinkItem>
+                  <LinkItem
+                    onClick={() => {
+                      console.log('Switched Theme, old:', userTheme)
+                      setUserTheme(userTheme === 'light' ? 'dark' : 'light')
+                    }}
+                  >
+                    <svg
+                      width={'50px'}
+                      height={'50px'}
+                      style={{ margin: '-10px 0px' }}
+                      // fill={'white'}
+                      viewBox={`${userTheme == 'dark' ? 400 : 300} 100 100 100`}
+                    >
+                      <image
+                        href="/icons/iconsInverted.svg"
+                        width="1000"
+                        height="1000"
+                      />
+                    </svg>
+                    Switch Theme
                   </LinkItem>
                 </NavBar>
               </>

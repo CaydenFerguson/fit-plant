@@ -9,6 +9,9 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import LoadingSpinner from '@/components/loadingSpinner'
 import { GlobalProvider, useGlobalContext } from './context/GlobalContext'
 import NavigationMobile from '@/components/mobileNav'
+import { ThemeProvider, useTheme } from '@emotion/react'
+import theme from './theme'
+import { getUserData } from '@/helpers/firebase'
 const db = getFirestore()
 
 export default function RootLayout({
@@ -18,7 +21,7 @@ export default function RootLayout({
 }>) {
   const [validatingLogin, setValidatingLogin] = useState(true)
   const [loggedIn, setLoggedIn] = useState(false)
-
+  const [userTheme, setUserTheme] = useState('dark')
   const auth = getAuth()
   useEffect(() => {
     console.log('Setting up onAuthStateChanged listener')
@@ -34,44 +37,78 @@ export default function RootLayout({
         setLoggedIn(false)
       }
     })
-
+    getUsersData()
     // Cleanup the listener on component unmount
     return () => {
       unsubscribe()
     }
   }, [])
 
+  const theme2 = {
+    colors: {
+      primary: 'hotpink',
+    },
+  }
+
+  async function getUsersData() {
+    const user = await getUserData(db, auth, 'users')
+    // if (user) {
+    //   if (user.preferredTheme != 'dark') {
+    //     setUserTheme('light')
+    //   } else {
+    //     setUserTheme('dark')
+    //   }
+    // }
+  }
+
   return (
     <html lang="en">
       <GlobalProvider>
-        {!validatingLogin != null ? (
-          <LayoutContent loggedIn={loggedIn}>{children}</LayoutContent>
-        ) : (
-          <body>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignContent: 'center',
-                height: '100%',
-              }}
+        <ThemeProvider
+          // theme={theme.dark}
+          theme={userTheme === 'dark' ? theme.dark : theme.light}
+        >
+          {!validatingLogin != null ? (
+            <LayoutContent
+              loggedIn={loggedIn}
+              userTheme={userTheme}
+              setUserTheme={setUserTheme}
             >
-              <LoadingSpinner size={100} />
-            </div>
-          </body>
-        )}
+              {children}
+            </LayoutContent>
+          ) : (
+            <body>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignContent: 'center',
+                  height: '100%',
+                }}
+              >
+                <LoadingSpinner size={100} />
+              </div>
+            </body>
+          )}
+        </ThemeProvider>
       </GlobalProvider>
     </html>
   )
 }
 
-function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
+function LayoutContent({
+  children,
+  loggedIn,
+  setLoggedIn,
+  setUserTheme,
+  userTheme,
+}: any) {
   const [showNav, setShowNav] = useState(true)
   const { isMobile } = useGlobalContext()
-
+  const theme = useTheme()
   // Eventually clean this up by moving it all into homepage
   return (
-    <body>
+    <body id="layout" style={{ backgroundColor: theme.colours.background }}>
       {loggedIn ? (
         <div
           style={{
@@ -81,7 +118,6 @@ function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
           }}
         >
           <div
-            id="SEEME"
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -96,6 +132,8 @@ function LayoutContent({ children, loggedIn, setLoggedIn }: any) {
                 setLoggedIn={setLoggedIn}
                 setShowNav={setShowNav}
                 showNav={showNav}
+                userTheme={userTheme}
+                setUserTheme={setUserTheme}
               />
             )}
             <div

@@ -1,7 +1,6 @@
 'use client'
 
 import styled from '@emotion/styled'
-import theme from '@/app/theme'
 
 export const Container = styled.div(({ invisible = false }: any) => {
   return {
@@ -25,26 +24,32 @@ export const Container = styled.div(({ invisible = false }: any) => {
     // },
   }
 })
-export const Container2 = styled.div(({ invisible = false }: any) => {
-  return {
-    // flexBasis: '500px',
-    width: '100%',
-    height: '60vh',
-    // minHeight: '300px',
-    borderRadius: '20px',
-    backgroundColor: invisible ? 'transparent' : '#29282A',
-    boxShadow: invisible ? '' : '3px 3px 5px 0px rgba(0,0,0,0.25)',
-    // padding: '10px',
-    position: 'relative',
+export const Container2 = styled.div(
+  ({ invisible = false, theme, isMobile = false }: any) => {
+    return {
+      // flexBasis: '500px',
+      width: '100%',
+      height: '60vh',
+      maxHeight: isMobile ? '400px' : '1000px',
+      // minHeight: '300px',
+      borderRadius: '20px',
+      backgroundColor: invisible ? 'transparent' : theme.colours.navAndPanels,
+      boxShadow: invisible ? '' : '3px 3px 5px 0px rgba(0,0,0,0.25)',
+      // padding: '10px',
+      position: 'relative',
+    }
   }
-})
+)
 
-export const SettingsButton = styled.button(() => {
+export const SettingsButton = styled.button(({ theme }) => {
   return {
     backgroundColor: theme.colours.transparent,
     position: 'absolute',
+    width: '40px',
+    height: '40px',
     top: '5px',
     left: '5px',
+    scale: '1.25',
     borderColor: 'transparent',
     zIndex: '5',
     cursor: 'pointer',
