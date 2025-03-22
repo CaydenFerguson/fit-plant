@@ -21,6 +21,7 @@ export default function HalfPanelGraph({
   const { isMobile } = useGlobalContext()
   const [activeReading, setActiveReading] = useState(0)
   const [activeDates, setActiveDates] = useState<null | number[]>(null)
+  const [numDates, setNumDates] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
   const [shownData, setShownData] = useState(
     plants.map((plant: any) => ({

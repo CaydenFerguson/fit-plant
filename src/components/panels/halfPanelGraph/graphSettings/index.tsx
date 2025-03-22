@@ -54,6 +54,24 @@ export default function GraphSettingsPanel({
     return () => clearTimeout(timeout)
   }, [])
 
+  function formatDateToLongForm(isoString: string | number | Date) {
+    const date = new Date(isoString)
+    const day = date.getDate()
+    const ordinal =
+      day % 10 === 1 && day !== 11
+        ? 'st'
+        : day % 10 === 2 && day !== 12
+          ? 'nd'
+          : day % 10 === 3 && day !== 13
+            ? 'rd'
+            : 'th'
+
+    const monthOptions = { month: 'long' as const, year: 'numeric' as const }
+    const formatted = date.toLocaleDateString('en-US', monthOptions)
+
+    return `${formatted.split(' ')[0]} ${day}${ordinal}, ${formatted.split(' ')[1]}`
+  }
+
   function checkOpen() {
     if (opened === false) {
       setOpened(true)
@@ -63,10 +81,10 @@ export default function GraphSettingsPanel({
   }
 
   // Adds or Removes an active date index from the array
-  function addOrRemoveActiveDate(index: number | null, activeDates: [any]) {
-    if (index === null) {
+  function addOrRemoveActiveDate(index: number, activeDates: [any]) {
+    if (index === -1) {
       console.log('null')
-      setActiveDates(null)
+      setActiveDates([...Array(dates?.length).keys()])
     } else if (activeDates === null || !activeDates.includes(index)) {
       console.log('index')
       setActiveDates([...(activeDates || []), index].sort())
@@ -112,7 +130,7 @@ export default function GraphSettingsPanel({
               height: 'auto',
               maxHeight: '60%',
               position: 'relative',
-              backgroundColor: theme.colours.navAndPanels,
+              backgroundColor: theme.colours.navAndPanelsTrans,
               borderRadius: '20px',
               boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
               overflowY: 'scroll',
@@ -152,8 +170,8 @@ export default function GraphSettingsPanel({
               <SettingsHeading>Date:</SettingsHeading>
               <DateList>
                 <SettingItem
-                  isActive={activeDates === null}
-                  onClick={() => addOrRemoveActiveDate(null, activeDates)}
+                  isActive={activeDates?.length === dates?.length}
+                  onClick={() => addOrRemoveActiveDate(-1, activeDates)}
                 >
                   All
                 </SettingItem>
@@ -162,7 +180,7 @@ export default function GraphSettingsPanel({
                     isActive={activeDates ? activeDates.includes(index) : false}
                     onClick={() => addOrRemoveActiveDate(index, activeDates)}
                   >
-                    {date}
+                    {formatDateToLongForm(date)}
                   </SettingItem>
                 ))}
 
