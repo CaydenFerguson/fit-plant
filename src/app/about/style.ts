@@ -1,73 +1,138 @@
 import styled from '@emotion/styled'
+import { device } from '@/app/theme'
 
 export const HeroSection = styled.section`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 10%;
-  border-radius: 20px;
-  text-align: left;
+  gap: 20px;
+  text-align: center;
+  padding: 20px;
   width: 100%;
-  gap: 50px;
-  max-width: 1300px;
   margin: auto;
+
+  ${device.lg} {
+    align-items: center;
+    justify-content: center;
+    padding: 100px 10%;
+    border-radius: 20px;
+    text-align: left;
+    gap: 50px;
+    max-width: 1300px;
+    margin: auto;
+  }
 `
 
 export const LogoContainer = styled.div`
-  flex: 1;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
+  flex: 1;
+
+  ${device.lg} {
+    justify-content: flex-start;
+  }
 `
 
 export const Logo = styled.img`
-  width: 550px;
+  width: 200px;
   height: auto;
   border-radius: 15px;
   max-width: 100%;
+
+  ${device.lg} {
+    width: 400px;
+  }
 `
 
 export const HeroContent = styled.div`
-  flex: 2;
-  text-align: left;
-  max-width: 600px;
+  flex: 1;
+  max-width: 100%;
+  text-align: center;
+
+  ${device.lg} {
+    flex: 2;
+    text-align: left;
+    max-width: 600px;
+  }
 `
 
 export const HeroTitle = styled.h1`
-  font-size: 4rem;
+  font-size: 2rem;
   color: #ffffff;
   font-weight: 700;
   margin-bottom: 20px;
   text-align: center;
+
+  ${device.md} {
+    font-size: 3rem;
+  }
+
+  ${device.lg} {
+    font-size: 3.5rem;
+  }
 `
 
 export const HeroSubtitle = styled.p`
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   color: #ffffff;
   line-height: 1.8;
   text-align: center;
+
+  ${device.md} {
+    font-size: 1.6rem;
+  }
+
+  ${device.lg} {
+    font-size: 1.7rem;
+  }
 `
 
 export const ContentSection = styled.section`
-  max-width: 1100px;
-  margin: 50px auto;
-  text-align: left;
+  width: 100%;
+  margin: 20px auto;
+  text-align: center;
   padding: 20px;
+
+  ${device.lg} {
+    max-width: 1100px;
+    margin: 50px auto;
+    text-align: left;
+    padding: 20px;
+  }
 `
 
 export const ContentTitle = styled.h2`
-  font-size: 3rem;
+  font-size: 2rem;
   color: #ffffff;
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+
+  ${device.md} {
+    font-size: 2.5rem;
+  }
+
+  ${device.lg} {
+    font-size: 2.7rem;
+  }
 `
 
 export const ContentText = styled.p`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   color: #ffffff;
-  line-height: 2;
-  margin-bottom: 5px;
-  max-width: 900px;
+  line-height: 1.8;
+  margin-bottom: 10px;
+  max-width: 100%;
+
+  ${device.md} {
+    font-size: 1.4rem;
+  }
+
+  ${device.lg} {
+    font-size: 1.5rem;
+    max-width: 900px;
+  }
 `
 
 export const WhyChooseSection = styled(ContentSection)`
@@ -75,13 +140,21 @@ export const WhyChooseSection = styled(ContentSection)`
 `
 
 export const WhyChooseItem = styled.p`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   color: #ffffff;
   margin-bottom: 8px;
   text-align: left;
   display: flex;
-  align-items: left;
+  align-items: center;
   gap: 15px;
+
+  ${device.md} {
+    font-size: 1.4rem;
+  }
+
+  ${device.lg} {
+    font-size: 1.5rem;
+  }
 `
 
 export const ContactSection = styled(ContentSection)`
@@ -89,7 +162,7 @@ export const ContactSection = styled(ContentSection)`
 `
 
 export const ContactLink = styled.a`
-  font-size: 1.6rem;
+  font-size: 1.2rem;
   color: #ffffff;
   text-decoration: none;
   margin: 8px;
@@ -98,5 +171,13 @@ export const ContactLink = styled.a`
 
   &:hover {
     color: #66bb6a;
+  }
+
+  ${device.md} {
+    font-size: 1.4rem;
+  }
+
+  ${device.lg} {
+    font-size: 1.5rem;
   }
 `

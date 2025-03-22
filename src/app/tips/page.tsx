@@ -6,7 +6,6 @@ import { TipsControlPanel } from './style'
 import ClickableTile from '@/components/panels/clickablePanel/clickableTile'
 import DetailPanel from '@/components/panels/clickablePanel/clickableDetailPanel'
 
-// Define a TypeScript interface for a plant tip.
 export interface PlantTip {
   id: number
   image: string
@@ -14,7 +13,6 @@ export interface PlantTip {
 }
 
 export default function PlantTipsPage() {
-  // Fixed array of plant tips.
   const plantTips: PlantTip[] = [
     {
       id: 1,
@@ -58,9 +56,7 @@ export default function PlantTipsPage() {
     },
   ]
 
-  // State for the active (clicked) tip.
   const [activeTip, setActiveTip] = useState<PlantTip | null>(null)
-
   return (
     <NormalPageLayout>
       <TipsControlPanel>
