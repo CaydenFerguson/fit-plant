@@ -31,9 +31,9 @@ export default function upload() {
       <PanelGeneric>
         <Container>
           <Title>Upload</Title>
-          <p>below is your secret code, use it to pair your sensor!</p>
+          <p>Below is your secret code, use it to pair your sensor!</p>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <CodeOutputBox id="code" type="text" />
+            <CodeOutputBox disabled={true} id="code" type="text" />
             <CopyButton id="button" onClick={copyCode}>
               {buttonText}
             </CopyButton>

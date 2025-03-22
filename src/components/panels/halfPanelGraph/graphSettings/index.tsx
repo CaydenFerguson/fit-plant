@@ -16,8 +16,9 @@ export default function GraphSettingsPanel({
   showSettings,
   activeReading,
   setActiveReading,
-  activeDate,
-  setActiveDate,
+  activeDates,
+  setActiveDates,
+  plantData,
 }: any) {
   const theme = useTheme()
   const [showPanel, setShowPanel] = useState<any>(null)
@@ -40,7 +41,20 @@ export default function GraphSettingsPanel({
     } else {
       setShowSettings(false)
     }
-    console.log('check me:', showPanel, showSettings)
+  }
+
+  // Adds or Removes an active date index from the array
+  function addOrRemoveActiveDate(index: number | null, activeDates: [any]) {
+    if (index === null) {
+      console.log('null')
+      setActiveDates(null)
+    } else if (activeDates === null || !activeDates.includes(index)) {
+      console.log('index')
+      setActiveDates([...(activeDates || []), index].sort())
+    } else {
+      const updatedArray = activeDates.filter((i) => i !== index)
+      setActiveDates(updatedArray.length ? updatedArray : null)
+    }
   }
   return (
     <div
@@ -90,8 +104,8 @@ export default function GraphSettingsPanel({
               style={{
                 marginBottom: '20px',
                 paddingBottom: '10px',
-                paddingLeft: '15px',
-                paddingRight: '15px',
+                paddingLeft: isMobile ? '0px' : '15px',
+                paddingRight: isMobile ? '0px' : '15px',
                 // borderBottom: '1px solid white',
               }}
             >
@@ -119,14 +133,27 @@ export default function GraphSettingsPanel({
               <SettingsHeading>Date:</SettingsHeading>
               <DateList>
                 <SettingItem
-                  isActive={activeDate === -1}
-                  onClick={() => setActiveDate(-1)}
+                  isActive={activeDates === null}
+                  onClick={() => addOrRemoveActiveDate(null, activeDates)}
                 >
                   All
                 </SettingItem>
+
                 <SettingItem
-                  isActive={activeDate >= 0}
-                  onClick={() => setActiveDate(0)}
+                  isActive={activeDates ? activeDates.includes(0) : false}
+                  onClick={() => addOrRemoveActiveDate(0, activeDates)}
+                >
+                  Choose Date
+                </SettingItem>
+                <SettingItem
+                  isActive={activeDates ? activeDates.includes(1) : false}
+                  onClick={() => addOrRemoveActiveDate(1, activeDates)}
+                >
+                  Choose Date
+                </SettingItem>
+                <SettingItem
+                  isActive={activeDates ? activeDates.includes(2) : false}
+                  onClick={() => addOrRemoveActiveDate(2, activeDates)}
                 >
                   Choose Date
                 </SettingItem>

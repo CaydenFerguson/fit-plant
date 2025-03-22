@@ -96,7 +96,7 @@ function LineChart({
       xAxis: {
         type: 'category',
         name: xLabel,
-        data: xValues,
+        // data: xValues,
         nameLocation: 'middle',
         nameGap: 30,
 
@@ -136,7 +136,7 @@ function LineChart({
       //--------//
       yAxis: {
         type: 'value',
-        name: yLabel,
+        // name: yLabel,
         nameLocation: 'middle',
         nameGap: 30,
 
@@ -165,7 +165,7 @@ function LineChart({
 
       series: yValues.map((plant: any, index: number) => ({
         name: plant.name,
-        data: plant.readings,
+        data: plant.data,
         type: 'line',
         smooth: false,
         animationEasing: 'linear', // Smooth linear transition
