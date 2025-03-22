@@ -25,6 +25,25 @@ export default function GraphSettingsPanel({
   const [opened, setOpened] = useState(false)
   const typesCapitalized = ['Moisture', 'E', 'NPK', 'pH', 'Temperature']
   const { isMobile } = useGlobalContext()
+  const [dates, setDates] = useState<string[] | null>(null)
+
+  useEffect(() => {
+    let datesArray: any = []
+    plantData.forEach((plant: any) => {
+      plant.dates.forEach((date: any) => {
+        datesArray.push(date)
+      })
+    })
+    if (datesArray.length > 0) {
+      const unique = [...new Set(datesArray)] as string[]
+      setDates(unique)
+      console.log('dates U:', unique)
+    } else {
+      setDates(datesArray)
+      console.log('dates:', datesArray)
+    }
+  }, [plantData])
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       console.log('This runs after 2 seconds!')
@@ -89,7 +108,7 @@ export default function GraphSettingsPanel({
               gap: 20,
               justifyContent: 'start',
               alignItems: 'center',
-              width: isMobile ? '95%' : '80%',
+              maxWidth: isMobile ? '95%' : '80%',
               height: 'auto',
               maxHeight: '60%',
               position: 'relative',
@@ -138,14 +157,16 @@ export default function GraphSettingsPanel({
                 >
                   All
                 </SettingItem>
+                {dates?.map((date: any, index: number) => (
+                  <SettingItem
+                    isActive={activeDates ? activeDates.includes(index) : false}
+                    onClick={() => addOrRemoveActiveDate(index, activeDates)}
+                  >
+                    {date}
+                  </SettingItem>
+                ))}
 
-                <SettingItem
-                  isActive={activeDates ? activeDates.includes(0) : false}
-                  onClick={() => addOrRemoveActiveDate(0, activeDates)}
-                >
-                  Choose Date
-                </SettingItem>
-                <SettingItem
+                {/* <SettingItem
                   isActive={activeDates ? activeDates.includes(1) : false}
                   onClick={() => addOrRemoveActiveDate(1, activeDates)}
                 >
@@ -156,7 +177,7 @@ export default function GraphSettingsPanel({
                   onClick={() => addOrRemoveActiveDate(2, activeDates)}
                 >
                   Choose Date
-                </SettingItem>
+                </SettingItem> */}
               </DateList>
             </SettingWrapper>
           </motion.div>
