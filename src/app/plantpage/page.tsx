@@ -13,7 +13,7 @@ export default function PlantPage() {
   const [activePlant, setActivePlant] = useState<any | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  // Function to fetch the plants data from Firebase
+  // Fetch plants from Firebase
   async function fetchPlants() {
     try {
       const plantData = await getUserData(db, auth, 'userPlants')
@@ -45,7 +45,38 @@ export default function PlantPage() {
       if (plantData) {
         const newPlant = {
           name: 'New Plant',
-          vitals: {},
+          vitals: {
+            moisture: {
+              title: 'Moisture',
+              unit: 'ppm',
+              version: 0,
+              readings: [],
+            },
+            temperature: {
+              title: 'Temperature',
+              unit: 'C',
+              version: 0,
+              readings: [],
+            },
+            pH: {
+              title: 'pH Level',
+              unit: '',
+              version: 0,
+              readings: [],
+            },
+            e: {
+              title: 'Electrical Conductivity',
+              unit: 'ec',
+              version: 0,
+              readings: [],
+            },
+            npk: {
+              title: 'NPK',
+              unit: '',
+              version: 0,
+              readings: [],
+            },
+          },
           image: '',
         }
         const updatedPlants = [...(plantData.plants || []), newPlant]
@@ -67,6 +98,7 @@ export default function PlantPage() {
 
   return (
     <NormalPageLayout id="tet">
+      {/* First ControlPanel: Plant Tiles */}
       <ControlPanel>
         {!loading && (
           <>
