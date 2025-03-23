@@ -10,6 +10,7 @@ interface ClickableDetailPanelProps {
 }
 
 export default function ClickableDetailPanel({
+  //plant tip popup
   data,
   onClose,
 }: ClickableDetailPanelProps) {
@@ -23,13 +24,16 @@ export default function ClickableDetailPanel({
           src={data.image}
           alt={`Plant Tip ${data.id}`}
           style={{
-            width: '50%',
+            width: '100%',
             maxWidth: '300px',
+            height: 'auto',
             display: 'block',
             margin: '0 auto 20px',
             borderRadius: '10px',
+            objectFit: 'contain',
           }}
         />
+
         {/* Increases text size */}
         <h2
           style={{

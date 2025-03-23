@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { device } from '@/app/theme'
 
-export const HeroSection = styled.section`
+export const HeroSection = styled.section`git
   display: flex;
   flex-direction: column;
   align-items: center;
