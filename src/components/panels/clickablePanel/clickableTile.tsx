@@ -4,7 +4,6 @@ import styled from '@emotion/styled'
 const TileWrapper = styled.div({
   cursor: 'pointer',
   transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-  // minWidth: '200px',
   borderRadius: '10px', // Rounded corners
   overflow: 'hidden',
 

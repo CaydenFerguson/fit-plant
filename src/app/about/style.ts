@@ -1,26 +1,22 @@
 import styled from '@emotion/styled'
 import { device } from '@/app/theme'
 
-export const HeroSection = styled.section`git
+export const HeroSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
   text-align: center;
   padding: 20px;
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
 
   ${device.lg} {
-    align-items: center;
-    justify-content: center;
-    padding: 100px 10%;
-    border-radius: 20px;
-    text-align: left;
-    gap: 50px;
-    max-width: 1300px;
-    margin: auto;
+    min-height: 10vh;
+    border-radius: 10px;
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 `
 
@@ -31,7 +27,7 @@ export const LogoContainer = styled.div`
   flex: 1;
 
   ${device.lg} {
-    justify-content: flex-start;
+    justify-content: center;
   }
 `
 
@@ -53,7 +49,7 @@ export const HeroContent = styled.div`
 
   ${device.lg} {
     flex: 2;
-    text-align: left;
+    text-align: center;
     max-width: 600px;
   }
 `
@@ -71,6 +67,7 @@ export const HeroTitle = styled.h1`
 
   ${device.lg} {
     font-size: 3.5rem;
+    text-align: center;
   }
 `
 
@@ -86,6 +83,7 @@ export const HeroSubtitle = styled.p`
 
   ${device.lg} {
     font-size: 1.7rem;
+    text-align: center;
   }
 `
 
