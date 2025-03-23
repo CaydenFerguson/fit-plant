@@ -264,6 +264,7 @@ function LineChart({
 
         // Axis Value Adjustments
         axisLabel: {
+          hideOverlap: true,
           color: theme.colours.graphing.graphLineColor,
           interval: 1, // ← show every other label
           formatter: (value: string | number | Date) => {
