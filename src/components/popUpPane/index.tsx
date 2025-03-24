@@ -19,6 +19,12 @@ export default function PopUpPane({
   setShowPopup,
   showPopup,
   paneTitle = '',
+  opacity = 1,
+  width = '100',
+  height = 'auto',
+  maxMobileWidth = '95%',
+  maxWidth = '80%',
+  maxHeight = '60%',
 }: any) {
   const [showPanel, setShowPanel] = useState<any>(null)
   const [opened, setOpened] = useState(false)
@@ -70,7 +76,7 @@ export default function PopUpPane({
           {showPanel ? (
             <motion.div
               initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: opacity, scale: 1 }}
               exit={{ opacity: 0, scale: 0 }}
               onAnimationComplete={() => checkOpen()}
               onClick={(e) => e.stopPropagation()}
@@ -82,11 +88,12 @@ export default function PopUpPane({
                 gap: 20,
                 justifyContent: 'start',
                 alignItems: 'center',
-                maxWidth: isMobile ? '95%' : '80%',
-                height: 'auto',
-                maxHeight: '60%',
+                maxWidth: isMobile ? maxMobileWidth : maxWidth,
+                width: width,
+                height: height,
+                maxHeight: maxHeight,
                 position: 'relative',
-                backgroundColor: theme.colours.navAndPanelsTrans,
+                backgroundColor: theme.colours.navAndPanels,
                 borderRadius: '20px',
                 boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
                 overflowY: 'scroll',

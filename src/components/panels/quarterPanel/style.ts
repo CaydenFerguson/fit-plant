@@ -28,3 +28,12 @@ export const Container = styled.div(({ invisible = false, theme }: any) => {
     },
   }
 })
+
+export const VitalsContainer = styled.div(() => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1.5rem',
+    marginTop: '1rem',
+  }
+})

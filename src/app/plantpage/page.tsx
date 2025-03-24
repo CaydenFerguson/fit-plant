@@ -8,6 +8,7 @@ import DetailPanel from '@/components/panels/quarterPanel/detailPanel'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
+import PopUpPane from '@/components/popUpPane'
 
 export default function PlantPage() {
   const [plants, setPlants] = useState<any[]>([])
@@ -74,7 +75,22 @@ export default function PlantPage() {
       </ControlPanel>
 
       {activePlant && (
-        <DetailPanel data={activePlant} onClose={() => setActivePlant(null)} />
+        <PopUpPane
+          paneTitle={activePlant.name}
+          setShowPopup={setActivePlant}
+          showPopUp={activePlant}
+          opacity={1}
+          maxWidth="95%"
+          width="95%"
+          maxHeight="95%"
+          height="95%"
+          maxMobileWidth="100%"
+        >
+          <DetailPanel
+            data={activePlant}
+            onClose={() => setActivePlant(null)}
+          />
+        </PopUpPane>
       )}
     </NormalPageLayout>
   )

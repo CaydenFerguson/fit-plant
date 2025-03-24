@@ -25,7 +25,7 @@ export const Container = styled.div(({ invisible = false }: any) => {
   }
 })
 export const Container2 = styled.div(
-  ({ invisible = false, theme, isMobile = false }: any) => {
+  ({ showDropShadow, theme, isMobile = false }: any) => {
     return {
       // flexBasis: '500px',
       width: '100%',
@@ -33,27 +33,28 @@ export const Container2 = styled.div(
       maxHeight: isMobile ? '400px' : '1000px',
       // minHeight: '300px',
       borderRadius: '20px',
-      backgroundColor: invisible ? 'transparent' : theme.colours.navAndPanels,
-      boxShadow: invisible ? '' : '3px 3px 5px 0px rgba(0,0,0,0.25)',
+      backgroundColor: theme.colours.navAndPanels,
+      boxShadow: showDropShadow ? '3px 3px 5px 0px rgba(0,0,0,0.25)' : '',
       // padding: '10px',
       position: 'relative',
     }
   }
 )
 
-export const SettingsButton = styled.button(({ theme }) => {
+export const SettingsButton = styled.button(({ theme, location }: any) => {
   return {
     backgroundColor: theme.colours.transparent,
     position: 'absolute',
-    width: '40px',
+    // width: '40px',
     height: '40px',
     top: '5px',
-    left: '5px',
+    left: location === 'left' ? '5px' : '',
+    right: location === 'right' ? '5px' : '',
     scale: '1.25',
     borderColor: 'transparent',
     zIndex: '5',
     cursor: 'pointer',
-    color: theme.colours.offWhite,
+    color: theme.colours.text,
     opacity: '0.5',
     '&:hover': {
       opacity: '1',

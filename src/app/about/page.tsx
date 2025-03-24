@@ -25,9 +25,30 @@ export default function AboutPage() {
       <PanelGeneric>
         <HeroSection>
           <LogoContainer>
-            <Logo src="/icons/Logo.png" alt="Fit Plant Logo" />
+            <Logo src="/icons/LogoWhiteText.svg" alt="Fit Plant Logo" />
           </LogoContainer>
-
+          <div
+            style={{
+              borderBottom: '2px solid white',
+              // borderTop: '2px solid white',
+              width: '50%',
+              height: '15px',
+              color: 'white',
+              // margin: '0 0 50px 0 ',
+              backgroundColor: 'transparent',
+            }}
+          />
+          <div
+            style={{
+              borderBottom: '2px solid white',
+              // borderTop: '2px solid white',
+              width: '30%',
+              height: '15px',
+              color: 'white',
+              margin: '-20px 0 50px 0 ',
+              backgroundColor: 'transparent',
+            }}
+          />
           <HeroContent>
             <HeroTitle>Oh hey there!</HeroTitle>
             <HeroSubtitle>

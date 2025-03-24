@@ -12,6 +12,9 @@ export default function HalfPanelGraph({
   children,
   plants,
   plantNum = 0,
+  showDropShadow = true,
+  optionsText = '',
+  optionsLocation = 'left',
 }: any) {
   console.log('Look:', plants)
 
@@ -89,11 +92,13 @@ export default function HalfPanelGraph({
 
   if (shownData) {
     return (
-      <Container2 invisible={invisible} isMobile={isMobile}>
-        <SettingsButton onClick={() => toggleSettings()}>⚙️</SettingsButton>
-        {/* <SettingsButton onClick={() => cycleActiveReading()}>
-        ⚙️ {typesCapitalized[activeReading]}
-      </SettingsButton> */}
+      <Container2 showDropShadow={showDropShadow} isMobile={isMobile}>
+        <SettingsButton
+          location={optionsLocation}
+          onClick={() => toggleSettings()}
+        >
+          ⚙️ {optionsText}
+        </SettingsButton>
         <AnimatePresence>
           {showSettings ? (
             <motion.div
@@ -115,7 +120,6 @@ export default function HalfPanelGraph({
             </motion.div>
           ) : null}
         </AnimatePresence>
-
         {plants && (
           <LineGraph
             xValues={

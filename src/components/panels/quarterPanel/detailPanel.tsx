@@ -13,51 +13,7 @@ import styled from '@emotion/styled'
 // } from 'recharts'
 import { useTheme } from '@emotion/react'
 import HalfPanelGraph from '../halfPanelGraph'
-import { setDataFirebase } from '@/helpers/firebase'
-
-const DetailPanelWrapper = styled.div`
-  position: fixed;
-  top: 5%; /* Start a bit closer to the top */
-  left: 25%; /* Left edge at 5% of the viewport */
-  right: 25%;
-  bottom: 5%;
-  background-color: #333;
-  color: #fff;
-  padding: 20px;
-  border: 2px solid #fff;
-  z-index: 1000;
-  border-radius: 8px;
-  overflow-y: auto;
-`
-
-const ButtonClose = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  padding: 5px 10px;
-  background: #555;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background: #777;
-  }
-`
-
-const VitalsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1rem;
-`
-
-const VitalCard = styled.div`
-  background-color: #444;
-  border-radius: 8px;
-  padding: 1rem;
-  border: 1px solid #555;
-`
+import { VitalsContainer } from './style'
 
 type DetailPanelProps = {
   data: {
@@ -100,144 +56,114 @@ export default function DetailPanel({ data, onClose }: DetailPanelProps) {
     }
   }
   return (
-    <DetailPanelWrapper>
-      <ButtonClose onClick={onClose}>X</ButtonClose>
-
-      <h2>{data.name}</h2>
-      {data.colour && <p>Colour: {data.colour}</p>}
-
+    <div
+      style={{
+        width: '100%',
+      }}
+    >
       {data.vitals && (
-        // <>
-        //   <h3>Vitals &amp; Graphs</h3>
-        //   <VitalsContainer>
-        //     {Object.entries(data.vitals).map(([key, vitalValue]) => {
-        //       const chartData = flattenVitalReadings(vitalValue)
-        //       const latest = chartData.length
-        //         ? chartData[chartData.length - 1]
-        //         : null
-
-        //       return (
-        //         <VitalCard key={key}>
-        //           <h4>{vitalValue.title}</h4>
-        //           <p>
-        //             {latest
-        //               ? `Latest: ${latest.value} ${vitalValue.unit}
-        //                 (at ${new Date(latest.time).toLocaleString()})`
-        //               : 'No data'}
-        //           </p>
-        //           {chartData.length > 0 ? (
-        //             // Increase chart width/height here
-        //             <LineChart width={700} height={250} data={chartData}>
-        //               <CartesianGrid strokeDasharray="3 3" />
-        //               <XAxis dataKey="time" />
-        //               <YAxis />
-        //               <Tooltip />
-        //               <Legend />
-        //               <Line
-        //                 type="monotone"
-        //                 dataKey="value"
-        //                 stroke="#8884d8"
-        //                 dot={false}
-        //               />
-        //             </LineChart>
-        //           ) : (
-        //             <p>No graph data available.</p>
-        //           )}
-        //         </VitalCard>
-        //       )
-        //     })}
-        //   </VitalsContainer>
-        // </>
-        <>
-          <HalfPanelGraph plants={[data]} />
-          <VitalsContainer>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                margin: '20px',
-                padding: '10px 5px',
-                borderRadius: '15px',
-              }}
-            >
-              <h1
-                style={{
-                  color: theme.colours.textLight,
-                  fontWeight: 'bold',
-                }}
-              >
-                {data.name}
-              </h1>
-            </div>
-            {/* Vitals */}
-            {data && (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row-reverse',
+            gap: '40px',
+          }}
+        >
+          <div style={{ flexBasis: '70%' }}>
+            <HalfPanelGraph
+              plants={[data]}
+              showDropShadow={false}
+              optionsLocation={'right'}
+            />
+          </div>
+          <div style={{ flexBasis: '30%' }}>
+            <VitalsContainer>
               <div
                 style={{
                   display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-evenly',
-                  height: '100%',
+                  justifyContent: 'center',
+                  margin: '10px',
                 }}
               >
-                {Object.values(data?.vitals)?.map(
-                  (vital: any, index: number) => (
-                    <div
-                      key={index}
-                      style={{
-                        margin: '15px',
-                        display: 'flex',
-                        flexDirection: 'row',
-                      }}
-                    >
+                <h1
+                  style={{
+                    color: theme.colours.textLight,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {'Current Status'}
+                </h1>
+              </div>
+              {/* Vitals */}
+              {data && (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-evenly',
+                    height: '100%',
+                  }}
+                >
+                  {Object.values(data?.vitals)?.map(
+                    (vital: any, index: number) => (
                       <div
+                        key={index}
                         style={{
-                          height: '50px',
-                          width: '50px',
-                          fontSize: '30px',
-                        }}
-                      >
-                        {getEmoji(vital.title)}
-                      </div>
-                      <div
-                        style={{
+                          margin: '15px',
                           display: 'flex',
-                          flexDirection: 'column',
+                          flexDirection: 'row',
                         }}
                       >
                         <div
                           style={{
-                            display: 'flex',
-                            flexDirection: 'row',
+                            height: '50px',
+                            width: '50px',
+                            fontSize: '30px',
                           }}
                         >
-                          <h2 key={index}>{vital.title}:</h2>
+                          {getEmoji(vital.title)}
+                        </div>
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'row',
+                            }}
+                          >
+                            <h2 key={index}>{vital.title}:</h2>
+                            <p
+                              style={{
+                                fontSize: '20px',
+                                paddingLeft: '15px',
+                              }}
+                            >
+                              Good
+                            </p>
+                          </div>
                           <p
                             style={{
                               fontSize: '20px',
-                              paddingLeft: '15px',
                             }}
                           >
-                            Good
+                            {vital.readings.at(-1).data.at(-1).value[1] +
+                              ' ' +
+                              vital.unit}
                           </p>
                         </div>
-                        <p
-                          style={{
-                            fontSize: '20px',
-                          }}
-                        >
-                          {vital.readings.at(-1).data.at(-1).value[1] +
-                            ' ' +
-                            vital.unit}
-                        </p>
                       </div>
-                    </div>
-                  )
-                )}
-              </div>
-            )}
-          </VitalsContainer>
-        </>
+                    )
+                  )}
+                </div>
+              )}
+            </VitalsContainer>
+          </div>
+        </div>
       )}
-    </DetailPanelWrapper>
+    </div>
   )
 }

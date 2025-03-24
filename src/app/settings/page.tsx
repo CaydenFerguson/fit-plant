@@ -73,6 +73,7 @@ export default function settings() {
             setShowPopup={setShowUpload}
             showPop={showUpload}
             paneTitle="Upload Image"
+            opacity={0.7}
           >
             <UploadPanel />
           </PopUpPane>

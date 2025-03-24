@@ -119,7 +119,11 @@ export default function PlantTipsPage() {
         ))}
       </TipsControlPanel>
       {activeTip && (
-        <PopUpPane setShowPopup={setActiveTip} showPopup={activeTip}>
+        <PopUpPane
+          setShowPopup={setActiveTip}
+          showPopup={activeTip}
+          opacity={0.9}
+        >
           <DetailPanel data={activeTip} onClose={() => setActiveTip(null)} />
         </PopUpPane>
       )}
