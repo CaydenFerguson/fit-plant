@@ -7,6 +7,7 @@ import ClickableQuarterPanel from '@/components/panels/quarterPanel/ClickableQua
 import DetailPanel from '@/components/panels/quarterPanel/detailPanel'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
+import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 
 export default function PlantPage() {
   const [plants, setPlants] = useState<any[]>([])
@@ -109,7 +110,6 @@ export default function PlantPage() {
               >
                 <div style={{ padding: '10px' }}>
                   <h3>{plant.name || 'Plant Name'}</h3>
-                  <p>Colour: {plant.colour}</p>
                 </div>
               </ClickableQuarterPanel>
             ))}
