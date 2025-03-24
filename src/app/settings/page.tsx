@@ -13,11 +13,15 @@ import { db, auth } from '@/config/firebase'
 import theme from '../theme'
 import { signOut } from 'firebase/auth'
 import AccountHero from '@/components/accountHero'
+import PopUpPane from '@/components/popUpPane'
+import { AnimatePresence, motion } from 'motion/react'
+import UploadPanel from '@/components/UploadPanel'
 
 export default function settings() {
   const [userPlants, setUserPlants] = useState<any>(null)
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
+  const [showUpload, setShowUpload] = useState(false)
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
@@ -63,6 +67,17 @@ export default function settings() {
 
   return (
     <NormalPageLayout>
+      <AnimatePresence>
+        {showUpload ? (
+          <PopUpPane
+            setShowPopup={setShowUpload}
+            showPop={showUpload}
+            paneTitle="Upload Image"
+          >
+            <UploadPanel />
+          </PopUpPane>
+        ) : null}
+      </AnimatePresence>
       <SettingsWrapper>
         <PanelGeneric>
           <div
@@ -151,7 +166,11 @@ export default function settings() {
             >
               <h1>Account Details</h1>
             </div>
-            <AccountHero user={user} />
+            <AccountHero
+              showUpload={showUpload}
+              setShowUpload={setShowUpload}
+              user={user}
+            />
             <p style={{ textWrap: 'wrap' }}>
               <b>UID:</b> {auth.currentUser?.uid}
             </p>

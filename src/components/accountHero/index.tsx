@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AccountHeroContainer, HeroButton } from './style'
+import PopUpPane from '../popUpPane'
 
-export default function AccountHero({ user }: any) {
+export default function AccountHero({ user, showUpload, setShowUpload }: any) {
   return (
     <AccountHeroContainer>
       {/* // This is a temporary fix for the user image */}
@@ -27,7 +28,9 @@ export default function AccountHero({ user }: any) {
         </div>
         <p>{user?.email}</p>
       </div>
-      <HeroButton>Change Picture</HeroButton>
+      <HeroButton onClick={() => setShowUpload(!showUpload)}>
+        Change Picture
+      </HeroButton>
     </AccountHeroContainer>
   )
 }
