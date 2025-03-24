@@ -2,15 +2,15 @@
 
 import React from 'react'
 import styled from '@emotion/styled'
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-} from 'recharts'
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   Legend,
+// } from 'recharts'
 import { useTheme } from '@emotion/react'
 import HalfPanelGraph from '../halfPanelGraph'
 import { setDataFirebase } from '@/helpers/firebase'
@@ -82,6 +82,7 @@ function flattenVitalReadings(vital: any) {
 }
 
 export default function DetailPanel({ data, onClose }: DetailPanelProps) {
+  console.log('check data', data)
   const theme = useTheme()
   function getEmoji(title: string) {
     if (title === 'Moisture') {
@@ -224,7 +225,9 @@ export default function DetailPanel({ data, onClose }: DetailPanelProps) {
                             fontSize: '20px',
                           }}
                         >
-                          {vital.readings[-1].data[0].number + ' ' + vital.unit}
+                          {vital.readings.at(-1).data.at(-1).value[1] +
+                            ' ' +
+                            vital.unit}
                         </p>
                       </div>
                     </div>
