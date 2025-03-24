@@ -5,6 +5,8 @@ import NormalPageLayout from '../../components/normalPageLayout'
 import { TipsControlPanel } from './style'
 import ClickableTile from '@/components/panels/clickablePanel/clickableTile'
 import DetailPanel from '@/components/panels/clickablePanel/clickableDetailPanel'
+// import DetailPanel from '@/components/panels/quarterPanel/detailPanel'
+import PopUpPane from '@/components/popUpPane'
 
 export interface PlantTip {
   id: number
@@ -77,7 +79,9 @@ export default function PlantTipsPage() {
       </TipsControlPanel>
 
       {activeTip && (
-        <DetailPanel data={activeTip} onClose={() => setActiveTip(null)} />
+        <PopUpPane setShowPopup={setActiveTip} showPopup={activeTip}>
+          <DetailPanel data={activeTip} onClose={() => setActiveTip(null)} />
+        </PopUpPane>
       )}
     </NormalPageLayout>
   )
