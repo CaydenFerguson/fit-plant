@@ -17,11 +17,14 @@ export const Panel = styled.div({
   backgroundColor: '#1a1a1a',
   padding: '40px',
   borderRadius: '10px',
-  minWidth: '600px',
+  width: '90%',
+  maxWidth: '600px',
   minHeight: '400px',
   position: 'relative',
   boxShadow: '0 0 20px rgba(0,0,0,0.7)',
   color: '#fff',
+  boxSizing: 'border-box',
+  overflowX: 'hidden',
 })
 
 export const CloseButton = styled.button({
