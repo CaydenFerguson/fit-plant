@@ -21,6 +21,7 @@ const theme = {
     colours: {
       background: '#2e2c2f',
       navAndPanels: '#29282A',
+      navAndPanelsDark: 'rgba(31, 30, 31,0.4)',
       navAndPanelsTrans: 'rgba(41, 40, 42,0.7)',
 
       backgroundDark: '#2e2c2f',
@@ -65,7 +66,8 @@ const theme = {
     colours: {
       background: '#EBEBEB',
       navAndPanels: '#5D707F',
-      navAndPanelsTrans: 'rgba(41, 40, 42,0.7)',
+      navAndPanelsDark: 'rgba(87, 104, 117,0.8)',
+      navAndPanelsTrans: 'rgba(93, 112, 127,0.7)',
 
       // CC7E85 - pink
       backgroundDark: '#2e2c2f',

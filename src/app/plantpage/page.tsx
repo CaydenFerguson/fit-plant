@@ -7,13 +7,14 @@ import ClickableQuarterPanel from '@/components/panels/quarterPanel/ClickableQua
 import DetailPanel from '@/components/panels/quarterPanel/detailPanel'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
+import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 
 export default function PlantPage() {
   const [plants, setPlants] = useState<any[]>([])
   const [activePlant, setActivePlant] = useState<any | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
 
-  // Function to fetch the plants data from Firebase
+  // Fetch plants from Firebase
   async function fetchPlants() {
     try {
       const plantData = await getUserData(db, auth, 'userPlants')
@@ -38,35 +39,9 @@ export default function PlantPage() {
     setActivePlant(plant)
   }
 
-  // Add a new plant tile
-  async function addPlant() {
-    try {
-      const plantData = await getUserData(db, auth, 'userPlants')
-      if (plantData) {
-        const newPlant = {
-          name: 'New Plant',
-          vitals: {},
-          image: '',
-        }
-        const updatedPlants = [...(plantData.plants || []), newPlant]
-        const newPlantData = {
-          ...plantData,
-          plants: updatedPlants,
-          version: plantData.version ? plantData.version + 1 : 1,
-        }
-        // update firestore
-        await setDataFirebase('userPlants', auth, db, newPlantData)
-        setPlants(updatedPlants)
-      } else {
-        console.error('User plant data not found.')
-      }
-    } catch (error) {
-      console.error('Error adding plant:', error)
-    }
-  }
-
   return (
     <NormalPageLayout id="tet">
+      {/* First ControlPanel: Plant Tiles */}
       <ControlPanel>
         {!loading && (
           <>
@@ -77,11 +52,10 @@ export default function PlantPage() {
               >
                 <div style={{ padding: '10px' }}>
                   <h3>{plant.name || 'Plant Name'}</h3>
-                  <p>Colour: {plant.colour}</p>
                 </div>
               </ClickableQuarterPanel>
             ))}
-            <ClickableQuarterPanel onClick={addPlant}>
+            {/* <ClickableQuarterPanel>
               <div
                 style={{
                   display: 'flex',
@@ -94,7 +68,7 @@ export default function PlantPage() {
               >
                 +
               </div>
-            </ClickableQuarterPanel>
+            </ClickableQuarterPanel> */}
           </>
         )}
       </ControlPanel>

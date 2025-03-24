@@ -21,23 +21,33 @@ const VitalInfo = styled.p`
 
 type VitalProps = {
   vital: {
-    unit: string
-    readings: {
-      time: number[]
-      reading: number[]
-    }
-    version: number
     title: string
+    unit: string
+    version: number
+    readings: Array<{
+      data: Array<{
+        value: [string, number]
+      }>
+    }>
   }
 }
 
 const VitalDetail: React.FC<VitalProps> = ({ vital }) => {
-  const { unit, readings, version, title } = vital
+  const { title, unit, version, readings } = vital
 
-  // Get the most recent reading from the arrays
-  const numReadings = readings.reading.length
-  const mostRecentTime = readings.time[numReadings - 1]
-  const mostRecentReading = readings.reading[numReadings - 1]
+  // Safely combine all reading data arrays from each readings element.
+  const allData = (readings || []).reduce(
+    (acc, r) => {
+      return acc.concat(r.data || [])
+    },
+    [] as Array<{ value: [string, number] }>
+  )
+
+  // Get the latest reading using standard indexing.
+  const latest = allData.length > 0 ? allData[allData.length - 1] : undefined
+
+  const latestTime = latest?.value?.[0]
+  const latestValue = latest?.value?.[1]
 
   return (
     <VitalWrapper>
@@ -46,10 +56,12 @@ const VitalDetail: React.FC<VitalProps> = ({ vital }) => {
         <strong>Version:</strong> {version}
       </VitalInfo>
       <VitalInfo>
-        <strong>Most Recent Time:</strong> {mostRecentTime}
+        <strong>Most Recent Time:</strong>{' '}
+        {latestTime ? new Date(latestTime).toLocaleString() : 'N/A'}
       </VitalInfo>
       <VitalInfo>
-        <strong>Most Recent Reading:</strong> {mostRecentReading} {unit}
+        <strong>Most Recent Reading:</strong>{' '}
+        {latestValue !== undefined ? `${latestValue} ${unit}` : 'N/A'}
       </VitalInfo>
     </VitalWrapper>
   )
