@@ -33,8 +33,12 @@ export const HeroButton = styled.button(({ theme }) => {
       marginRight: 'auto',
       cursor: 'pointer',
       textWrap: 'nowrap',
+      maxWidth: '170px',
+      width: '100%',
+      transition: 'transform 0.3s ease, box-shadow 0.3s ease',
       '&:hover': {
         backgroundColor: theme.colours.hoverNav,
+        transform: 'scale(1.05)',
       },
     }
   }

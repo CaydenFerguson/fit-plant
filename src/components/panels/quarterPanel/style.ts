@@ -5,12 +5,15 @@ import styled from '@emotion/styled'
 
 export const Container = styled.div(({ invisible = false, theme }: any) => {
   return {
+    cursor: 'pointer',
     flexBasis: '250px',
+    maxWidth: '30vh',
     flexGrow: 1,
     height: '30vh',
     borderRadius: '20px',
     backgroundColor: invisible ? 'transparent' : theme.colours.navAndPanels,
     boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
     padding: '20px',
     '&:hover': {
       transform: 'scale(1.03)',

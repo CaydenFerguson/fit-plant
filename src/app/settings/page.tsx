@@ -142,7 +142,7 @@ export default function settings() {
               </SettingsRow>
 
               {/* ------- Log Out --------- */}
-              <SettingsRow>
+              <SettingsRow isCentered={true}>
                 <LogoutButton onClick={() => logout()}>Logout</LogoutButton>
               </SettingsRow>
             </SettingsContainer>

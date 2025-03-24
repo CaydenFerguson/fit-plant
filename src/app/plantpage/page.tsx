@@ -30,7 +30,35 @@ export default function PlantPage() {
       setLoading(false)
     }
   }
-
+  function getRandomPlantEmoji() {
+    const emojis = [
+      '🌵',
+      '🌱',
+      '🌿',
+      '☘️',
+      '🍀',
+      '🎍',
+      '🪴',
+      '🎋',
+      '🍃',
+      '🍂',
+      '🍁',
+      '🍄',
+      '🍄‍🟫',
+      '🌾',
+      '💐',
+      '🌷',
+      '🪷',
+      '🌹',
+      '🥀',
+      '🌺',
+      '🌸',
+      '🪻',
+      '🌼',
+      '🌻',
+    ]
+    return emojis[Math.floor(Math.random() * emojis.length)]
+  }
   useEffect(() => {
     console.log('Fetching plant details')
     fetchPlants()
@@ -51,25 +79,36 @@ export default function PlantPage() {
                 key={index}
                 onClick={() => handlePlantClick(plant)}
               >
-                <div style={{ padding: '10px' }}>
-                  <h3>{plant.name || 'Plant Name'}</h3>
+                <div
+                  style={{
+                    padding: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'column',
+                    gap: '20px',
+                    height: '100%',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: '100px',
+                      height: '100px',
+                      border: '4px solid white',
+                      borderRadius: '50%',
+                      backgroundColor: 'transparent',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      fontSize: '3rem',
+                    }}
+                  >
+                    {getRandomPlantEmoji()}
+                  </div>
+                  <h2>{plant.name || 'Plant Name'}</h2>
                 </div>
               </ClickableQuarterPanel>
             ))}
-            {/* <ClickableQuarterPanel>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '100%',
-                  fontSize: '2rem',
-                  color: '#fff',
-                }}
-              >
-                +
-              </div>
-            </ClickableQuarterPanel> */}
           </>
         )}
       </ControlPanel>
