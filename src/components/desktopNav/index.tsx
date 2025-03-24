@@ -103,8 +103,8 @@ export default function NavigationDesktop({
                   }}
                 >
                   <svg
-                    width={'auto'}
-                    height={'auto'}
+                    width={'300px'}
+                    height={'115px'}
                     fill={'white'}
                     viewBox={'0 0 300 115'}
                   >

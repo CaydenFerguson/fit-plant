@@ -32,7 +32,9 @@ export default function upload() {
         <Container>
           <Title>Upload</Title>
           <p>Below is your secret code, use it to pair your sensor!</p>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+          >
             <CodeOutputBox disabled={true} id="code" type="text" />
             <CopyButton id="button" onClick={copyCode}>
               {buttonText}

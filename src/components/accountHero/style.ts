@@ -2,14 +2,15 @@
 
 import styled from '@emotion/styled'
 
-export const AccountHeroContainer = styled.div(() => {
+export const AccountHeroContainer = styled.div(({ theme }) => {
   return {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     padding: '10px',
     borderRadius: '15px',
-    backgroundColor: '#3E3B3F',
+    backgroundColor: theme.colours.navAndPanelsDark,
+    opacity: '1.2',
     margin: '10px 0px',
     gap: '20px',
     width: '100%',

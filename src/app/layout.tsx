@@ -52,13 +52,13 @@ export default function RootLayout({
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
-    // if (user) {
-    //   if (user.preferredTheme != 'dark') {
-    //     setUserTheme('light')
-    //   } else {
-    //     setUserTheme('dark')
-    //   }
-    // }
+    if (user) {
+      if (user.preferredTheme != 'dark') {
+        setUserTheme('light')
+      } else {
+        setUserTheme('dark')
+      }
+    }
   }
 
   return (

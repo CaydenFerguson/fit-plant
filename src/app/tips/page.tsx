@@ -5,6 +5,7 @@ import NormalPageLayout from '../../components/normalPageLayout'
 import { TipsControlPanel } from './style'
 import ClickableTile from '@/components/panels/clickablePanel/clickableTile'
 import DetailPanel from '@/components/panels/clickablePanel/clickableDetailPanel'
+import { useTheme } from '@emotion/react'
 
 // Define a TypeScript interface for a plant tip.
 export interface PlantTip {
@@ -60,7 +61,7 @@ export default function PlantTipsPage() {
 
   // State for the active (clicked) tip.
   const [activeTip, setActiveTip] = useState<PlantTip | null>(null)
-
+  const theme = useTheme()
   return (
     <NormalPageLayout>
       <TipsControlPanel>
@@ -106,7 +107,7 @@ export default function PlantTipsPage() {
                 style={{
                   fontSize: '28px',
                   fontWeight: '600',
-                  color: '#fff',
+                  color: theme.colours.text,
                 }}
               >
                 Plant Tip {tip.id}
