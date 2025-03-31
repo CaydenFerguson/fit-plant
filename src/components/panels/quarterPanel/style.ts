@@ -40,3 +40,40 @@ export const VitalsContainer = styled.div(() => {
     marginTop: '1rem',
   }
 })
+
+export const Button = styled.div(({ theme }) => {
+  return {
+    color: theme.colours.text,
+    backgroundColor: theme.colours.buttonBlue,
+    borderRadius: '20px',
+    padding: '10px',
+    maxWidth: '200px',
+    width: '100%',
+    textAlign: 'center',
+    cursor: 'pointer',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    fontSize: '20px',
+    '&:hover': {
+      transform: 'scale(1.05)',
+      boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+      backgroundColor: theme.colours.hoverNav,
+    },
+  }
+})
+
+export const EmojiItem = styled.div(({ theme, padding = '5px' }: any) => {
+  return {
+    fontSize: '20px',
+    borderRadius: '20px',
+    // backgroundColor: theme.colours.navAndPanelsDark,
+    border: '2px solid white',
+    padding: padding,
+    boxShadow: '3px 3px 5px 0px rgba(0, 0, 0, 0.25)',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.colours.offWhite,
+      scale: '1.2',
+      color: 'black',
+    },
+  }
+})

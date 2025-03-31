@@ -57,3 +57,45 @@ export const SettingsWrapper = styled.div(() => {
     },
   }
 })
+
+export const EmojiSelectContainer = styled.div(() => {
+  return {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '15px',
+    marginBottom: '20px',
+  }
+})
+
+export const EmojiItem = styled.div(({ theme }) => {
+  return {
+    fontSize: '40px',
+    borderRadius: '20px',
+    // backgroundColor: theme.colours.navAndPanelsDark,
+    border: '2px solid white',
+    padding: '5px',
+    boxShadow: '3px 3px 5px 0px rgba(0, 0, 0, 0.25)',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: theme.colours.offWhite,
+      scale: '1.1',
+    },
+  }
+})
+
+export const Divider = styled.div(() => {
+  return {
+    width: '120px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '10px',
+    display: 'flex',
+    marginTop: '40px',
+    marginBottom: '40px',
+    textAlign: 'center',
+    justifyContent: 'center',
+    alignContent: 'center',
+    borderTop: '2px solid white',
+    borderBottom: '2px solid white',
+  }
+})

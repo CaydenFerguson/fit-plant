@@ -71,8 +71,9 @@ export default function RootLayout({
           {!validatingLogin != null ? (
             <LayoutContent
               loggedIn={loggedIn}
-              userTheme={userTheme}
+              setLoggedIn={setLoggedIn}
               setUserTheme={setUserTheme}
+              userTheme={userTheme}
             >
               {children}
             </LayoutContent>

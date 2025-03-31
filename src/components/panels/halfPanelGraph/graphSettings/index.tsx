@@ -177,6 +177,7 @@ export default function GraphSettingsPanel({
                 </SettingItem>
                 {dates?.map((date: any, index: number) => (
                   <SettingItem
+                    key={index}
                     isActive={activeDates ? activeDates.includes(index) : false}
                     onClick={() => addOrRemoveActiveDate(index, activeDates)}
                   >

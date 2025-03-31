@@ -10,17 +10,18 @@ import Link from 'next/link'
 import NavHero from '../NavHero'
 import { motion } from 'motion/react'
 
-export default function NavigationDesktop({
-  isLoggedIn,
-  setLoggedIn,
-  setShowNav,
-  showNav,
-  setUserTheme,
-  userTheme,
-}: any) {
+export default function NavigationDesktop(props: any) {
+  const {
+    isLoggedIn,
+    setLoggedIn,
+    setShowNav,
+    showNav,
+    setUserTheme,
+    userTheme,
+  } = props
   const pathname = usePathname()
   const theme = useTheme()
-  console.log('ThemeNav:', theme)
+
   async function logout() {
     try {
       console.log('logout')

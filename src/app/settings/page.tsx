@@ -3,6 +3,9 @@ import NormalPageLayout from '@/components/normalPageLayout'
 import PanelGeneric from '@/components/panels/panelGeneric'
 import React, { useEffect, useState } from 'react'
 import {
+  Divider,
+  EmojiItem,
+  EmojiSelectContainer,
   LogoutButton,
   SettingsContainer,
   SettingsRow,
@@ -10,18 +13,19 @@ import {
 } from './styles'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import { db, auth } from '@/config/firebase'
-import theme from '../theme'
 import { signOut } from 'firebase/auth'
 import AccountHero from '@/components/accountHero'
 import PopUpPane from '@/components/popUpPane'
 import { AnimatePresence, motion } from 'motion/react'
 import UploadPanel from '@/components/UploadPanel'
+import { useTheme } from '@emotion/react'
 
 export default function settings() {
   const [userPlants, setUserPlants] = useState<any>(null)
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
   const [showUpload, setShowUpload] = useState(false)
+  const theme = useTheme()
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
@@ -65,6 +69,80 @@ export default function settings() {
     }
   }
 
+  function setProfilePic(emoji: string) {
+    let updatedUser = user
+    updatedUser.profileEmoji = emoji
+    updatedUser.version += 1
+    setDataFirebase('users', auth, db, updatedUser)
+    getUsersData()
+  }
+
+  const profileEmojis = [
+    '🧒',
+    '👦',
+    '🧑',
+    '👨',
+    '👩‍🦱',
+    '🧑‍🦱',
+    '👨‍🦱',
+    '👩‍🦰',
+    '🧑‍🦰',
+    '👨‍🦰',
+    '👱‍♀️',
+    '👱',
+    '👱‍♂️',
+    '👩‍🦳',
+    '🧑‍🦳',
+    '👨‍🦳',
+    '👩‍🦲',
+    '🧑‍🦲',
+    '👨‍🦲',
+    '🧔‍♀️',
+    '🧔',
+    '🧔‍♂️',
+    '👵',
+    '🧓',
+    '👴',
+    '👳‍♀️',
+    '👳',
+    '👳‍♂️',
+    '🧕',
+  ]
+  function getProfileEmoji() {
+    const people = [
+      '🧒',
+      '👦',
+      '🧑',
+      '👨',
+      '👩‍🦱',
+      '🧑‍🦱',
+      '👨‍🦱',
+      '👩‍🦰',
+      '🧑‍🦰',
+      '👨‍🦰',
+      '👱‍♀️',
+      '👱',
+      '👱‍♂️',
+      '👩‍🦳',
+      '🧑‍🦳',
+      '👨‍🦳',
+      '👩‍🦲',
+      '🧑‍🦲',
+      '👨‍🦲',
+      '🧔‍♀️',
+      '🧔',
+      '🧔‍♂️',
+      '👵',
+      '🧓',
+      '👴',
+      '👳‍♀️',
+      '👳',
+      '👳‍♂️',
+      '🧕',
+    ]
+    return people[Math.floor(Math.random() * people.length)]
+  }
+
   return (
     <NormalPageLayout>
       <AnimatePresence>
@@ -74,8 +152,22 @@ export default function settings() {
             showPop={showUpload}
             paneTitle="Upload Image"
             opacity={0.7}
+            maxWidth={'60%'}
+            maxHeight={'80%'}
           >
-            <UploadPanel />
+            <div>
+              <EmojiSelectContainer>
+                {profileEmojis.map((emoji) => {
+                  return (
+                    <EmojiItem onClick={() => setProfilePic(emoji)}>
+                      {emoji}
+                    </EmojiItem>
+                  )
+                })}
+              </EmojiSelectContainer>
+              <Divider>or</Divider>
+              <UploadPanel />
+            </div>
           </PopUpPane>
         ) : null}
       </AnimatePresence>

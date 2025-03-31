@@ -21,7 +21,6 @@ import LoadingSpinner from '@/components/loadingSpinner'
 import { getUserData, setDataFirebase } from '@/helpers/firebase'
 import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 import HighThirdPanel from '@/components/panels/highQuarterPanel'
-import theme from '../theme'
 import HeroPanel from '@/components/panels/heroPanel'
 import NotificationPanel from '@/components/panels/notificationPanel'
 import { useGlobalContext } from '../context/GlobalContext'
@@ -93,28 +92,120 @@ export default function Homepage() {
     }
   }
 
+  function getLocalIsoString() {
+    const now = new Date()
+
+    const year = now.getFullYear()
+    const month = String(now.getMonth() + 1).padStart(2, '0') // months are 0-indexed
+    const day = String(now.getDate()).padStart(2, '0')
+    const hours = String(now.getHours()).padStart(2, '0')
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+    const seconds = String(now.getSeconds()).padStart(2, '0')
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`
+  }
+
+  // Returns just the date
+  function justDate(iso: string) {
+    let date = iso.split('T')[0] + 'T00:00:00'
+    return date
+  }
+
+  // Checks if same day
+  function isSameDate(iso1: string, iso2: string) {
+    const date1 = iso1.split('T')[0]
+    const date2 = iso2.split('T')[0]
+    return date1 === date2
+  }
+
   // Proof of concept for moisture
   async function setNewData(plantData: any) {
-    let newPlantData = plantData
+    let newPlantData = { ...plantData }
+
+    // For each plant
     newPlantData.plants.forEach((plant: any, index: number) => {
-      // get user data
-      const currentReadings = plant.vitals.moisture.readings.reading
+      // FOr each plants vitals
+      for (let key in plant.vitals) {
+        let readings = plant.vitals[key].readings
 
-      // delete the oldest datapoint and append a new datapoint
-      let newReadings = currentReadings
-      newReadings.shift()
-      const missingOrNot = newReadings.push(
-        Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : null
-      )
+        //Check if readings is empty, if so create the first reading and add date
+        if (!plant.dates.includes(justDate(getLocalIsoString()))) {
+          console.log('[x] Date didnt exist - adding')
+          // Adding the date
+          plant.dates.push(justDate(getLocalIsoString()))
 
-      newPlantData.plants[index].vitals.moisture.readings.reading = newReadings
+          // Adding the corresponding data
+          plant.vitals[key].readings.push({
+            data: [
+              {
+                value: [getLocalIsoString(), Math.random()],
+              },
+            ],
+          })
+        } else {
+          console.log('[x] found date - adding data')
+          const index = plant.dates.indexOf(justDate(getLocalIsoString()))
+          // Checking if there is an entry in this vital for this date
+          if (plant.vitals[key].readings.length - 1 < index) {
+            plant.vitals[key].readings.push({
+              data: [
+                {
+                  value: [getLocalIsoString(), Math.random()],
+                },
+              ],
+            })
+          }
+          // Otherwise add the data to the given date
+          else {
+            plant.vitals[key].readings[index].data.push({
+              value: [getLocalIsoString(), Math.random()],
+            })
+          }
+        }
+
+        newPlantData.plants[index] = plant
+
+        // //Choosing random values to mulitply the last result
+        // const incDec = Math.random() <= 0.5 ? -1 : 1
+        // const readingModifier = incDec * (Math.random() + 1)
+
+        // // Check if there was a last result
+        // // console.log(key, obj[key]);
+        // console.log('check', plant.vitals[key].readings)
+        // console.log('check', plant.vitals[key].readings.at(-1))
+        // plant.vitals[key].readings.at(-1).data.push({
+        //   value: [
+        //     getLocalIsoString(),
+        //     plant.vitals[key].readings.at(-1).data.length !== 0
+        //       ? plant.vitals[key].readings.at(-1).data.at(-1).value[1] *
+        //         readingModifier
+        //       : readingModifier,
+        //   ],
+        // })
+      }
+
+      console.log('[x] new dates', newPlantData.plants[1].dates)
+
+      //   // get user data
+      //   const currentReadings = plant.vitals.moisture.readings.reading
+
+      //   // delete the oldest datapoint and append a new datapoint
+      //   let newReadings = currentReadings
+      //   newReadings.shift()
+      //   const missingOrNot = newReadings.push(
+      //     Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : null
+      //   )
+
+      //   newPlantData.plants[index].vitals.moisture.readings.reading = newReadings
     })
+    console.log('[x] new data', newPlantData.plants[1].vitals)
     newPlantData.version = newPlantData.version + 1
 
     // update firestore
     await setDataFirebase('userPlants', auth, db, newPlantData)
     await getUsersData()
   }
+
   function getEmoji(title: string) {
     if (title === 'Moisture') {
       return '💧'
@@ -129,6 +220,41 @@ export default function Homepage() {
     } else {
       return ''
     }
+  }
+
+  function getProfileEmoji() {
+    const people = [
+      '🧒',
+      '👦',
+      '🧑',
+      '👨',
+      '👩‍🦱',
+      '🧑‍🦱',
+      '👨‍🦱',
+      '👩‍🦰',
+      '🧑‍🦰',
+      '👨‍🦰',
+      '👱‍♀️',
+      '👱',
+      '👱‍♂️',
+      '👩‍🦳',
+      '🧑‍🦳',
+      '👨‍🦳',
+      '👩‍🦲',
+      '🧑‍🦲',
+      '👨‍🦲',
+      '🧔‍♀️',
+      '🧔',
+      '🧔‍♂️',
+      '👵',
+      '🧓',
+      '👴',
+      '👳‍♀️',
+      '👳',
+      '👳‍♂️',
+      '🧕',
+    ]
+    return people[Math.floor(Math.random() * people.length)]
   }
 
   return (
@@ -154,9 +280,12 @@ export default function Homepage() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   gap: '20px',
+                  justifyContent: 'center',
                 }}
               >
-                <UserProfilePic />
+                <UserProfilePic>
+                  {user?.profileEmoji ? user.profileEmoji : '👤'}
+                </UserProfilePic>
                 {isMobile ? (
                   <h2 style={{ textAlign: 'center' }}>
                     Welcome back, {user?.firstName} 👋

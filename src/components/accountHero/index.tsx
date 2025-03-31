@@ -12,8 +12,14 @@ export default function AccountHero({ user, showUpload, setShowUpload }: any) {
           height: '50px',
           backgroundColor: 'white',
           borderRadius: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '2rem',
         }}
-      />
+      >
+        {user?.profileEmoji ? user.profileEmoji : '👤'}
+      </div>
       <div>
         <div
           style={{

@@ -16,8 +16,12 @@ export const UserProfilePic = styled.div(() => {
   return {
     borderRadius: '50%',
     backgroundColor: 'white',
-    width: '50px',
-    height: '50px',
+    width: '100px',
+    height: '100px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: '4rem',
   }
 })
 

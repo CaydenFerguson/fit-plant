@@ -11,16 +11,17 @@ import HalfPanelGraph from '@/components/panels/halfPanelGraph'
 import PopUpPane from '@/components/popUpPane'
 
 export default function PlantPage() {
-  const [plants, setPlants] = useState<any[]>([])
+  const [userPlants, setUserPlants] = useState<any>()
   const [activePlant, setActivePlant] = useState<any | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
+  const [activeIndex, setActiveIndex] = useState(-1)
 
   // Fetch plants from Firebase
   async function fetchPlants() {
     try {
       const plantData = await getUserData(db, auth, 'userPlants')
-      if (plantData && plantData.plants) {
-        setPlants(plantData.plants)
+      if (plantData && plantData?.plants) {
+        setUserPlants(plantData)
       } else {
         console.log('No plants found for this user.')
       }
@@ -30,6 +31,7 @@ export default function PlantPage() {
       setLoading(false)
     }
   }
+
   function getRandomPlantEmoji() {
     const emojis = [
       '🌵',
@@ -64,20 +66,30 @@ export default function PlantPage() {
     fetchPlants()
   }, [])
 
+  function setNewPlantEmoji(plantIndex: number, emoji: string) {
+    console.log('tring to set', plantIndex, emoji)
+    let updatedUserPlants = userPlants
+    updatedUserPlants.plants[plantIndex].image = emoji
+    setDataFirebase('userPlants', auth, db, updatedUserPlants)
+  }
+
   function handlePlantClick(plant: any) {
     setActivePlant(plant)
   }
-
+  console.log('check user plants:', userPlants)
   return (
-    <NormalPageLayout id="tet">
+    <NormalPageLayout>
       {/* First ControlPanel: Plant Tiles */}
       <ControlPanel>
         {!loading && (
           <>
-            {plants.map((plant, index) => (
+            {userPlants.plants.map((plant: any, index: number) => (
               <ClickableQuarterPanel
                 key={index}
-                onClick={() => handlePlantClick(plant)}
+                onClick={() => {
+                  setActiveIndex(index)
+                  handlePlantClick(plant)
+                }}
               >
                 <div
                   style={{
@@ -103,9 +115,9 @@ export default function PlantPage() {
                       fontSize: '3rem',
                     }}
                   >
-                    {getRandomPlantEmoji()}
+                    {plant?.image ? plant.image : '🌱'}
                   </div>
-                  <h2>{plant.name || 'Plant Name'}</h2>
+                  <h2>{plant.name || 'Plant'}</h2>
                 </div>
               </ClickableQuarterPanel>
             ))}
@@ -128,6 +140,8 @@ export default function PlantPage() {
           <DetailPanel
             data={activePlant}
             onClose={() => setActivePlant(null)}
+            setNewPlantEmoji={setNewPlantEmoji}
+            index={activeIndex}
           />
         </PopUpPane>
       )}

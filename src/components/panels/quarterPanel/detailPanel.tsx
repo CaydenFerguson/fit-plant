@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import styled from '@emotion/styled'
 // import {
 //   LineChart,
@@ -13,7 +13,8 @@ import styled from '@emotion/styled'
 // } from 'recharts'
 import { useTheme } from '@emotion/react'
 import HalfPanelGraph from '../halfPanelGraph'
-import { VitalsContainer } from './style'
+import { Button, EmojiItem, VitalsContainer } from './style'
+import PopUpPane from '@/components/popUpPane'
 
 type DetailPanelProps = {
   data: {
@@ -23,6 +24,8 @@ type DetailPanelProps = {
     vitals?: Record<string, any>
   }
   onClose: () => void
+  setNewPlantEmoji: any
+  index: number
 }
 
 /** Flatten function to transform nested readings into an array of { time, value } */
@@ -37,7 +40,13 @@ function flattenVitalReadings(vital: any) {
   }, [])
 }
 
-export default function DetailPanel({ data, onClose }: DetailPanelProps) {
+export default function DetailPanel({
+  data,
+  onClose,
+  setNewPlantEmoji,
+  index,
+}: DetailPanelProps) {
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   console.log('check data', data)
   const theme = useTheme()
   function getEmoji(title: string) {
@@ -55,6 +64,33 @@ export default function DetailPanel({ data, onClose }: DetailPanelProps) {
       return ''
     }
   }
+  const plantEmojis = [
+    '🌵',
+    '🌱',
+    '🌿',
+    '☘️',
+    '🍀',
+    '🎍',
+    '🪴',
+    '🎋',
+    '🍃',
+    '🍂',
+    '🍁',
+    '🍄',
+    '🍄‍🟫',
+    '🌾',
+    '💐',
+    '🌷',
+    '🪷',
+    '🌹',
+    '🥀',
+    '🌺',
+    '🌸',
+    '🪻',
+    '🌼',
+    '🌻',
+  ]
+
   return (
     <div
       style={{
@@ -150,7 +186,7 @@ export default function DetailPanel({ data, onClose }: DetailPanelProps) {
                               fontSize: '20px',
                             }}
                           >
-                            {vital.readings.at(-1).data.at(-1).value[1] +
+                            {vital?.readings?.at(-1)?.data?.at(-1).value[1] +
                               ' ' +
                               vital.unit}
                           </p>
@@ -164,6 +200,54 @@ export default function DetailPanel({ data, onClose }: DetailPanelProps) {
           </div>
         </div>
       )}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
+            gap: '10px',
+          }}
+        >
+          <Button onClick={() => setShowEmojiPicker(true)}>Change Emoji</Button>
+          {showEmojiPicker && (
+            <ul
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                listStyle: 'none',
+                gap: '10px',
+              }}
+            >
+              {plantEmojis.map((emoji) => {
+                return (
+                  <EmojiItem
+                    onClick={() => {
+                      console.log('Setting emoji', emoji)
+                      setNewPlantEmoji(index, emoji)
+                    }}
+                  >
+                    {emoji}
+                  </EmojiItem>
+                )
+              })}
+              <EmojiItem
+                padding={'5px 15px'}
+                onClick={() => setShowEmojiPicker(false)}
+              >
+                x
+              </EmojiItem>
+            </ul>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

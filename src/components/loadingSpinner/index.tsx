@@ -3,7 +3,6 @@ import { motion } from 'framer-motion'
 
 export default function LoadingSpinner({ size = 20 }: any) {
   const theme = useTheme()
-  // if (theme) {
   return (
     <motion.div
       animate={{
@@ -24,7 +23,4 @@ export default function LoadingSpinner({ size = 20 }: any) {
       }}
     />
   )
-  // } else {
-  //   return <div></div>
-  // }
 }
