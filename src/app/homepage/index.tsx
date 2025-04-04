@@ -25,6 +25,8 @@ import HeroPanel from '@/components/panels/heroPanel'
 import NotificationPanel from '@/components/panels/notificationPanel'
 import { useGlobalContext } from '../context/GlobalContext'
 import { UserProfilePic } from '@/components/NavHero/style'
+import PopUpPane from '@/components/popUpPane'
+import ExpandedNotification from '@/components/expandedNotification'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -33,6 +35,8 @@ export default function Homepage() {
   const [favouritePlant, setFavouritePlant] = useState<any>(null)
   const [user, setUser] = useState<any>(null)
   const { isMobile } = useGlobalContext()
+  const [expandedNotif, setExpandedNotif] = useState<null | number>(null)
+  const [showExpandedNotif, setShowExpandedNotif] = useState<boolean>(false)
 
   const theme = useTheme()
 
@@ -51,10 +55,6 @@ export default function Homepage() {
   useEffect(() => {
     setFavouritePlant(userPlants?.plants[user?.favouritePlant])
   }, [user])
-
-  useEffect(() => {
-    console.log('Fav Plant:', favouritePlant)
-  }, [favouritePlant])
 
   //
   // UNCOMMENT THE BELOW FOR LIVE UPDATES!!!! :)
@@ -308,6 +308,20 @@ export default function Homepage() {
           </HeroPanel>
           {/* Notifications */}
           <NotificationPanel>
+            {showExpandedNotif ? (
+              <PopUpPane
+                setShowPopup={setShowExpandedNotif}
+                showPopup={showExpandedNotif}
+                paneTitle={
+                  expandedNotif !== null ? notifs[expandedNotif]?.name : ''
+                }
+              >
+                <ExpandedNotification
+                  expandedNotif={expandedNotif}
+                  notifs={notifs}
+                />
+              </PopUpPane>
+            ) : null}
             <NotificationPaneContainer>
               <h2>Notifications</h2>
               <NotificationsContainer>
@@ -318,6 +332,10 @@ export default function Homepage() {
                       key={index}
                       notif={notif}
                       even={index % 2 === 0}
+                      onClick={() => {
+                        setExpandedNotif(index)
+                        setShowExpandedNotif(true)
+                      }}
                     />
                   ))
                 ) : (
