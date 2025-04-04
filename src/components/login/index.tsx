@@ -3194,6 +3194,11 @@ export default function LoginPane({ isLoggedIn, setLoggedIn, database }: any) {
   async function signUp() {
     setIsLoading(true)
     try {
+      if (password.length < 6) {
+        setError('Password must be at least 6 characters long')
+        setIsLoading(false)
+        return
+      }
       const userCred = await createUserWithEmailAndPassword(
         auth,
         email,
