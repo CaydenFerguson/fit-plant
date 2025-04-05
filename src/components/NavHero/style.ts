@@ -22,6 +22,13 @@ export const UserProfilePic = styled.div(() => {
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: '4rem',
+    boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.5)',
+    transition: 'scale 0.2s, opacity 0.2s',
+    cursor: 'pointer',
+    '&:hover': {
+      scale: '1.1',
+      opacity: '0.87',
+    },
   }
 })
 

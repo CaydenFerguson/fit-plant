@@ -28,6 +28,7 @@ import { useGlobalContext } from '../context/GlobalContext'
 import { UserProfilePic } from '@/components/NavHero/style'
 import PopUpPane from '@/components/popUpPane'
 import ExpandedNotification from '@/components/expandedNotification'
+import { Divider, EmojiItem, EmojiSelectContainer } from '../settings/styles'
 
 // This is the homepage component,
 export default function Homepage() {
@@ -38,6 +39,7 @@ export default function Homepage() {
   const { isMobile } = useGlobalContext()
   const [expandedNotif, setExpandedNotif] = useState<null | number>(null)
   const [showExpandedNotif, setShowExpandedNotif] = useState<boolean>(false)
+  const [showProfilePicChange, setShowProfilePicChange] = useState(false)
 
   const theme = useTheme()
 
@@ -242,8 +244,69 @@ export default function Homepage() {
     return people[Math.floor(Math.random() * people.length)]
   }
 
+  function setProfilePic(emoji: string) {
+    let updatedUser = user
+    updatedUser.profileEmoji = emoji
+    updatedUser.version += 1
+    setDataFirebase('users', auth, db, updatedUser)
+    getUsersData()
+  }
+  const profileEmojis = [
+    '🧒',
+    '👦',
+    '🧑',
+    '👨',
+    '👩‍🦱',
+    '🧑‍🦱',
+    '👨‍🦱',
+    '👩‍🦰',
+    '🧑‍🦰',
+    '👨‍🦰',
+    '👱‍♀️',
+    '👱',
+    '👱‍♂️',
+    '👩‍🦳',
+    '🧑‍🦳',
+    '👨‍🦳',
+    '👩‍🦲',
+    '🧑‍🦲',
+    '👨‍🦲',
+    '🧔‍♀️',
+    '🧔',
+    '🧔‍♂️',
+    '👵',
+    '🧓',
+    '👴',
+    '👳‍♀️',
+    '👳',
+    '👳‍♂️',
+    '🧕',
+  ]
+
   return (
     <NormalPageLayout id="test">
+      {showProfilePicChange ? (
+        <PopUpPane
+          setShowPopup={setShowProfilePicChange}
+          showPop={showProfilePicChange}
+          paneTitle="Upload Image"
+          opacity={0.7}
+          maxWidth={'60%'}
+          maxHeight={'80%'}
+        >
+          <div>
+            <EmojiSelectContainer>
+              {profileEmojis.map((emoji) => {
+                return (
+                  <EmojiItem onClick={() => setProfilePic(emoji)}>
+                    {emoji}
+                  </EmojiItem>
+                )
+              })}
+            </EmojiSelectContainer>
+          </div>
+        </PopUpPane>
+      ) : null}
       <DashboardRow>
         {/* ControlPanels are rows to display panels, must add to one or less */}
         <ControlPanel>
@@ -271,7 +334,7 @@ export default function Homepage() {
                     justifyContent: 'center',
                   }}
                 >
-                  <UserProfilePic>
+                  <UserProfilePic onClick={() => setShowProfilePicChange(true)}>
                     {user?.profileEmoji ? user.profileEmoji : '👤'}
                   </UserProfilePic>
                   {isMobile ? (
