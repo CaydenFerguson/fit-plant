@@ -24,7 +24,6 @@ export default function RootLayout({
   const [userTheme, setUserTheme] = useState('dark')
   const auth = getAuth()
   useEffect(() => {
-    console.log('Setting up onAuthStateChanged listener')
     // Listen to auth state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {

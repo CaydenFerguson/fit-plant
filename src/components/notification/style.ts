@@ -48,3 +48,17 @@ export const Details = styled.div(() => {
     alignItems: 'center',
   }
 })
+
+export const CloseButton = styled.div(() => {
+  return {
+    padding: '5px',
+    scale: '1.2',
+    opacity: '0.3',
+    '&:hover': {
+      scale: '1.3',
+      cursor: 'pointer',
+      opacity: '1',
+      transition: 'scale 0.1s ease',
+    },
+  }
+})

@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Container, Container2, SettingsButton } from './style'
 import LineGraph from '@/components/lineGraph'
 import { useGlobalContext } from '@/app/context/GlobalContext'
 import GraphSettingsPanel from './graphSettings'
 import { AnimatePresence, motion } from 'motion/react'
+import LiveTimeChart from '@/components/lineGraph'
 
 export default function HalfPanelGraph({
   invisible = false,
@@ -16,16 +17,20 @@ export default function HalfPanelGraph({
   optionsText = '',
   optionsLocation = 'left',
 }: any) {
-  console.log('Look:', plants)
-
   const types = ['moisture', 'e', 'npk', 'pH', 'temperature']
   const typesCapitalized = ['Moisture', 'E', 'NPK', 'pH', 'Temperature']
 
   const { isMobile } = useGlobalContext()
   const [activeReading, setActiveReading] = useState(0)
-  const [activeDates, setActiveDates] = useState<null | number[]>(null)
+  const [activeDates, setActiveDates] = useState<null | number[]>([
+    plants[0]?.dates.at(-1) || null,
+  ])
+  const [useLocalData, setUseLocalData] = useState(false)
   const [numDates, setNumDates] = useState(0)
   const [showSettings, setShowSettings] = useState(false)
+  const [data, setData] = useState<
+    { name: string; value: (number | Date)[] }[]
+  >([])
   const [shownData, setShownData] = useState(
     plants.map((plant: any) => ({
       data: plant.vitals[types[0]]?.readings[0]?.data,
@@ -33,23 +38,48 @@ export default function HalfPanelGraph({
     }))
   )
 
+  // Sets the default active date to the max date of all the plants
   useEffect(() => {
-    console.log('Date Indices:', activeDates)
-  }, [activeDates])
+    let maxPlantDateLength = 0
+    if (plants) {
+      plants.forEach((plant: any) => {
+        if (plant?.dates && plant?.dates.length > 0) {
+          if (plant.dates.length > maxPlantDateLength) {
+            maxPlantDateLength = plant.dates.length
+          }
+        }
+      })
+    }
+    setActiveDates([maxPlantDateLength - 1])
+  }, [])
+
+  const maxPoints = 48 // Max number of points to keep
   useEffect(() => {
-    console.log('Active Reading:', activeReading)
-  }, [activeReading])
+    const interval = setInterval(() => {
+      const now = new Date()
+      const newPoint = {
+        name: now.toLocaleTimeString(),
+        value: [now, Math.random() * 100],
+      }
+
+      setData((prev) => {
+        const updated = [...prev, newPoint]
+        return updated.length > maxPoints ? updated.slice(-maxPoints) : updated
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   // This useEffect assembles the right data based on the users settings.
   useEffect(() => {
     // Making sure the user has selected an active reading and that the date is not null
     if (activeReading >= 0 && activeDates != null) {
-      console.log('run', activeReading, activeDates)
       setShownData(
         plants.map((plant: any) => {
           // This will hold the accumulated data (from all preffered dates) per plant
           let data: any[] = []
-          activeDates.forEach((dateIndex: any) => {
+          activeDates?.forEach((dateIndex: any) => {
             console.log(
               'length verify',
               plant.vitals[types[activeReading]]?.readings.length,
@@ -59,14 +89,14 @@ export default function HalfPanelGraph({
               plant.vitals[types[activeReading]]?.readings.length - 1 >=
               dateIndex
             ) {
-              console.log(
-                'check me:',
-                plant.vitals[types[activeReading]]?.readings[dateIndex].data
-              )
-              data = [
-                ...data,
-                ...plant.vitals[types[activeReading]]?.readings[dateIndex].data,
-              ]
+              data = plant.vitals[types[activeReading]]?.readings[dateIndex]
+                ?.data
+                ? [
+                    ...data,
+                    ...plant.vitals[types[activeReading]]?.readings[dateIndex]
+                      .data,
+                  ]
+                : [...data]
             }
           })
 
@@ -80,22 +110,31 @@ export default function HalfPanelGraph({
         })
       )
     }
-  }, [activeReading, activeDates])
+  }, [activeReading, activeDates, plants])
 
-  function cycleActiveReading() {
-    setActiveReading((activeReading + 1) % 4)
-  }
+  const slicedData = useMemo(() => {
+    return shownData.map((plant: any) => ({
+      name: plant.name,
+      type: 'line',
+      showSymbol: false,
+      smooth: false, // MAKES DATA SMOOTH vs STRAIGHT
+      animationEasing: 'linear',
+      animationDurationUpdate: 500,
+      data: plant?.data
+        ? plant.data.slice(-48).map((point: any) => ({
+            name: point.value?.[0],
+            value: point.value,
+          }))
+        : [],
+    }))
+  }, [shownData])
 
-  function toggleSettings() {
-    setShowSettings(!showSettings)
-  }
-
-  if (shownData) {
-    return (
+  return (
+    <>
       <Container2 showDropShadow={showDropShadow} isMobile={isMobile}>
         <SettingsButton
           location={optionsLocation}
-          onClick={() => toggleSettings()}
+          onClick={() => setShowSettings(!showSettings)}
         >
           ⚙️ {optionsText}
         </SettingsButton>
@@ -116,26 +155,21 @@ export default function HalfPanelGraph({
                 setShowSettings={setShowSettings}
                 showSettings={showSettings}
                 plantData={plants}
+                useLocalData={useLocalData}
+                setUseLocalData={setUseLocalData}
               />
             </motion.div>
           ) : null}
         </AnimatePresence>
         {plants && (
-          <LineGraph
-            xValues={
-              plants[plantNum].vitals[types[activeReading]]?.readings?.time
-            }
-            // xValues={plants.map(
-            //   (plant: any) => plant.vitals[types[activeReading]].readings.time
-            // )}
-            yValues={shownData}
-            xLabel={'TIME'}
-            yLabel={types[activeReading].toUpperCase()}
+          <LiveTimeChart
+            useLocalData={useLocalData}
+            data={useLocalData ? data : slicedData}
             title={plants[plantNum].vitals[types[activeReading]].title}
+            yTitle={types?.[activeReading]?.toUpperCase() || 'Reading'}
           />
         )}
-        {children}
       </Container2>
-    )
-  }
+    </>
+  )
 }

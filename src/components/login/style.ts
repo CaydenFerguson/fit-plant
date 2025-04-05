@@ -7,7 +7,7 @@ export const LoginBackground = styled.div(({ theme }) => {
   return {
     width: '100vw',
     height: '100vh',
-    backgroundColor: theme.colours.backgroundDark,
+    backgroundColor: theme.colours.background,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,7 +17,7 @@ export const LoginBackground = styled.div(({ theme }) => {
 export const LoginPanel = styled.div(({ theme }) => {
   return {
     padding: '20px',
-    backgroundColor: theme.colours.foregroundDark,
+    backgroundColor: theme.colours.navAndPanels,
     boxShadow: '3px 3px 5px 0px rgba(0,0,0,0.25)',
     alignItems: 'center',
     textAlign: 'center',

@@ -8,6 +8,7 @@ import {
   EmojiSelectContainer,
   LogoutButton,
   SettingsContainer,
+  SettingSelector,
   SettingsRow,
   SettingsWrapper,
 } from './styles'
@@ -188,7 +189,7 @@ export default function settings() {
               {/* --------- Theme ---------- */}
               <SettingsRow>
                 <h2>Theme:</h2>
-                <select
+                <SettingSelector
                   style={{ width: 'auto' }}
                   onChange={(e) => {
                     updateTheme(e.target.value)
@@ -197,13 +198,13 @@ export default function settings() {
                 >
                   <option value="light">Light</option>
                   <option value="dark">Dark</option>
-                </select>
+                </SettingSelector>
               </SettingsRow>
 
               {/* ------- Favourite Plant -------- */}
               <SettingsRow>
                 <h2>Favourite Plant:</h2>
-                <select
+                <SettingSelector
                   value={user?.favouritePlant}
                   style={{ width: 'auto' }}
                   onChange={(e) => {
@@ -216,13 +217,13 @@ export default function settings() {
                       {plant.name}
                     </option>
                   ))}
-                </select>
+                </SettingSelector>
               </SettingsRow>
 
               {/* ------- Units --------- */}
               <SettingsRow>
                 <h2>Units:</h2>
-                <select
+                <SettingSelector
                   style={{ width: 'auto' }}
                   onChange={(e) => {
                     console.log('Changed Units')
@@ -230,7 +231,7 @@ export default function settings() {
                 >
                   <option value="metric">Metric</option>
                   <option value="imperial">Imperial</option>
-                </select>
+                </SettingSelector>
               </SettingsRow>
 
               {/* ------- Log Out --------- */}

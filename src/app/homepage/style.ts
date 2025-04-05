@@ -30,6 +30,7 @@ export const NotificationPaneContainer = styled.div(() => {
 export const NotificationsContainer = styled.div(() => {
   return {
     width: '100%',
+    height: '100%',
     borderRadius: '20px 0px 0px 20px',
     marginTop: '5px',
     overflowY: 'auto',
@@ -42,5 +43,15 @@ export const VitalsContainer = styled.div(() => {
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+  }
+})
+
+export const DeleteAllNotifButton = styled.div(() => {
+  return {
+    opacity: '0.3',
+    cursor: 'pointer',
+    '&:hover': {
+      opacity: '1',
+    },
   }
 })

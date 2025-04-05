@@ -6,6 +6,7 @@ import NormalPageLayout from '../../components/normalPageLayout'
 import {
   ControlPanel,
   DashboardRow,
+  DeleteAllNotifButton,
   NotificationPaneContainer,
   NotificationsContainer,
   VitalsContainer,
@@ -40,33 +41,24 @@ export default function Homepage() {
 
   const theme = useTheme()
 
-  // This will work for now, but the issue is we have no way of knowing
-  // if this data is accurate past the second its fetched
-  // need a version id or something we can compare to the server every so often to verify its up-to-date
   useEffect(() => {
     console.log('Fetching user details')
     getUsersData()
   }, [])
 
   useEffect(() => {
-    setFavouritePlant(userPlants?.plants[0])
+    console.log('plant update detected!')
   }, [userPlants])
 
-  useEffect(() => {
-    setFavouritePlant(userPlants?.plants[user?.favouritePlant])
-  }, [user])
-
-  //
   // UNCOMMENT THE BELOW FOR LIVE UPDATES!!!! :)
-  //
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setNewData(userPlants)
-  //     console.log('Fetching')
-  //   }, 5000)
-  //   return () => clearInterval(interval) // Cleanup on unmount
-  // }, [user])
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log('Fetching')
+      getUsersData()
+    }, 5000)
+    return () => clearInterval(interval) // Cleanup on unmount
+  }, [user])
 
   async function getUsersData() {
     const user = await getUserData(db, auth, 'users')
@@ -87,6 +79,25 @@ export default function Homepage() {
 
     if (docSnap.exists()) {
       setNotifs(docSnap.data().notifications)
+    } else {
+      console.log('No such document!')
+    }
+  }
+
+  async function deleteNotif(index: number, all = false) {
+    const userId = auth?.currentUser?.uid
+    const docRef = doc(db, 'users', String(userId))
+    const docSnap = await getDoc(docRef)
+
+    if (docSnap.exists()) {
+      const data = docSnap.data()
+      if (all === true) {
+        data.notifications.splice(index, 1000)
+      } else {
+        data.notifications.splice(index, 1)
+      }
+      setNotifs(data.notifications)
+      await setDataFirebase('users', auth, db, data)
     } else {
       console.log('No such document!')
     }
@@ -164,45 +175,19 @@ export default function Homepage() {
         }
 
         newPlantData.plants[index] = plant
-
-        // //Choosing random values to mulitply the last result
-        // const incDec = Math.random() <= 0.5 ? -1 : 1
-        // const readingModifier = incDec * (Math.random() + 1)
-
-        // // Check if there was a last result
-        // // console.log(key, obj[key]);
-        // console.log('check', plant.vitals[key].readings)
-        // console.log('check', plant.vitals[key].readings.at(-1))
-        // plant.vitals[key].readings.at(-1).data.push({
-        //   value: [
-        //     getLocalIsoString(),
-        //     plant.vitals[key].readings.at(-1).data.length !== 0
-        //       ? plant.vitals[key].readings.at(-1).data.at(-1).value[1] *
-        //         readingModifier
-        //       : readingModifier,
-        //   ],
-        // })
       }
 
       console.log('[x] new dates', newPlantData.plants[1].dates)
-
-      //   // get user data
-      //   const currentReadings = plant.vitals.moisture.readings.reading
-
-      //   // delete the oldest datapoint and append a new datapoint
-      //   let newReadings = currentReadings
-      //   newReadings.shift()
-      //   const missingOrNot = newReadings.push(
-      //     Math.random() > 0.1 ? Number((Math.random() * 0.5).toFixed(2)) : null
-      //   )
-
-      //   newPlantData.plants[index].vitals.moisture.readings.reading = newReadings
     })
     console.log('[x] new data', newPlantData.plants[1].vitals)
     newPlantData.version = newPlantData.version + 1
 
     // update firestore
     await setDataFirebase('userPlants', auth, db, newPlantData)
+    await getUsersData()
+  }
+  async function getNewData(plantData: any) {
+    let newPlantData = { ...plantData }
     await getUsersData()
   }
 
@@ -274,36 +259,40 @@ export default function Homepage() {
                 height: '100%',
               }}
             >
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '20px',
-                  justifyContent: 'center',
-                }}
-              >
-                <UserProfilePic>
-                  {user?.profileEmoji ? user.profileEmoji : '👤'}
-                </UserProfilePic>
-                {isMobile ? (
-                  <h2 style={{ textAlign: 'center' }}>
-                    Welcome back, {user?.firstName} 👋
-                  </h2>
-                ) : (
-                  <h1 style={{ textAlign: 'center' }}>
-                    Welcome back, {user?.firstName} 👋
-                  </h1>
-                )}
-                <p
+              {user === null ? (
+                <LoadingSpinner />
+              ) : (
+                <div
                   style={{
-                    fontSize: `${isMobile ? '17px' : '18px'}`,
-                    color: theme.colours.textLight,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '20px',
+                    justifyContent: 'center',
                   }}
                 >
-                  Here's a quick overview of your plants
-                </p>
-              </div>
+                  <UserProfilePic>
+                    {user?.profileEmoji ? user.profileEmoji : '👤'}
+                  </UserProfilePic>
+                  {isMobile ? (
+                    <h2 style={{ textAlign: 'center' }}>
+                      Welcome back, {user?.firstName} 👋
+                    </h2>
+                  ) : (
+                    <h1 style={{ textAlign: 'center' }}>
+                      Welcome back, {user?.firstName} 👋
+                    </h1>
+                  )}
+                  <p
+                    style={{
+                      fontSize: `${isMobile ? '17px' : '18px'}`,
+                      color: theme.colours.textLight,
+                    }}
+                  >
+                    Here's a quick overview of your plants
+                  </p>
+                </div>
+              )}
             </div>
           </HeroPanel>
           {/* Notifications */}
@@ -323,7 +312,19 @@ export default function Homepage() {
               </PopUpPane>
             ) : null}
             <NotificationPaneContainer>
-              <h2>Notifications</h2>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <h2>Notifications</h2>
+                <DeleteAllNotifButton onClick={() => deleteNotif(0, true)}>
+                  Clear All
+                </DeleteAllNotifButton>
+              </div>
               <NotificationsContainer>
                 {notifs != null ? (
                   notifs.map((notif: any, index: number) => (
@@ -331,7 +332,9 @@ export default function Homepage() {
                       isMobile={isMobile}
                       key={index}
                       notif={notif}
+                      index={index}
                       even={index % 2 === 0}
+                      deleteNotif={deleteNotif}
                       onClick={() => {
                         setExpandedNotif(index)
                         setShowExpandedNotif(true)
@@ -339,10 +342,35 @@ export default function Homepage() {
                     />
                   ))
                 ) : (
-                  <LoadingSpinner />
+                  <div
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <LoadingSpinner margin={0} padding={'10'} />
+                  </div>
+                )}
+
+                {notifs?.length === 0 && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      width: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <p style={{ fontSize: '18px' }}>
+                      No new notifications, yay! 😁
+                    </p>
+                  </div>
                 )}
               </NotificationsContainer>
-              {/* <button onClick={() => getNotifications(auth)}>GetNotifs</button> */}
             </NotificationPaneContainer>
           </NotificationPanel>
         </ControlPanel>
@@ -444,80 +472,11 @@ export default function Homepage() {
             {userPlants && (
               <HalfPanelGraph
                 plantNum={user?.favouritePlant}
-                plants={userPlants?.plants}
+                plants={userPlants.plants}
               />
             )}
           </ControlPanel>
         }
-
-        {
-          <ControlPanel>
-            {/* <QuarterPanel> */}
-            <div>
-              <button onClick={() => setNewData(userPlants)}>
-                New Reading
-              </button>
-              <button onClick={() => getUsersData()}>Refresh</button>
-            </div>
-            {/* </QuarterPanel> */}
-            {false && (
-              <QuarterPanel>
-                <div>
-                  {/* Favourite Plant Select */}
-                  <div style={{ display: 'flex', flexDirection: 'row' }}>
-                    <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                      Favourite Plant:
-                    </h3>
-                    <select
-                      style={{ width: 'auto' }}
-                      onChange={(e) => {
-                        setFavouritePlant(userPlants?.plants[e.target.value])
-                      }}
-                    >
-                      {userPlants?.plants?.map((plant: any, index: number) => (
-                        <option key={index} value={index}>
-                          {plant.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </QuarterPanel>
-            )}
-          </ControlPanel>
-        }
-        {false && (
-          <ControlPanel>
-            <QuarterPanel>
-              <div>
-                <button onClick={() => setNewData(userPlants)}>
-                  New Reading
-                </button>
-                <button onClick={() => getUsersData()}>Refresh</button>
-              </div>
-            </QuarterPanel>
-            <QuarterPanel>
-              {/* Favourite Plant Select */}
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <h3 style={{ textWrap: 'nowrap', paddingRight: '15px' }}>
-                  Favourite Plant:
-                </h3>
-                <select
-                  style={{ width: 'auto' }}
-                  onChange={(e) => {
-                    setFavouritePlant(userPlants?.plants[e.target.value])
-                  }}
-                >
-                  {userPlants?.plants?.map((plant: any, index: number) => (
-                    <option key={index} value={index}>
-                      {plant.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </QuarterPanel>
-          </ControlPanel>
-        )}
       </DashboardRow>
     </NormalPageLayout>
   )

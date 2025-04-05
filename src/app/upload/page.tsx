@@ -22,7 +22,7 @@ export default function upload() {
     const code = document.getElementById('code') as HTMLInputElement
     code.select()
     code.setSelectionRange(0, 99999)
-    document.execCommand('copy')
+    navigator.clipboard.writeText(code.value)
     setButtonText('Copied!')
   }
 

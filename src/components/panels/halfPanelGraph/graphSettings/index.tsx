@@ -19,6 +19,8 @@ export default function GraphSettingsPanel({
   activeDates,
   setActiveDates,
   plantData,
+  useLocalData,
+  setUseLocalData,
 }: any) {
   const theme = useTheme()
   const [showPanel, setShowPanel] = useState<any>(null)
@@ -184,19 +186,18 @@ export default function GraphSettingsPanel({
                     {formatDateToLongForm(date)}
                   </SettingItem>
                 ))}
-
-                {/* <SettingItem
-                  isActive={activeDates ? activeDates.includes(1) : false}
-                  onClick={() => addOrRemoveActiveDate(1, activeDates)}
-                >
-                  Choose Date
-                </SettingItem>
+              </DateList>
+            </SettingWrapper>
+            {/* Dev Settings */}
+            <SettingWrapper isMobile={isMobile}>
+              <SettingsHeading>Dev Settings</SettingsHeading>
+              <DateList>
                 <SettingItem
-                  isActive={activeDates ? activeDates.includes(2) : false}
-                  onClick={() => addOrRemoveActiveDate(2, activeDates)}
+                  isActive={useLocalData}
+                  onClick={() => setUseLocalData(!useLocalData)}
                 >
-                  Choose Date
-                </SettingItem> */}
+                  All
+                </SettingItem>
               </DateList>
             </SettingWrapper>
           </motion.div>
